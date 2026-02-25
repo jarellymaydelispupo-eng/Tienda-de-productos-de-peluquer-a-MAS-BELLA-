@@ -3,252 +3,392 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MÁS BELLA - Tienda</title>
+    <title>MÁS BELLA - Tienda Virtual</title>
     <style>
-        :root { --oro: #d4af37; --rosa: #d81b60; --fondo: #fff5f8; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--fondo); margin: 0; padding: 0; color: #333; }
-        header { background: white; text-align: center; padding: 20px; border-bottom: 4px solid var(--oro); }
-        .logo { font-size: 1.8rem; font-weight: bold; color: var(--rosa); margin: 0; }
+        :root { 
+            --oro: #d4af37; 
+            --rosa-fondo: #fff5f8;
+            --rosa-fuerte: #d81b60;
+            --oscuro: #2c3e50;
+        }
+
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            margin: 0; 
+            background-color: var(--rosa-fondo);
+            color: #333; 
+        }
+
+        header { 
+            background: white; padding: 20px; text-align: center; 
+            border-bottom: 4px solid var(--oro); box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo { font-size: 2rem; font-weight: bold; color: var(--rosa-fuerte); margin: 0; }
+
+        .info-box {
+            max-width: 470px;
+            margin: 15px auto;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 0.95rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .horarios {
+            background: white;
+            border: 1px solid var(--oro);
+            text-align: left;
+        }
+
+        .horarios h4 {
+            margin: 0 0 10px 0;
+            color: var(--oscuro);
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+
+        .horarios ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px;
+        }
+
+        .horarios li {
+            padding: 3px 0;
+            font-size: 0.85rem;
+        }
+
+        .nota-envase {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .categoria-titulo { 
+            background: var(--oscuro); color: white; padding: 10px; 
+            margin-top: 20px; text-align: center; font-weight: bold;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .lista-productos { padding: 10px; max-width: 500px; margin: auto; padding-bottom: 150px; }
+
+        .producto-item { 
+            background: white; display: flex; flex-direction: column;
+            padding: 15px; margin-bottom: 8px; border-radius: 10px; border-left: 5px solid var(--oro);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .fila-superior { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+
+        .info-txt { flex: 1; }
+        .nombre { font-weight: bold; font-size: 1.05rem; color: #333; display: block; }
+        .descripcion-combo { font-size: 0.85rem; color: #666; margin-top: 3px; font-style: italic; }
+        .precio { font-weight: bold; color: var(--rosa-fuerte); font-size: 1.1rem; }
+
+        .controles { display: flex; align-items: center; gap: 10px; }
+        .cant-input { width: 50px; text-align: center; border: 2px solid #eee; border-radius: 6px; padding: 8px; font-weight: bold; font-size: 1rem; }
         
-        .contenedor { max-width: 500px; margin: auto; padding: 10px; padding-bottom: 150px; }
+        .selector-tono {
+            width: 100%;
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid var(--oro);
+            background: #fffdf5;
+            display: none;
+        }
+
+        .seccion-pago {
+            background: white; margin: 20px auto; padding: 20px; 
+            max-width: 460px; border-radius: 15px; border: 2px solid var(--rosa-fuerte);
+        }
+
+        .selector, .input-datos { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box; font-size: 1rem; }
         
-        .categoria-titulo { background: #2c3e50; color: white; padding: 10px; margin-top: 20px; text-align: center; font-weight: bold; border-radius: 5px; text-transform: uppercase; font-size: 0.9rem; }
-        
-        .producto-card { background: white; margin: 10px 0; padding: 15px; border-radius: 10px; border-left: 5px solid var(--oro); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        
-        .fila-principal { display: flex; justify-content: space-between; align-items: center; }
-        .nombre { font-weight: bold; font-size: 1rem; }
-        .precio { color: var(--rosa); font-weight: bold; }
-        
-        .contenedor-tonos { background: #fdf2f5; padding: 10px; margin-top: 10px; border-radius: 8px; border: 1px dashed var(--rosa); }
-        .fila-tono { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 0.9rem; }
-        
-        input[type="number"] { width: 50px; padding: 8px; text-align: center; border: 1px solid #ccc; border-radius: 5px; font-weight: bold; }
-        
-        .seccion-pago { background: white; padding: 20px; border-radius: 15px; border: 2px solid var(--rosa); margin-top: 20px; }
-        select, input[type="text"], textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box; }
-        
-        .barra-total { position: fixed; bottom: 0; width: 100%; background: #2c3e50; color: white; text-align: center; padding: 15px; font-size: 1.2rem; font-weight: bold; z-index: 1000; }
-        .btn-wa { background: #25d366; color: white; text-decoration: none; padding: 12px 25px; border-radius: 50px; display: inline-block; margin-top: 10px; font-size: 1rem; }
+        .resumen-total {
+            background: var(--oscuro); color: white; padding: 15px;
+            position: fixed; bottom: 0; width: 100%; text-align: center;
+            font-size: 1.3rem; font-weight: bold; box-shadow: 0 -4px 15px rgba(0,0,0,0.3);
+            z-index: 100;
+        }
+
+        .btn-whatsapp {
+            background: #25d366; color: white; text-decoration: none;
+            padding: 12px 30px; border-radius: 50px; display: inline-block;
+            margin-top: 10px; font-size: 1.1rem;
+        }
+
+        #domicilio-formulario { display: none; margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 15px; }
+        .label-form { font-size: 0.9rem; font-weight: bold; display: block; text-align: left; margin-bottom: 2px; }
     </style>
 </head>
 <body>
 
-<header>
-    <p class="logo">🌺 MÁS BELLA 🌺</p>
-    <small>Estética Profesional | Camagüey</small>
-</header>
+    <header>
+        <p class="logo">🌺 MÁS BELLA 🌺</p>
+        <p>Estética Profesional | Camagüey</p>
+    </header>
 
-<div class="contenedor">
-    <div id="lista-productos"></div>
+    <div class="info-box horarios">
+        <h4>🕒 Nuestros Horarios</h4>
+        <ul>
+            <li><strong>Lun:</strong> 8:00am - 7:00pm</li>
+            <li><strong>Mar:</strong> 1:00pm - 8:00pm</li>
+            <li><strong>Mié:</strong> 7:00am - 3:00pm</li>
+            <li><strong>Jue:</strong> 1:00pm - 8:00pm</li>
+            <li><strong>Vie:</strong> 1:00pm - 8:00pm</li>
+            <li><strong>Sáb:</strong> 7:00am - 1:00pm</li>
+            <li><strong>Dom:</strong> 1:00pm - 8:00pm</li>
+        </ul>
+    </div>
 
-    <div class="seccion-pago">
-        <h3>🛵 Método de Entrega</h3>
-        <select id="metodoEntrega" onchange="actualizarInterfaz()">
-            <option value="tienda">🏪 Recogida en Tienda ($0)</option>
-            <option value="domicilio">🏠 Servicio a Domicilio</option>
-        </select>
+    <div class="info-box nota-envase">
+        📢 RECORDATORIO: Si no trae su envase, se cobrará a $30 cup el pomo de a pinta.
+    </div>
 
-        <div id="form-domicilio" style="display:none">
-            <label>Zona de Camagüey:</label>
-            <select id="zonaCosto" onchange="calcularTotal()">
-                <option value="300">Centro del pueblo ($300)</option>
-                <option value="500">Lenin ($500)</option>
-                <option value="400">Modelo ($400)</option>
-                <option value="350">La Caridad ($350)</option>
-                <option value="400">La Vigía ($400)</option>
-                <option value="400">Florat ($400)</option>
-                <option value="350">Vista Hermosa ($350)</option>
-                <option value="400">Versalles ($400)</option>
-                <option value="350">Agramonte ($350)</option>
-                <option value="500">Jayama ($500)</option>
-                <option value="400">Monte Carlos ($400)</option>
-                <option value="400">La Mosca ($400)</option>
-                <option value="400">Marquesado ($400)</option>
-                <option value="450">La Esperanza ($450)</option>
-                <option value="450">Nueva Esperanza ($450)</option>
-                <option value="400">Garrido ($400)</option>
-                <option value="450">El Micro ($450)</option>
-                <option value="350">Palomino ($350)</option>
-                <option value="400">Juanito ($400)</option>
-                <option value="350">Previsora ($350)</option>
-                <option value="450">La Guernina ($450)</option>
-                <option value="450">La Belén ($450)</option>
-                <option value="350">Casino Campestre ($350)</option>
-                <option value="350">Las Mercedes ($350)</option>
-                <option value="350">Simoni ($350)</option>
-                <option value="400">Montejo ($400)</option>
-                <option value="450">La Yaba ($450)</option>
-                <option value="450">Nadales ($450)</option>
-                <option value="400">Bella Vista ($400)</option>
-                <option value="450">Vista Bella ($450)</option>
-                <option value="400">Inra ($400)</option>
-                <option value="450">Imán ($450)</option>
-                <option value="400">Mascota ($400)</option>
-                <option value="400">Puerto Príncipe ($400)</option>
-                <option value="500">Isabel Hortensia ($500)</option>
-                <option value="400">Villa Mariana ($400)</option>
-                <option value="450">Los Coquitos ($450)</option>
-                <option value="450">La Zambrana ($450)</option>
-                <option value="500">Saratoga ($500)</option>
-                <option value="400">El Jardín ($400)</option>
-                <option value="350">Floiran Quiroz ($350)</option>
-                <option value="350">Porvenir ($350)</option>
-                <option value="450">Nitrógeno ($450)</option>
-                <option value="400">Buenos Aires ($400)</option>
-                <option value="400">Camino Matanza ($400)</option>
-                <option value="350">Sanchez Soto ($350)</option>
+    <div class="lista-productos">
+        <div id="contenedor-productos"></div>
+
+        <div class="seccion-pago">
+            <h3>🛵 Método de Entrega</h3>
+            <select id="metodoEntrega" class="selector" onchange="actualizarEntrega()">
+                <option value="0">🏪 Recogida en Tienda ($0)</option>
+                <option value="domicilio">🏠 Servicio a Domicilio</option>
             </select>
-            <input type="text" id="nomCli" placeholder="Nombre del Cliente">
-            <textarea id="dirCli" placeholder="Dirección Exacta"></textarea>
-            <input type="text" id="telCli" placeholder="Teléfono">
+
+            <div id="domicilio-formulario">
+                <label class="label-form">Zona de Camagüey:</label>
+                <select id="zonaDomicilio" class="selector" onchange="calcularTotal()">
+                    <option value="300">Centro del pueblo ($300)</option>
+                    <option value="500">Lenin ($500)</option>
+                    <option value="400">Modelo ($400)</option>
+                    <option value="350">La Caridad ($350)</option>
+                    <option value="400">La Vigía ($400)</option>
+                    <option value="400">Florat ($400)</option>
+                    <option value="350">Vista Hermosa ($350)</option>
+                    <option value="400">Versalles ($400)</option>
+                    <option value="350">Agramonte ($350)</option>
+                    <option value="500">Jayama ($500)</option>
+                    <option value="400">Monte Carlos ($400)</option>
+                    <option value="400">La Mosca ($400)</option>
+                    <option value="400">Marquesado ($400)</option>
+                    <option value="450">La Esperanza ($450)</option>
+                    <option value="450">Nueva Esperanza ($450)</option>
+                    <option value="400">Garrido ($400)</option>
+                    <option value="450">El Micro ($450)</option>
+                    <option value="350">Palomino ($350)</option>
+                    <option value="400">Juanito ($400)</option>
+                    <option value="350">Previsora ($350)</option>
+                    <option value="450">La Guernina ($450)</option>
+                    <option value="450">La Belén ($450)</option>
+                    <option value="350">Casino Campestre ($350)</option>
+                    <option value="350">Las Mercedes ($350)</option>
+                    <option value="350">Simoni ($350)</option>
+                    <option value="400">Montejo ($400)</option>
+                    <option value="450">La Yaba ($450)</option>
+                    <option value="450">Nadales ($450)</option>
+                    <option value="400">Bella Vista ($400)</option>
+                    <option value="450">Vista Bella ($450)</option>
+                    <option value="400">Inra ($400)</option>
+                    <option value="450">Imán ($450)</option>
+                    <option value="400">Mascota ($400)</option>
+                    <option value="400">Puerto Príncipe ($400)</option>
+                    <option value="500">Isabel Hortensia ($500)</option>
+                    <option value="400">Villa Mariana ($400)</option>
+                    <option value="450">Los Coquitos ($450)</option>
+                    <option value="450">La Zambrana ($450)</option>
+                    <option value="500">Saratoga ($500)</option>
+                    <option value="400">El Jardín ($400)</option>
+                    <option value="350">Floiran Quiroz ($350)</option>
+                    <option value="350">Porvenir ($350)</option>
+                    <option value="450">Nitrógeno ($450)</option>
+                    <option value="400">Buenos Aires ($400)</option>
+                    <option value="400">Camino Matanza ($400)</option>
+                    <option value="350">Sanchez Soto ($350)</option>
+                </select>
+                
+                <label class="label-form">Nombre del Cliente:</label>
+                <input type="text" id="nombreCliente" class="input-datos" placeholder="Nombre completo">
+                <label class="label-form">Dirección Exacta:</label>
+                <textarea id="direccionCliente" class="input-datos" rows="2" placeholder="Calle, No. de casa..."></textarea>
+                <label class="label-form">Teléfono:</label>
+                <input type="tel" id="telefonoCliente" class="input-datos" placeholder="Número de contacto">
+            </div>
         </div>
     </div>
-</div>
 
-<div class="barra-total">
-    TOTAL: $<span id="montoTotal">0</span><br>
-    <a href="javascript:void(0)" onclick="enviarPedido()" class="btn-wa">📲 ENVIAR PEDIDO</a>
-</div>
+    <div class="resumen-total">
+        TOTAL: $<span id="monto-total">0</span><br>
+        <a href="javascript:void(0);" onclick="enviarPedido()" class="btn-whatsapp">📲 PEDIR POR WHATSAPP</a>
+    </div>
 
 <script>
-const productos = [
-    {cat: "🎨 Coloración y Tintes", n: "Tinte Stereo", p: 490},
-    {cat: "🎨 Coloración y Tintes", n: "Tinte Negro Ultra", p: 320},
-    {cat: "🎨 Coloración y Tintes", n: "Tinte de Gel (Rojo)", p: 220, tonos: ["Rojo Uva", "Rojo Fuego", "Rojo Intenso", "Rojo Brillante", "Rojo Rubio Intenso", "Rojo Rubí", "Rojo Cereza", "Rojo Fresa"]},
-    {cat: "🎨 Coloración y Tintes", n: "Tinte de Gel (Negro)", p: 200},
-    {cat: "🎨 Coloración y Tintes", n: "Tinte Escarcha", p: 70, tonos: ["Negro", "Platino", "Gris Acero", "Carmelita", "Rubio Ceniza", "Tabaco", "Chocolate"]},
-    {cat: "🎨 Coloración y Tintes", n: "Tinte de Gel (Claros)", p: 160, tonos: ["Rubio Cenizo", "Platino", "Carmelita", "Gris Acero", "Tabaco", "Chocolate", "Rubio Dorado", "Rubio Miel"]},
-    {cat: "🎨 Coloración y Tintes", n: "Aceite para Decoloración", p: 120},
-    
-    {cat: "🧪 Decoloración y Peróxido", n: "Polvo INEXUS", p: 2850},
-    {cat: "🧪 Decoloración y Peróxido", n: "Polvo NT", p: 2600},
-    {cat: "🧪 Decoloración y Peróxido", n: "Polvo por Onza", p: 170},
-    {cat: "🧪 Decoloración y Peróxido", n: "Peróxido de 20 (Granel)", p: 200},
-    {cat: "🧪 Decoloración y Peróxido", n: "Peróxido de 40 (Granel)", p: 250},
-    {cat: "🧪 Decoloración y Peróxido", n: "Peróxido de 100", p: 1300},
-    
-    {cat: "💇‍♀️ Tratamientos y Cabello", n: "Juego ORO LÍQUIDO", p: 770},
-    {cat: "💇‍♀️ Tratamientos y Cabello", n: "Alisado Brasileño", p: 470},
-    {cat: "💇‍♀️ Tratamientos y Cabello", n: "Keratina Sara Max", p: 370},
-    {cat: "💇‍♀️ Tratamientos y Cabello", n: "Ultra Keratina Chocolate", p: 370},
-    {cat: "💇‍♀️ Tratamientos y Cabello", n: "Shampoo/Acond. granel (Pinta)", p: 170},
-    {cat: "💇‍♀️ Tratamientos y Cabello", n: "Crema de Peinar", p: 390},
-    {cat: "💇‍♀️ Tratamientos y Cabello", n: "Gel para el Cabello (Pote)", p: 150},
-    {cat: "💇‍♀️ Tratamientos y Cabello", n: "Brocha", p: 250},
-    
-    {cat: "🧼 Limpieza Sadier (Sellado)", n: "Suavizante SADIER", p: 400},
-    {cat: "🧼 Limpieza Sadier (Sellado)", n: "Detergente Fregar SADIER", p: 400},
-    {cat: "🧼 Limpieza Sadier (Sellado)", n: "Detergente Lavar SADIER", p: 400},
-    
-    {cat: "🧴 Limpieza y Cuidado (Granel)", n: "Suavizante granel", p: 300},
-    {cat: "🧴 Limpieza y Cuidado (Granel)", n: "Detergente Fregar granel", p: 320},
-    {cat: "🧴 Limpieza y Cuidado (Granel)", n: "Detergente Lavar granel", p: 320},
-    {cat: "🧴 Limpieza y Cuidado (Granel)", n: "Gel de Baño", p: 580},
-    {cat: "🧴 Limpieza y Cuidado (Granel)", n: "Crema para la Piel", p: 480}
-];
+    const productos = [
+        {cat: "🎁 COMBOS EN OFERTA", nombre: "Combo #1 - Oferta Especial", precio: 1650, desc: "Incluye: 1 Crema de peinar, 1 Juego Oro Líquido (Shampoo/Acond.) y 1 Crema de piel (8 onz)"},
 
-function iniciar() {
-    const contenedor = document.getElementById('lista-productos');
-    let html = "";
-    let catActual = "";
-    
-    productos.forEach((p, i) => {
-        if(p.cat !== catActual) {
-            catActual = p.cat;
-            html += `<div class="categoria-titulo">${catActual}</div>`;
+        {cat: "🎨 Coloración y Tintes", nombre: "Tinte Stereo", precio: 490},
+        {cat: "🎨 Coloración y Tintes", nombre: "Tinte Negro Ultra", precio: 320},
+        {cat: "🎨 Coloración y Tintes", nombre: "Tinte de Gel (Rojo)", precio: 220, tonos: ["Rojo Uva", "Rojo Fuego", "Rojo Intenso", "Rojo Brillante", "Rojo Rubio Intenso", "Rojo Rubí", "Rojo Cereza", "Rojo Fresa"]},
+        {cat: "🎨 Coloración y Tintes", nombre: "Tinte de Gel (Negro)", precio: 200},
+        {cat: "🎨 Coloración y Tintes", nombre: "Tinte Escarcha (Negros y Claros)", precio: 70, tonos: ["Negro", "Platino", "Gris Acero", "Carmelita", "Rubio Ceniza", "Tabaco", "Chocolate"]},
+        {cat: "🎨 Coloración y Tintes", nombre: "Tinte de Gel (Claros)", precio: 160, tonos: ["Rubio Cenizo", "Platino", "Carmelita", "Gris Acero", "Tabaco", "Chocolate", "Rubio Dorado", "Rubio Miel"]},
+        {cat: "🎨 Coloración y Tintes", nombre: "Aceite para Decoloración", precio: 120},
+
+        {cat: "🧪 Decoloración y Peróxido", nombre: "Polvo INEXUS", precio: 2850},
+        {cat: "🧪 Decoloración y Peróxido", nombre: "Polvo NT", precio: 2600},
+        {cat: "🧪 Decoloración y Peróxido", nombre: "Polvo por Onza", precio: 170},
+        {cat: "🧪 Decoloración y Peróxido", nombre: "Peróxido de 20 a granel", precio: 200},
+        {cat: "🧪 Decoloración y Peróxido", nombre: "Peróxido de 40 a granel", precio: 250},
+        {cat: "🧪 Decoloración y Peróxido", nombre: "Peróxido de 100", precio: 1300},
+
+        {cat: "💇‍♀️ Tratamientos y Cabello", nombre: "Juego ORO LÍQUIDO", precio: 770},
+        {cat: "💇‍♀️ Tratamientos y Cabello", nombre: "Alisado Brasileño", precio: 470},
+        {cat: "💇‍♀️ Tratamientos y Cabello", nombre: "Keratina Sara Max", precio: 370},
+        {cat: "💇‍♀️ Tratamientos y Cabello", nombre: "Ultra Keratina Chocolate", precio: 370},
+        {cat: "💇‍♀️ Tratamientos y Cabello", nombre: "Shampoo/Acond. granel (Pinta)", precio: 170},
+        {cat: "💇‍♀️ Tratamientos y Cabello", nombre: "Crema de Peinar", precio: 390},
+        {cat: "💇‍♀️ Tratamientos y Cabello", nombre: "Gel para el Cabello (Potes)", precio: 150},
+        {cat: "💇‍♀️ Tratamientos y Cabello", nombre: "Brocha", precio: 250},
+        {cat: "💇‍♀️ Tratamientos y Cabello", nombre: "Brocha con su peine", precio: 250},
+
+        {cat: "🧼 Limpieza Sadier (Sellado)", nombre: "Suavizante ropa SADIER", precio: 400},
+        {cat: "🧼 Limpieza Sadier (Sellado)", nombre: "Detergente SADIER (Fregar)", precio: 400},
+        {cat: "🧼 Limpieza Sadier (Sellado)", nombre: "Detergente SADIER (Lavar)", precio: 400},
+
+        {cat: "🧴 Limpieza y Cuidado (Granel/Otros)", nombre: "Suavizante a granel", precio: 300},
+        {cat: "🧴 Limpieza y Cuidado (Granel/Otros)", nombre: "Detergente granel (Fregar)", precio: 320},
+        {cat: "🧴 Limpieza y Cuidado (Granel/Otros)", nombre: "Detergente granel (Lavar)", precio: 320},
+        {cat: "🧴 Limpieza y Cuidado (Granel/Otros)", nombre: "Gel de Baño", precio: 580},
+        {cat: "🧴 Limpieza y Cuidado (Granel/Otros)", nombre: "Crema para la Piel", precio: 480}
+    ];
+
+    function cargarProductos() {
+        const div = document.getElementById('contenedor-productos');
+        div.innerHTML = "";
+        let currentCat = "";
+        productos.forEach((p, index) => {
+            if(p.cat !== currentCat) {
+                currentCat = p.cat;
+                div.innerHTML += `<div class="categoria-titulo">${p.cat}</div>`;
+            }
+
+            let htmlTono = "";
+            if(p.tonos) {
+                htmlTono = `<select id="tono-${index}" class="selector-tono">
+                    <option value="">-- Elige la tonalidad --</option>
+                    ${p.tonos.map(t => `<option value="${t}">${t}</option>`).join('')}
+                </select>`;
+            }
+
+            let descHtml = p.desc ? `<span class="descripcion-combo">${p.desc}</span>` : "";
+
+            div.innerHTML += `
+                <div class="producto-item">
+                    <div class="fila-superior">
+                        <div class="info-txt">
+                            <span class="nombre">${p.nombre}</span>
+                            ${descHtml}
+                            <span class="precio">$${p.precio}</span>
+                        </div>
+                        <div class="controles">
+                            <input type="number" class="cant-input" id="cant-${index}" value="0" min="0" onchange="actualizarTonoVisual(${index})">
+                        </div>
+                    </div>
+                    ${htmlTono}
+                </div>`;
+        });
+    }
+
+    function actualizarTonoVisual(index) {
+        const cant = document.getElementById(`cant-${index}`).value;
+        const selector = document.getElementById(`tono-${index}`);
+        if(selector) {
+            selector.style.display = (cant > 0) ? "block" : "none";
+        }
+        calcularTotal();
+    }
+
+    function actualizarEntrega() {
+        const metodo = document.getElementById("metodoEntrega").value;
+        document.getElementById("domicilio-formulario").style.display = (metodo === "domicilio") ? "block" : "none";
+        calcularTotal();
+    }
+
+    function calcularTotal() {
+        let total = 0;
+        productos.forEach((p, index) => {
+            const cant = parseInt(document.getElementById(`cant-${index}`).value) || 0;
+            total += cant * p.precio;
+        });
+        const metodo = document.getElementById("metodoEntrega").value;
+        if(metodo === "domicilio") {
+            total += parseInt(document.getElementById("zonaDomicilio").value);
+        }
+        document.getElementById("monto-total").innerText = total;
+    }
+
+    function enviarPedido() {
+        let texto = "Hola MÁS BELLA, nuevo pedido:\n\n";
+        let tieneProductos = false;
+        
+        for(let i=0; i < productos.length; i++) {
+            const p = productos[i];
+            const cant = document.getElementById(`cant-${i}`).value;
+            
+            if(cant > 0) {
+                let detalleTono = "";
+                const selectorTono = document.getElementById(`tono-${i}`);
+                if(selectorTono) {
+                    if(selectorTono.value === "") {
+                        alert(`Por favor elige un tono para: ${p.nombre}`);
+                        return;
+                    }
+                    detalleTono = ` (${selectorTono.value})`;
+                }
+                
+                texto += `- ${cant}x ${p.nombre}${detalleTono} ($${cant * p.precio})\n`;
+                tieneProductos = true;
+            }
+        }
+
+        if(!tieneProductos) {
+            alert("Selecciona al menos un producto.");
+            return;
+        }
+
+        const metodo = document.getElementById("metodoEntrega").value;
+        if(metodo === "domicilio") {
+            const zona = document.getElementById("zonaDomicilio");
+            const nombreZona = zona.options[zona.selectedIndex].text;
+            const nombre = document.getElementById("nombreCliente").value;
+            const direccion = document.getElementById("direccionCliente").value;
+            const tel = document.getElementById("telefonoCliente").value;
+            if(!nombre || !direccion) {
+                alert("Por favor completa Nombre y Dirección para el domicilio.");
+                return;
+            }
+            texto += `\n🏠 ENTREGA A DOMICILIO:`;
+            texto += `\n👤 Cliente: ${nombre}`;
+            texto += `\n📍 Zona: ${nombreZona}`;
+            texto += `\n🏠 Dirección: ${direccion}`;
+            texto += `\n📞 Teléfono: ${tel}`;
+        } else {
+            texto += `\n🏪 Recogida en Tienda`;
         }
         
-        html += `<div class="producto-card">
-            <div class="fila-principal">
-                <div class="info">
-                    <span class="nombre">${p.n}</span><br>
-                    <span class="precio">$${p.p}</span>
-                </div>
-                <div class="control">
-                    ${!p.tonos ? `<input type="number" id="cant-${i}" value="0" min="0" onchange="calcularTotal()">` : `<small>Ver tonos ↓</small>`}
-                </div>
-            </div>`;
-            
-        if(p.tonos) {
-            html += `<div class="contenedor-tonos">`;
-            p.tonos.forEach((t, ti) => {
-                html += `
-                <div class="fila-tono">
-                    <span>${t}</span>
-                    <input type="number" class="t-cant-${i}" data-tono="${t}" data-prod="${p.n}" data-precio="${p.p}" value="0" min="0" onchange="calcularTotal()">
-                </div>`;
-            });
-            html += `</div>`;
-        }
-        html += `</div>`;
-    });
-    contenedor.innerHTML = html;
-}
-
-function actualizarInterfaz() {
-    const met = document.getElementById('metodoEntrega').value;
-    document.getElementById('form-domicilio').style.display = (met === 'domicilio') ? 'block' : 'none';
-    calcularTotal();
-}
-
-function calcularTotal() {
-    let total = 0;
-    productos.forEach((p, i) => {
-        if(!p.tonos) {
-            let c = parseInt(document.getElementById(`cant-${i}`).value) || 0;
-            total += c * p.p;
-        } else {
-            let inputs = document.querySelectorAll(`.t-cant-${i}`);
-            inputs.forEach(inp => {
-                total += (parseInt(inp.value) || 0) * p.p;
-            });
-        }
-    });
-    
-    if(document.getElementById('metodoEntrega').value === 'domicilio') {
-        total += parseInt(document.getElementById('zonaCosto').value) || 0;
+        texto += `\n\n💰 TOTAL A PAGAR: $${document.getElementById("monto-total").innerText}`;
+        window.location.href = `https://wa.me/5356247880?text=${encodeURIComponent(texto)}`;
     }
-    document.getElementById('montoTotal').innerText = total;
-}
-
-function enviarPedido() {
-    let mensaje = "Hola MÁS BELLA, nuevo pedido:\n\n";
-    let tieneAlgo = false;
-    
-    productos.forEach((p, i) => {
-        if(!p.tonos) {
-            let c = document.getElementById(`cant-${i}`).value;
-            if(c > 0) {
-                mensaje += `- ${c}x ${p.n} ($${c*p.p})\n`;
-                tieneAlgo = true;
-            }
-        } else {
-            let inputs = document.querySelectorAll(`.t-cant-${i}`);
-            inputs.forEach(inp => {
-                if(inp.value > 0) {
-                    mensaje += `- ${inp.value}x ${p.n} (${inp.dataset.tono}) ($${inp.value*p.p})\n`;
-                    tieneAlgo = true;
-                }
-            });
-        }
-    });
-    
-    if(!tieneAlgo) return alert("Por favor, selecciona algún producto.");
-    
-    if(document.getElementById('metodoEntrega').value === 'domicilio') {
-        const zonaNom = document.getElementById('zonaCosto').options[document.getElementById('zonaCosto').selectedIndex].text;
-        mensaje += `\n🏠 DOMICILIO:\nCliente: ${document.getElementById('nomCli').value}\nZona: ${zonaNom}\nDir: ${document.getElementById('dirCli').value}\nTel: ${document.getElementById('telCli').value}`;
-    } else {
-        mensaje += `\n🏪 Recogida en tienda`;
-    }
-    
-    mensaje += `\n\n💰 TOTAL: $${document.getElementById('montoTotal').innerText}`;
-    window.location.href = "https://wa.me/5356247880?text=" + encodeURIComponent(mensaje);
-}
-
-iniciar();
+    cargarProductos();
 </script>
+
 </body>
-  </html>
-  
+                        </html>
+    
