@@ -235,7 +235,7 @@
 
         {cat: "🎨 Coloración y Tintes", nombre: "Tinte Stereo", precio: 490},
         {cat: "🎨 Coloración y Tintes", nombre: "Tinte Negro Ultra", precio: 320},
-        {cat: "🎨 Coloración y Tintes", nombre: "Tinte de Gel (Rojo)", precio: 270, tonos: ["Rojo Uva", "Rojo Fuego", "Rojo Intenso", "Rojo Brillante", "Rojo Rubio Intenso", "Rojo Rubí", "Rojo Cereza", "Rojo Fresa"]},
+        {cat: "🎨 Coloración y Tintes", nombre: "Tinte de Gel (Rojo)", precio: 270, tonos: ["Rojo Uva", "Rojo Fuego", "Rojo Intenso", "Rojo Brillante", "Rojo Rubí", "Rojo Cereza", "Rojo Fresa"]},
         {cat: "🎨 Coloración y Tintes", nombre: "Tinte de Gel (Negro Azul)", precio: 220},
         {cat: "🎨 Coloración y Tintes", nombre: "Tinte Escarcha (Negros y Claros)", precio: 70, tonos: ["Negro", "Platino", "Gris Acero", "Carmelita", "Rubio Ceniza", "Tabaco", "Chocolate"]},
         {cat: "🎨 Coloración y Tintes", nombre: "Tinte de Gel (Claros)", precio: 180, tonos: ["Rubio Cenizo", "Platino", "Carmelita", "Gris Acero", "Tabaco", "Chocolate", "Rubio Dorado", "Rubio Miel"]},
@@ -245,7 +245,6 @@
         {cat: "🧪 Decoloración y Peróxido", nombre: "Polvo NT", precio: 2800},
         {cat: "🧪 Decoloración y Peróxido", nombre: "Polvo por Onza", precio: 170},
         {cat: "🧪 Decoloración y Peróxido", nombre: "Peróxido de 20 a granel", precio: 200},
-        {cat: "🧪 Decoloración y Peróxido", nombre: "Peróxido de 40 a granel", precio: 250},
         {cat: "🧪 Decoloración y Peróxido", nombre: "Peróxido de 100", precio: 1300},
 
         {cat: "💇‍♀️ Tratamientos y Cabello", nombre: "Juego ORO LÍQUIDO", precio: 770},
@@ -324,7 +323,8 @@
     function calcularTotal() {
         let total = 0;
         productos.forEach((p, index) => {
-            const cant = parseInt(document.getElementById(`cant-${index}`).value) || 0;
+            const cantVal = document.getElementById(`cant-${index}`);
+            const cant = cantVal ? (parseInt(cantVal.value) || 0) : 0;
             total += cant * p.precio;
         });
         const metodo = document.getElementById("metodoEntrega").value;
@@ -340,7 +340,8 @@
         
         for(let i=0; i < productos.length; i++) {
             const p = productos[i];
-            const cant = document.getElementById(`cant-${i}`).value;
+            const cantInput = document.getElementById(`cant-${i}`);
+            const cant = cantInput ? cantInput.value : 0;
             
             if(cant > 0) {
                 let detalleTono = "";
@@ -390,5 +391,5 @@
 </script>
 
 </body>
-                                           </html>
-                    
+                        </html>
+    
