@@ -102,7 +102,7 @@
             border-radius: 5px;
             border: 1px solid var(--oro);
             background: #fffdf5;
-            display: block; /* Ahora siempre visible */
+            display: none;
         }
 
         .seccion-pago {
@@ -231,18 +231,19 @@
 
 <script>
     const productos = [
+        {cat: "🎁 COMBOS EN OFERTA", nombre: "Combo #1 - Oferta Especial", precio: 1650, desc: "Incluye: 1 Crema de peinar, 1 Juego Oro Líquido (Shampoo/Acond.) y 1 Crema de piel (8 onz)"},
+
         {cat: "🎨 Coloración y Tintes", nombre: "Tinte Stereo", precio: 490},
         {cat: "🎨 Coloración y Tintes", nombre: "Tinte Negro Ultra", precio: 320},
-        // Ajustado: Solo Rojo Uva
-        {cat: "🎨 Coloración y Tintes", nombre: "Tinte de Gel (Rojo)", precio: 270, tonos: ["Rojo Uva (POCA DISPONIBILIDAD)"]},
+        {cat: "🎨 Coloración y Tintes", nombre: "Tinte de Gel (Rojo)", precio: 270, tonos: ["Rojo Uva (POCA DISPONIBILIDAD)", "Rojo Fuego", "Rojo Intenso", "Rojo Brillante", "Rojo Rubio Intenso", "Rojo Rubí", "Rojo Cereza", "Rojo Fresa"]},
         {cat: "🎨 Coloración y Tintes", nombre: "Tinte de Gel (Negro Azul)", precio: 220},
         {cat: "🎨 Coloración y Tintes", nombre: "Tinte Escarcha (Negros y Claros)", precio: 70, tonos: ["Negro", "Platino", "Gris Acero", "Carmelita", "Rubio Ceniza", "Tabaco", "Chocolate"]},
-        {cat: "🎨 Coloración y Tintes", nombre: "Tinte de Gel (Claros)", precio: 180, tonos: ["Rubio Cenizo", "Platino", "Gris Acero", "Tabaco", "Chocolate", "Rubio Dorado", "Rubio Miel"]},
+        {cat: "🎨 Coloración y Tintes", nombre: "Tinte de Gel (Claros)", precio: 180, tonos: ["Rubio Cenizo", "Platino", "Carmelita", "Gris Acero", "Tabaco", "Chocolate", "Rubio Dorado", "Rubio Miel"]},
         {cat: "🎨 Coloración y Tintes", nombre: "Aceite para Decoloración", precio: 120},
 
         {cat: "🧪 Decoloración y Peróxido", nombre: "Polvo INEXUS", precio: 2850},
         {cat: "🧪 Decoloración y Peróxido", nombre: "Polvo NT", precio: 2600},
-        {cat: "🧪 Decoloración y Peróxido", nombre: "Polvo por Onza", precio: 170},
+        {cat: "🧪 Decoloración y Peróxido", nombre: "Polvo por Onza", precio: 200},
         {cat: "🧪 Decoloración y Peróxido", nombre: "Peróxido de 20 a granel", precio: 200},
         {cat: "🧪 Decoloración y Peróxido", nombre: "Peróxido de 40 a granel", precio: 250},
 
@@ -289,12 +290,21 @@
                             <span class="precio">$${p.precio}</span>
                         </div>
                         <div class="controles">
-                            <input type="number" class="cant-input" id="cant-${index}" value="0" min="0" onchange="calcularTotal()">
+                            <input type="number" class="cant-input" id="cant-${index}" value="0" min="0" onchange="actualizarTonoVisual(${index})">
                         </div>
                     </div>
                     ${htmlTono}
                 </div>`;
         });
+    }
+
+    function actualizarTonoVisual(index) {
+        const cant = document.getElementById(`cant-${index}`).value;
+        const selector = document.getElementById(`tono-${index}`);
+        if(selector) {
+            selector.style.display = (cant > 0) ? "block" : "none";
+        }
+        calcularTotal();
     }
 
     function actualizarEntrega() {
@@ -306,11 +316,8 @@
     function calcularTotal() {
         let total = 0;
         productos.forEach((p, index) => {
-            const cantInput = document.getElementById(`cant-${index}`);
-            if (cantInput) {
-                const cant = parseInt(cantInput.value) || 0;
-                total += cant * p.precio;
-            }
+            const cant = parseInt(document.getElementById(`cant-${index}`).value) || 0;
+            total += cant * p.precio;
         });
         const metodo = document.getElementById("metodoEntrega").value;
         if(metodo === "domicilio") {
@@ -325,10 +332,7 @@
         
         for(let i=0; i < productos.length; i++) {
             const p = productos[i];
-            const cantInput = document.getElementById(`cant-${i}`);
-            if(!cantInput) continue;
-            
-            const cant = cantInput.value;
+            const cant = document.getElementById(`cant-${i}`).value;
             
             if(cant > 0) {
                 let detalleTono = "";
@@ -379,4 +383,4 @@
 
 </body>
     </html>
-                        
+                    
