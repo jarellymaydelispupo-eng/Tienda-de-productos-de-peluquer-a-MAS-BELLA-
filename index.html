@@ -321,7 +321,7 @@
     }
 
     function enviarPedido() {
-        let texto = "Hola MÁS BELLA, nuevo pedido:\n\n";
+        let texto = "HOLA 🌺 MAS BELLA 🌺\nNuevo pedido:\n\n";
         let tieneProductos = false;
         let importeMercancia = 0;
         
@@ -352,7 +352,6 @@
             return;
         }
 
-        // --- BLOQUE DE PRECIOS DESGLOSADOS ---
         texto += `\n📦 Importe de mercancía: $${importeMercancia}`;
 
         const metodo = document.getElementById("metodoEntrega").value;
@@ -369,22 +368,23 @@
                 return;
             }
 
-            texto += `\n🛵 Domicilio: $${costoDomicilio}`; // Aquí aparece por separado
-            texto += `\n\n🏠 Datos de Entrega:`;
+            texto += `\n🛵 Domicilio: $${costoDomicilio}`;
+            texto += `\n\n💰 TOTAL A PAGAR: $${document.getElementById("monto-total").innerText}`;
+            texto += `\n\n🏠 DATOS DE ENTREGA:`;
             texto += `\n👤 Cliente: ${nombre}`;
             texto += `\n📍 Zona: ${nombreZona}`;
             texto += `\n🏠 Dirección: ${direccion}`;
             texto += `\n📞 Teléfono: ${tel}`;
         } else {
             texto += `\n🏪 Recogida en Tienda ($0)`;
+            texto += `\n\n💰 TOTAL A PAGAR: $${document.getElementById("monto-total").innerText}`;
         }
         
-        texto += `\n\n💰 TOTAL A PAGAR: $${document.getElementById("monto-total").innerText}`;
         window.location.href = `https://wa.me/5356247880?text=${encodeURIComponent(texto)}`;
     }
     cargarProductos();
 </script>
 
 </body>
-    </html>
-        
+                        </html>
+                        
