@@ -232,6 +232,7 @@
 <script>
     const productos = [
         {cat: "🎁 COMBOS EN OFERTA", nombre: "Combo #1 - Oferta Especial", precio: 1650, desc: "Incluye: 1 Crema de peinar, 1 Juego Oro Líquido (Shampoo/Acond.) y 1 Crema de piel (8 onz)"},
+
         {cat: "🎨 Coloración y Tintes", nombre: "Tinte Stereo", precio: 490},
         {cat: "🎨 Coloración y Tintes", nombre: "Tinte Negro Ultra", precio: 320},
         {cat: "🎨 Coloración y Tintes", nombre: "Tinte de Gel (Rojo)", precio: 270, tonos: ["Rojo Uva (POCA DISPONIBILIDAD)", "Rojo Fuego", "Rojo Intenso", "Rojo Brillante", "Rojo Rubio Intenso", "Rojo Rubí", "Rojo Cereza", "Rojo Fresa"]},
@@ -239,17 +240,21 @@
         {cat: "🎨 Coloración y Tintes", nombre: "Tinte Escarcha (Negros y Claros)", precio: 70, tonos: ["Negro", "Platino", "Gris Acero", "Carmelita", "Rubio Ceniza", "Tabaco", "Chocolate"]},
         {cat: "🎨 Coloración y Tintes", nombre: "Tinte de Gel (Claros)", precio: 180, tonos: ["Rubio Cenizo", "Platino", "Carmelita", "Gris Acero", "Tabaco", "Chocolate", "Rubio Dorado", "Rubio Miel"]},
         {cat: "🎨 Coloración y Tintes", nombre: "Aceite para Decoloración", precio: 120},
+
         {cat: "🧪 Decoloración y Peróxido", nombre: "Polvo INEXUS", precio: 2850},
-        {cat: "🧪 Decoloración y Peróxido", nombre: "Polvo NT", precio: 2600},
+        {cat: "🧪 Decoloración y Peróxido", nombre: "Polvo NT", precio: 2800},
         {cat: "🧪 Decoloración y Peróxido", nombre: "Polvo por Onza", precio: 200},
         {cat: "🧪 Decoloración y Peróxido", nombre: "Peróxido de 20 a granel", precio: 200},
+
         {cat: "💇‍♀️ Tratamientos y Cabello", nombre: "Shampoo a granel (Pinta)", precio: 170},
         {cat: "💇‍♀️ Tratamientos y Cabello", nombre: "Acondicionador a granel (Pinta)", precio: 170},
         {cat: "💇‍♀️ Tratamientos y Cabello", nombre: "Crema de Peinar", precio: 390},
         {cat: "💇‍♀️ Tratamientos y Cabello", nombre: "Brocha con su peine", precio: 250},
+
         {cat: "🧼 Limpieza Sadier (Sellado)", nombre: "Suavizante ropa SADIER", precio: 420},
         {cat: "🧼 Limpieza Sadier (Sellado)", nombre: "Detergente SADIER (Fregar)", precio: 420},
         {cat: "🧼 Limpieza Sadier (Sellado)", nombre: "Detergente SADIER (Lavar)", precio: 420},
+
         {cat: "🧴 Limpieza y Cuidado (Granel/Otros)", nombre: "Suavizante a granel", precio: 320},
         {cat: "🧴 Limpieza y Cuidado (Granel/Otros)", nombre: "Detergente granel (Fregar)", precio: 320},
         {cat: "🧴 Limpieza y Cuidado (Granel/Otros)", nombre: "Detergente granel (Lavar)", precio: 320},
@@ -265,6 +270,7 @@
                 currentCat = p.cat;
                 div.innerHTML += `<div class="categoria-titulo">${p.cat}</div>`;
             }
+
             let htmlTono = "";
             if(p.tonos) {
                 htmlTono = `<select id="tono-${index}" class="selector-tono">
@@ -272,7 +278,9 @@
                     ${p.tonos.map(t => `<option value="${t}">${t}</option>`).join('')}
                 </select>`;
             }
+
             let descHtml = p.desc ? `<span class="descripcion-combo">${p.desc}</span>` : "";
+
             div.innerHTML += `
                 <div class="producto-item">
                     <div class="fila-superior">
@@ -306,28 +314,25 @@
     }
 
     function calcularTotal() {
-        let subtotalMercancia = 0;
+        let total = 0;
         productos.forEach((p, index) => {
             const cant = parseInt(document.getElementById(`cant-${index}`).value) || 0;
-            subtotalMercancia += cant * p.precio;
+            total += cant * p.precio;
         });
-        
-        let totalFinal = subtotalMercancia;
         const metodo = document.getElementById("metodoEntrega").value;
         if(metodo === "domicilio") {
-            totalFinal += parseInt(document.getElementById("zonaDomicilio").value);
+            total += parseInt(document.getElementById("zonaDomicilio").value);
         }
-        document.getElementById("monto-total").innerText = totalFinal;
+        document.getElementById("monto-total").innerText = total;
     }
 
     function enviarPedido() {
-        let texto = "HOLA 🌺 MAS BELLA 🌺\nNuevo pedido:\n\n";
+        let texto = "Hola MÁS BELLA, nuevo pedido:\n\n";
         let tieneProductos = false;
-        let importeMercancia = 0;
         
         for(let i=0; i < productos.length; i++) {
             const p = productos[i];
-            const cant = parseInt(document.getElementById(`cant-${i}`).value) || 0;
+            const cant = document.getElementById(`cant-${i}`).value;
             
             if(cant > 0) {
                 let detalleTono = "";
@@ -340,9 +345,7 @@
                     detalleTono = ` (${selectorTono.value})`;
                 }
                 
-                let subtotalFila = cant * p.precio;
-                importeMercancia += subtotalFila;
-                texto += `- ${cant}x ${p.nombre}${detalleTono} ($${subtotalFila})\n`;
+                texto += `- ${cant}x ${p.nombre}${detalleTono} ($${cant * p.precio})\n`;
                 tieneProductos = true;
             }
         }
@@ -352,39 +355,32 @@
             return;
         }
 
-        texto += `\n📦 Importe de mercancía: $${importeMercancia}`;
-
         const metodo = document.getElementById("metodoEntrega").value;
         if(metodo === "domicilio") {
-            const costoDomicilio = parseInt(document.getElementById("zonaDomicilio").value);
             const zona = document.getElementById("zonaDomicilio");
             const nombreZona = zona.options[zona.selectedIndex].text;
             const nombre = document.getElementById("nombreCliente").value;
             const direccion = document.getElementById("direccionCliente").value;
             const tel = document.getElementById("telefonoCliente").value;
-
             if(!nombre || !direccion) {
                 alert("Por favor completa Nombre y Dirección para el domicilio.");
                 return;
             }
-
-            texto += `\n🛵 Domicilio: $${costoDomicilio}`;
-            texto += `\n\n💰 TOTAL A PAGAR: $${document.getElementById("monto-total").innerText}`;
-            texto += `\n\n🏠 DATOS DE ENTREGA:`;
+            texto += `\n🏠 ENTREGA A DOMICILIO:`;
             texto += `\n👤 Cliente: ${nombre}`;
             texto += `\n📍 Zona: ${nombreZona}`;
             texto += `\n🏠 Dirección: ${direccion}`;
             texto += `\n📞 Teléfono: ${tel}`;
         } else {
-            texto += `\n🏪 Recogida en Tienda ($0)`;
-            texto += `\n\n💰 TOTAL A PAGAR: $${document.getElementById("monto-total").innerText}`;
+            texto += `\n🏪 Recogida en Tienda`;
         }
         
+        texto += `\n\n💰 TOTAL A PAGAR: $${document.getElementById("monto-total").innerText}`;
         window.location.href = `https://wa.me/5356247880?text=${encodeURIComponent(texto)}`;
     }
     cargarProductos();
 </script>
 
 </body>
-                        </html>
-                        
+                    </html>
+                
