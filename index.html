@@ -149,10 +149,6 @@
         </ul>
     </div>
 
-    <div class="info-box nota-envase">
-        📢 RECORDATORIO: Si no trae su envase, se cobrará a $30 cup el pomo de a pinta.
-    </div>
-
     <div class="lista-productos">
         <div id="contenedor-productos"></div>
 
@@ -231,7 +227,7 @@
 
 <script>
     const productos = [
-        {cat: "🎁 COMBOS EN OFERTA", nombre: "Combo #1 - Oferta Especial", precio: 1650, desc: "Incluye: 1 Juego de Shampoo y Acondicionador, 1 Crema de piel y 1 Crema de peinar"},
+        {cat: "🎁 COMBOS EN OFERTA", nombre: "Oferta Limitada de Belleza", precio: 1480, desc: "Trae 1 juego de shampoo y acondicionador + base líquida + crema de piel"},
 
         {cat: "🎨 Coloración y Tintes", nombre: "Tinte Stereo", precio: 490},
         {cat: "🎨 Coloración y Tintes", nombre: "Tinte Negro Ultra", precio: 320},
@@ -240,17 +236,12 @@
         {cat: "🎨 Coloración y Tintes", nombre: "Aceite para Decoloración", precio: 120},
 
         {cat: "🧪 Decoloración y Químicos", nombre: "Polvo INEXUS", precio: 2850},
-        {cat: "🧪 Decoloración y Químicos", nombre: "Polvo NT", precio: 2800},
         {cat: "🧪 Decoloración y Químicos", nombre: "Polvo por Onza", precio: 200},
-        {cat: "🧪 Decoloración y Químicos", nombre: "Peróxido de 20 a granel", precio: 200},
         {cat: "🧪 Decoloración y Químicos", nombre: "Peróxido SADIER Vol 20", precio: 550},
 
         {cat: "💇‍♀️ Tratamientos y Cabello", nombre: "Botox de Argán (Onza)", precio: 200},
         {cat: "💇‍♀️ Tratamientos y Cabello", nombre: "Juego Shampoo/Acond. ORO LÍQUIDO", precio: 800},
         {cat: "💇‍♀️ Tratamientos y Cabello", nombre: "Juego Shampoo/Acond. ULTRA VITANE", precio: 700, desc: "Fragancia: Coco"},
-        {cat: "💇‍♀️ Tratamientos y Cabello", nombre: "Shampoo a granel (Pinta)", precio: 170},
-        {cat: "💇‍♀️ Tratamientos y Cabello", nombre: "Acondicionador a granel (Pinta)", precio: 170},
-        {cat: "💇‍♀️ Tratamientos y Cabello", nombre: "Crema de Peinar", precio: 390},
         {cat: "💇‍♀️ Tratamientos y Cabello", nombre: "Gorritos para el cabello", precio: 30, desc: "Para mantener el cabello seco"},
         {cat: "💇‍♀️ Tratamientos y Cabello", nombre: "Brocha con su peine", precio: 250},
 
@@ -332,7 +323,7 @@
     }
 
     function enviarPedido() {
-        let texto = "Hola MÁS BELLA, nuevo pedido:\n\n";
+        let texto = "Hola 🌺MÁS BELLA🌺, nuevo pedido:\n\n";
         let tieneProductos = false;
         
         for(let i=0; i < productos.length; i++) {
@@ -387,5 +378,5 @@
 </script>
 
 </body>
-                </html>
-                    
+                    </html>
+    
