@@ -12,121 +12,49 @@
             --oscuro: #2c3e50;
         }
 
-        body { 
-            font-family: 'Segoe UI', Arial, sans-serif; 
-            margin: 0; 
-            background-color: var(--rosa-fondo);
-            color: #333; 
-        }
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background-color: var(--rosa-fondo); color: #333; }
+        header { background: white; padding: 20px; text-align: center; border-bottom: 4px solid var(--oro); box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .logo { font-size: 2.2rem; font-weight: bold; color: var(--rosa-fuerte); margin: 0; }
 
-        header { 
-            background: white; padding: 20px; text-align: center; 
-            border-bottom: 4px solid var(--oro); box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
+        .info-box { max-width: 470px; margin: 15px auto; border-radius: 8px; padding: 15px; font-size: 0.95rem; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .horarios { background: white; border: 1px solid var(--oro); }
+        .horarios h4 { margin: 0 0 10px 0; text-align: center; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        .horarios ul { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+        .nota-envase { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; text-align: center; font-weight: bold; }
 
-        .logo { font-size: 2rem; font-weight: bold; color: var(--rosa-fuerte); margin: 0; }
-
-        .info-box {
-            max-width: 470px;
-            margin: 15px auto;
-            border-radius: 8px;
-            padding: 15px;
-            font-size: 0.95rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        .horarios {
-            background: white;
-            border: 1px solid var(--oro);
-            text-align: left;
-        }
-
-        .horarios h4 {
-            margin: 0 0 10px 0;
-            color: var(--oscuro);
-            text-align: center;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 5px;
-        }
-
-        .horarios ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 5px;
-        }
-
-        .horarios li {
-            padding: 3px 0;
-            font-size: 0.85rem;
-        }
-
-        .nota-envase {
-            background: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeeba;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        .categoria-titulo { 
-            background: var(--oscuro); color: white; padding: 10px; 
-            margin-top: 20px; text-align: center; font-weight: bold;
-            text-transform: uppercase; letter-spacing: 1px;
-        }
+        .categoria-titulo { background: var(--oscuro); color: white; padding: 10px; margin-top: 20px; text-align: center; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
 
         .lista-productos { padding: 10px; max-width: 500px; margin: auto; padding-bottom: 150px; }
-
-        .producto-item { 
-            background: white; display: flex; flex-direction: column;
-            padding: 15px; margin-bottom: 8px; border-radius: 10px; border-left: 5px solid var(--oro);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        .fila-superior { display: flex; justify-content: space-between; align-items: center; width: 100%; }
-
+        .producto-item { background: white; display: flex; flex-direction: column; padding: 15px; margin-bottom: 8px; border-radius: 10px; border-left: 5px solid var(--oro); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        
+        .agotado { opacity: 0.5; border-left-color: #ccc !important; }
+        .badge-agotado { background: #ff4444; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; margin-left: 5px; }
+        
+        .fila-superior { display: flex; justify-content: space-between; align-items: center; }
         .info-txt { flex: 1; }
-        .nombre { font-weight: bold; font-size: 1.05rem; color: #333; display: block; }
-        .descripcion-combo { font-size: 0.85rem; color: #666; margin-top: 3px; font-style: italic; }
+        .nombre { font-weight: bold; font-size: 1.05rem; display: block; }
         .precio { font-weight: bold; color: var(--rosa-fuerte); font-size: 1.1rem; }
-
-        .controles { display: flex; align-items: center; gap: 10px; }
         .cant-input { width: 50px; text-align: center; border: 2px solid #eee; border-radius: 6px; padding: 8px; font-weight: bold; font-size: 1rem; }
-        
-        .selector-tono {
-            width: 100%;
-            margin-top: 10px;
-            padding: 8px;
-            border-radius: 5px;
-            border: 1px solid var(--oro);
-            background: #fffdf5;
-            display: none;
-        }
 
-        .seccion-pago {
-            background: white; margin: 20px auto; padding: 20px; 
-            max-width: 460px; border-radius: 15px; border: 2px solid var(--rosa-fuerte);
-        }
-
+        .seccion-pago { background: white; margin: 20px auto; padding: 20px; max-width: 460px; border-radius: 15px; border: 2px solid var(--rosa-fuerte); }
         .selector, .input-datos { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box; font-size: 1rem; }
-        
-        .resumen-total {
-            background: var(--oscuro); color: white; padding: 15px;
-            position: fixed; bottom: 0; width: 100%; text-align: center;
-            font-size: 1.3rem; font-weight: bold; box-shadow: 0 -4px 15px rgba(0,0,0,0.3);
-            z-index: 100;
-        }
 
-        .btn-whatsapp {
-            background: #25d366; color: white; text-decoration: none;
-            padding: 12px 30px; border-radius: 50px; display: inline-block;
-            margin-top: 10px; font-size: 1.1rem;
-        }
+        .resumen-total { background: var(--oscuro); color: white; padding: 15px; position: fixed; bottom: 0; width: 100%; text-align: center; font-size: 1.3rem; font-weight: bold; z-index: 100; box-shadow: 0 -4px 15px rgba(0,0,0,0.3); }
+        .btn-whatsapp { background: #25d366; color: white; text-decoration: none; padding: 12px 30px; border-radius: 50px; display: inline-block; margin-top: 10px; font-size: 1.1rem; }
 
-        #domicilio-formulario { display: none; margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 15px; }
-        .label-form { font-size: 0.9rem; font-weight: bold; display: block; text-align: left; margin-bottom: 2px; }
+        /* Estilos Admin */
+        #admin-panel { display: none; background: #f0f2f5; padding: 20px; margin: 20px auto; max-width: 480px; border-radius: 12px; border: 3px dashed var(--oscuro); box-sizing: border-box; }
+        .tabs-admin { display: flex; gap: 5px; margin-bottom: 15px; }
+        .tab-btn { flex: 1; padding: 10px; border: none; background: #ddd; cursor: pointer; border-radius: 5px; font-weight: bold; }
+        .tab-active { background: var(--rosa-fuerte); color: white; }
+        .admin-fila { background: white; padding: 10px; margin-bottom: 5px; border-radius: 5px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; }
+        .admin-input { width: 65px; padding: 5px; border: 1px solid #ccc; border-radius: 4px; margin-left: 5px; }
+        .tabla-inv { width: 100%; border-collapse: collapse; font-size: 0.8rem; background: white; }
+        .tabla-inv th { background: var(--oscuro); color: white; padding: 8px; text-align: left; }
+        .tabla-inv td { padding: 8px; border-bottom: 1px solid #eee; }
+        .resumen-inv { background: #d1ecf1; color: #0c5460; padding: 15px; border-radius: 8px; margin-top: 15px; font-weight: bold; text-align: center; }
+        .btn-borrar { background: #ff4444; color: white; border: none; padding: 5px 8px; border-radius: 4px; cursor: pointer; font-size: 0.7rem; margin-top: 5px; }
+        .seccion-respaldo { background: #fff3cd; padding: 15px; border-radius: 8px; margin-top: 20px; border: 1px solid #ffeeba; }
     </style>
 </head>
 <body>
@@ -137,17 +65,16 @@
     </header>
 
     <div class="info-box horarios">
-        <h4>🕒 Nuestros Horarios</h4>
+        <h4>🕒 Horarios de Atención</h4>
         <ul>
-            <li><strong>Lun:</strong> 8:00am - 7:00pm</li>
-            <li><strong>Mar:</strong> 1:00pm - 8:00pm</li>
-            <li><strong>Mié:</strong> 7:00am - 3:00pm</li>
-            <li><strong>Jue:</strong> 1:00pm - 8:00pm</li>
-            <li><strong>Vie:</strong> 1:00pm - 8:00pm</li>
-            <li><strong>Sáb:</strong> 7:00am - 1:00pm</li>
-            <li><strong>Dom:</strong> 1:00pm - 8:00pm</li>
+            <li><strong>Lun:</strong> 8:00am-7:00pm</li><li><strong>Mar:</strong> 1:00pm-8:00pm</li>
+            <li><strong>Mié:</strong> 7:00am-3:00pm</li><li><strong>Jue:</strong> 1:00pm-8:00pm</li>
+            <li><strong>Vie:</strong> 1:00pm-8:00pm</li><li><strong>Sáb:</strong> 7:00am-1:00pm</li>
+            <li><strong>Dom:</strong> 1:00pm-8:00pm</li>
         </ul>
     </div>
+
+    <div class="info-box nota-envase">📢 RECORDATORIO: Sin envase, el pomo de a pinta cuesta $30 cup.</div>
 
     <div class="lista-productos">
         <div id="contenedor-productos"></div>
@@ -158,65 +85,51 @@
                 <option value="0">🏪 Recogida en Tienda ($0)</option>
                 <option value="domicilio">🏠 Servicio a Domicilio</option>
             </select>
-
-            <div id="domicilio-formulario">
-                <label class="label-form">Zona de Camagüey:</label>
-                <select id="zonaDomicilio" class="selector" onchange="calcularTotal()">
-                    <option value="300">Centro del pueblo ($300)</option>
-                    <option value="500">Lenin ($500)</option>
-                    <option value="400">Modelo ($400)</option>
-                    <option value="350">La Caridad ($350)</option>
-                    <option value="400">La Vigía ($400)</option>
-                    <option value="400">Florat ($400)</option>
-                    <option value="350">Vista Hermosa ($350)</option>
-                    <option value="400">Versalles ($400)</option>
-                    <option value="350">Agramonte ($350)</option>
-                    <option value="500">Jayama ($500)</option>
-                    <option value="400">Monte Carlos ($400)</option>
-                    <option value="400">La Mosca ($400)</option>
-                    <option value="400">Marquesado ($400)</option>
-                    <option value="450">La Esperanza ($450)</option>
-                    <option value="450">Nueva Esperanza ($450)</option>
-                    <option value="400">Garrido ($400)</option>
-                    <option value="450">El Micro ($450)</option>
-                    <option value="350">Palomino ($350)</option>
-                    <option value="400">Juanito ($400)</option>
-                    <option value="350">Previsora ($350)</option>
-                    <option value="450">La Guernina ($450)</option>
-                    <option value="450">La Belén ($450)</option>
-                    <option value="350">Casino Campestre ($350)</option>
-                    <option value="350">Las Mercedes ($350)</option>
-                    <option value="350">Simoni ($350)</option>
-                    <option value="400">Montejo ($400)</option>
-                    <option value="450">La Yaba ($450)</option>
-                    <option value="450">Nadales ($450)</option>
-                    <option value="400">Bella Vista ($400)</option>
-                    <option value="450">Vista Bella ($450)</option>
-                    <option value="400">Inra ($400)</option>
-                    <option value="450">Imán ($450)</option>
-                    <option value="400">Mascota ($400)</option>
-                    <option value="400">Puerto Príncipe ($400)</option>
-                    <option value="500">Isabel Hortensia ($500)</option>
-                    <option value="400">Villa Mariana ($400)</option>
-                    <option value="450">Los Coquitos ($450)</option>
-                    <option value="450">La Zambrana ($450)</option>
-                    <option value="500">Saratoga ($500)</option>
-                    <option value="400">El Jardín ($400)</option>
-                    <option value="350">Floiran Quiroz ($350)</option>
-                    <option value="350">Porvenir ($350)</option>
-                    <option value="450">Nitrógeno ($450)</option>
-                    <option value="400">Buenos Aires ($400)</option>
-                    <option value="400">Camino Matanza ($400)</option>
-                    <option value="350">Sanchez Soto ($350)</option>
-                </select>
-                
-                <label class="label-form">Nombre del Cliente:</label>
-                <input type="text" id="nombreCliente" class="input-datos" placeholder="Nombre completo">
-                <label class="label-form">Dirección Exacta:</label>
-                <textarea id="direccionCliente" class="input-datos" rows="2" placeholder="Calle, No. de casa..."></textarea>
-                <label class="label-form">Teléfono:</label>
-                <input type="tel" id="telefonoCliente" class="input-datos" placeholder="Número de contacto">
+            <div id="domicilio-formulario" style="display:none;">
+                <input type="text" id="nombreCliente" class="input-datos" placeholder="Nombre completo del cliente">
+                <textarea id="direccionCliente" class="input-datos" placeholder="Dirección exacta (Calle, No, entre...)"></textarea>
             </div>
+        </div>
+
+        <div style="text-align: center; margin: 40px 0;">
+            <button onclick="accederAdmin()" style="background:none; border:none; color:#ddd; cursor:pointer; font-size: 0.8rem;">⚙️ Acceso Dueña</button>
+        </div>
+
+        <div id="admin-panel">
+            <h3>⚙️ PANEL DE CONTROL</h3>
+            
+            <div class="tabs-admin">
+                <button class="tab-btn tab-active" id="btn-tab-ventas" onclick="cambiarTab('ventas')">🛍️ Ventas/Stock</button>
+                <button class="tab-btn" id="btn-tab-inv" onclick="cambiarTab('inventario')">📊 Inventario/Costo</button>
+            </div>
+
+            <div id="vista-ventas">
+                <div id="lista-admin-ventas"></div>
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px; border: 1px solid var(--oro);">
+                    <h4>➕ Nuevo Producto</h4>
+                    <input type="text" id="new-cat" class="input-datos" placeholder="Categoría (ej: Tintes)">
+                    <input type="text" id="new-nom" class="input-datos" placeholder="Nombre">
+                    <input type="number" id="new-prc" class="input-datos" placeholder="Precio Venta ($)">
+                    <input type="number" id="new-stk" class="input-datos" placeholder="Stock Inicial">
+                    <button onclick="crearProductoNuevo()" style="width:100%; padding:10px; background:#28a745; color:white; border:none; border-radius:5px; cursor:pointer;">✨ AGREGAR</button>
+                </div>
+            </div>
+
+            <div id="vista-inventario" style="display:none;">
+                <table class="tabla-inv">
+                    <thead><tr><th>Producto</th><th>Stock</th><th>Costo</th><th>Subtotal</th></tr></thead>
+                    <tbody id="lista-admin-inv"></tbody>
+                </table>
+                <div id="total-inversion" class="resumen-inv">Inversión: $0</div>
+            </div>
+
+            <div class="seccion-respaldo">
+                <h4>💾 Seguridad</h4>
+                <button onclick="exportarDatos()" style="width:100%; padding:8px; margin-bottom:5px; background:#007bff; color:white; border:none; border-radius:4px;">📤 COPIAR RESPALDO</button>
+                <button onclick="importarDatos()" style="width:100%; padding:8px; background:#6c757d; color:white; border:none; border-radius:4px;">📥 RECUPERAR RESPALDO</button>
+            </div>
+
+            <button onclick="guardarCambiosAdmin()" style="width:100%; padding:15px; background:var(--oscuro); color:white; border:none; border-radius:5px; margin-top:20px; font-weight:bold; cursor:pointer;">💾 GUARDAR TODO Y SALIR</button>
         </div>
     </div>
 
@@ -226,157 +139,169 @@
     </div>
 
 <script>
-    const productos = [
-        {cat: "🎁 COMBOS EN OFERTA", nombre: "Oferta Limitada de Belleza", precio: 1480, desc: "Trae 1 juego de shampoo y acondicionador + base líquida + crema de piel"},
+    const MI_CLAVE = "061021041122";
 
-        {cat: "🎨 Coloración y Tintes", nombre: "Tinte Stereo", precio: 490},
-        {cat: "🎨 Coloración y Tintes", nombre: "Tinte Negro Ultra", precio: 320},
-        {cat: "🎨 Coloración y Tintes", nombre: "Tinte Negro Azul (Gel)", precio: 220},
-        {cat: "🎨 Coloración y Tintes", nombre: "Tinte Escarcha (Negros y Claros)", precio: 70, tonos: ["Negro", "Platino", "Gris Acero", "Carmelita", "Rubio Ceniza", "Tabaco", "Chocolate"]},
-        {cat: "🎨 Coloración y Tintes", nombre: "Aceite para Decoloración", precio: 120},
-
-        {cat: "🧪 Decoloración y Químicos", nombre: "Polvo INEXUS", precio: 2850},
-        {cat: "🧪 Decoloración y Químicos", nombre: "Polvo por Onza", precio: 200},
-        {cat: "🧪 Decoloración y Químicos", nombre: "Peróxido SADIER Vol 20", precio: 550},
-
-        {cat: "💇‍♀️ Tratamientos y Cabello", nombre: "Botox de Argán (Onza)", precio: 200},
-        {cat: "💇‍♀️ Tratamientos y Cabello", nombre: "Juego Shampoo/Acond. ORO LÍQUIDO", precio: 800},
-        {cat: "💇‍♀️ Tratamientos y Cabello", nombre: "Juego Shampoo/Acond. ULTRA VITANE", precio: 700, desc: "Fragancia: Coco"},
-        {cat: "💇‍♀️ Tratamientos y Cabello", nombre: "Gorritos para el cabello", precio: 30, desc: "Para mantener el cabello seco"},
-        {cat: "💇‍♀️ Tratamientos y Cabello", nombre: "Brocha con su peine", precio: 250},
-
-        {cat: "💄 Maquillaje y Piel", nombre: "Bases Líquidas", precio: 250},
-        {cat: "💄 Maquillaje y Piel", nombre: "Crema para la Piel", precio: 480},
-
-        {cat: "🧼 Limpieza Sadier (Sellado)", nombre: "Suavizante ropa SADIER", precio: 420},
-        {cat: "🧼 Limpieza Sadier (Sellado)", nombre: "Detergente SADIER (Fregar)", precio: 420},
-        {cat: "🧼 Limpieza Sadier (Sellado)", nombre: "Detergente SADIER (Lavar)", precio: 420},
-
-        {cat: "🧴 Limpieza a Granel", nombre: "Suavizante a granel", precio: 250},
-        {cat: "🧴 Limpieza a Granel", nombre: "Detergente granel (Fregar)", precio: 320},
-        {cat: "🧴 Limpieza a Granel", nombre: "Detergente granel (Lavar)", precio: 320}
+    let productos = [
+        {cat: "🎨 COLORACIÓN", nombre: "Tinte Stereo", precio: 490, stock: 10, costo: 300},
+        {cat: "🧼 LIMPIEZA SADIER", nombre: "Peróxido SADIER Vol 20", precio: 550, stock: 5, costo: 350}
     ];
 
+    if(localStorage.getItem('inventario_bella')) {
+        productos = JSON.parse(localStorage.getItem('inventario_bella'));
+    }
+
     function cargarProductos() {
-        const div = document.getElementById('contenedor-productos');
-        div.innerHTML = "";
-        let currentCat = "";
-        productos.forEach((p, index) => {
-            if(p.cat !== currentCat) {
-                currentCat = p.cat;
-                div.innerHTML += `<div class="categoria-titulo">${p.cat}</div>`;
+        const contenedor = document.getElementById('contenedor-productos');
+        contenedor.innerHTML = "";
+        let catActual = "";
+
+        productos.forEach((p, i) => {
+            if(p.cat !== catActual) {
+                catActual = p.cat;
+                contenedor.innerHTML += `<div class="categoria-titulo">${p.cat}</div>`;
             }
 
-            let htmlTono = "";
-            if(p.tonos) {
-                htmlTono = `<select id="tono-${index}" class="selector-tono">
-                    <option value="">-- Elige la tonalidad --</option>
-                    ${p.tonos.map(t => `<option value="${t}">${t}</option>`).join('')}
-                </select>`;
-            }
-
-            let descHtml = p.desc ? `<span class="descripcion-combo">${p.desc}</span>` : "";
-
-            div.innerHTML += `
-                <div class="producto-item">
+            const sinStock = p.stock <= 0;
+            contenedor.innerHTML += `
+                <div class="producto-item ${sinStock ? 'agotado' : ''}">
                     <div class="fila-superior">
                         <div class="info-txt">
-                            <span class="nombre">${p.nombre}</span>
-                            ${descHtml}
+                            <span class="nombre">${p.nombre} ${sinStock ? '<span class="badge-agotado">AGOTADO</span>' : ''}</span>
                             <span class="precio">$${p.precio}</span>
                         </div>
                         <div class="controles">
-                            <input type="number" class="cant-input" id="cant-${index}" value="0" min="0" onchange="actualizarTonoVisual(${index})">
+                            <input type="number" class="cant-input" id="cant-${i}" value="0" min="0" max="${p.stock}" ${sinStock ? 'disabled' : ''} onchange="calcularTotal()">
                         </div>
                     </div>
-                    ${htmlTono}
                 </div>`;
         });
     }
 
-    function actualizarTonoVisual(index) {
-        const cant = document.getElementById(`cant-${index}`).value;
-        const selector = document.getElementById(`tono-${index}`);
-        if(selector) {
-            selector.style.display = (cant > 0) ? "block" : "none";
+    function cambiarTab(tab) {
+        document.getElementById('vista-ventas').style.display = (tab === 'ventas') ? "block" : "none";
+        document.getElementById('vista-inventario').style.display = (tab === 'inventario') ? "block" : "none";
+        document.getElementById('btn-tab-ventas').className = (tab === 'ventas') ? "tab-btn tab-active" : "tab-btn";
+        document.getElementById('btn-tab-inv').className = (tab === 'inventario') ? "tab-btn tab-active" : "tab-btn";
+        if(tab === 'inventario') renderizarInventario();
+    }
+
+    function accederAdmin() {
+        if(prompt("Introduce clave de Dueña:") === MI_CLAVE) {
+            document.getElementById('admin-panel').style.display = "block";
+            renderizarListaAdmin();
+            window.scrollTo(0, document.body.scrollHeight);
+        } else { alert("Error."); }
+    }
+
+    function renderizarListaAdmin() {
+        const lista = document.getElementById('lista-admin-ventas');
+        lista.innerHTML = "";
+        productos.forEach((p, i) => {
+            lista.innerHTML += `
+                <div class="admin-fila">
+                    <div style="flex:1"><b>${p.nombre}</b><br><button class="btn-borrar" onclick="eliminarProducto(${i})">Eliminar</button></div>
+                    <div>
+                        Stock: <input type="number" value="${p.stock}" class="admin-input" onchange="actualizarDato(${i}, 'stock', this.value)">
+                        Precio: <input type="number" value="${p.precio}" class="admin-input" onchange="actualizarDato(${i}, 'precio', this.value)">
+                    </div>
+                </div>`;
+        });
+    }
+
+    function renderizarInventario() {
+        const lista = document.getElementById('lista-admin-inv');
+        lista.innerHTML = "";
+        let sumaTotal = 0;
+        productos.forEach((p, i) => {
+            let costo = p.costo || 0;
+            let sub = p.stock * costo;
+            sumaTotal += sub;
+            lista.innerHTML += `<tr><td>${p.nombre}</td><td>${p.stock}</td><td>$<input type="number" value="${costo}" class="admin-input" style="width:50px" onchange="actualizarDato(${i}, 'costo', this.value); renderizarInventario()"></td><td>$${sub}</td></tr>`;
+        });
+        document.getElementById('total-inversion').innerText = `Valor Total en Almacén: $${sumaTotal}`;
+    }
+
+    function actualizarDato(i, prop, val) { productos[i][prop] = parseFloat(val) || 0; }
+
+    function crearProductoNuevo() {
+        const cat = document.getElementById('new-cat').value;
+        const nom = document.getElementById('new-nom').value;
+        const prc = parseFloat(document.getElementById('new-prc').value) || 0;
+        const stk = parseFloat(document.getElementById('new-stk').value) || 0;
+        if(cat && nom) {
+            productos.push({cat: cat, nombre: nom, precio: prc, stock: stk, costo: 0});
+            renderizarListaAdmin();
         }
-        calcularTotal();
+    }
+
+    function eliminarProducto(i) {
+        if(confirm("¿Eliminar producto?")) { productos.splice(i, 1); renderizarListaAdmin(); }
+    }
+
+    function guardarCambiosAdmin() {
+        localStorage.setItem('inventario_bella', JSON.stringify(productos));
+        alert("Guardado.");
+        cargarProductos();
+        document.getElementById('admin-panel').style.display = "none";
     }
 
     function actualizarEntrega() {
-        const metodo = document.getElementById("metodoEntrega").value;
-        document.getElementById("domicilio-formulario").style.display = (metodo === "domicilio") ? "block" : "none";
+        document.getElementById("domicilio-formulario").style.display = (document.getElementById("metodoEntrega").value === "domicilio") ? "block" : "none";
         calcularTotal();
     }
 
     function calcularTotal() {
         let total = 0;
-        productos.forEach((p, index) => {
-            const cant = parseInt(document.getElementById(`cant-${index}`).value) || 0;
-            total += cant * p.precio;
+        productos.forEach((p, i) => {
+            total += (parseInt(document.getElementById(`cant-${i}`).value) || 0) * p.precio;
         });
-        const metodo = document.getElementById("metodoEntrega").value;
-        if(metodo === "domicilio") {
-            total += parseInt(document.getElementById("zonaDomicilio").value);
-        }
         document.getElementById("monto-total").innerText = total;
     }
 
     function enviarPedido() {
-        let texto = "Hola 🌺MÁS BELLA🌺, nuevo pedido:\n\n";
-        let tieneProductos = false;
-        
-        for(let i=0; i < productos.length; i++) {
-            const p = productos[i];
-            const cant = document.getElementById(`cant-${i}`).value;
-            
-            if(cant > 0) {
-                let detalleTono = "";
-                const selectorTono = document.getElementById(`tono-${i}`);
-                if(selectorTono) {
-                    if(selectorTono.value === "") {
-                        alert(`Por favor elige un tono para: ${p.nombre}`);
-                        return;
-                    }
-                    detalleTono = ` (${selectorTono.value})`;
-                }
-                
-                texto += `- ${cant}x ${p.nombre}${detalleTono} ($${cant * p.precio})\n`;
-                tieneProductos = true;
+        const ahora = new Date();
+        const pedidoID = `MB-${ahora.getDate()}${ahora.getHours()}${ahora.getMinutes()}`;
+        let texto = `*NUEVO PEDIDO #${pedidoID}*\n----------------------------\n`;
+        let hay = false;
+        productos.forEach((p, i) => {
+            let c = parseInt(document.getElementById(`cant-${i}`).value) || 0;
+            if(c > 0) {
+                texto += `✅ ${c}x ${p.nombre} ($${c*p.precio})\n`;
+                p.stock -= c;
+                hay = true;
             }
-        }
-
-        if(!tieneProductos) {
-            alert("Selecciona al menos un producto.");
-            return;
-        }
-
-        const metodo = document.getElementById("metodoEntrega").value;
-        if(metodo === "domicilio") {
-            const zona = document.getElementById("zonaDomicilio");
-            const nombreZona = zona.options[zona.selectedIndex].text;
-            const nombre = document.getElementById("nombreCliente").value;
-            const direccion = document.getElementById("direccionCliente").value;
-            const tel = document.getElementById("telefonoCliente").value;
-            if(!nombre || !direccion) {
-                alert("Por favor completa Nombre y Dirección para el domicilio.");
-                return;
-            }
-            texto += `\n🏠 ENTREGA A DOMICILIO:`;
-            texto += `\n👤 Cliente: ${nombre}`;
-            texto += `\n📍 Zona: ${nombreZona}`;
-            texto += `\n🏠 Dirección: ${direccion}`;
-            texto += `\n📞 Teléfono: ${tel}`;
-        } else {
-            texto += `\n🏪 Recogida en Tienda`;
-        }
+        });
+        if(!hay) return alert("Selecciona algo.");
         
-        texto += `\n\n💰 TOTAL A PAGAR: $${document.getElementById("monto-total").innerText}`;
+        const entrega = document.getElementById("metodoEntrega").value;
+        if(entrega === "domicilio") {
+            texto += `\n🏠 *ENTREGA A DOMICILIO*\n👤: ${document.getElementById("nombreCliente").value}\n📍: ${document.getElementById("direccionCliente").value}`;
+        } else { texto += `\n🏪 *RECOGIDA EN TIENDA*`; }
+        
+        texto += `\n\n💰 *TOTAL: $${document.getElementById("monto-total").innerText}*`;
+        localStorage.setItem('inventario_bella', JSON.stringify(productos));
         window.location.href = `https://wa.me/5356247880?text=${encodeURIComponent(texto)}`;
+        setTimeout(()=>location.reload(), 2000);
     }
+
+    function exportarDatos() {
+        const el = document.createElement('textarea');
+        el.value = JSON.stringify(productos);
+        document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el);
+        alert("¡CÓDIGO COPIADO! Guárdalo en WhatsApp.");
+    }
+
+    function importarDatos() {
+        const cod = prompt("Pega el código de respaldo:");
+        if(cod) { 
+            productos = JSON.parse(cod); 
+            localStorage.setItem('inventario_bella', JSON.stringify(productos)); 
+            location.reload(); 
+        }
+    }
+
     cargarProductos();
 </script>
-
 </body>
                     </html>
     
