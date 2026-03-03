@@ -42,7 +42,6 @@
         .resumen-total { background: var(--oscuro); color: white; padding: 15px; position: fixed; bottom: 0; width: 100%; text-align: center; font-size: 1.3rem; font-weight: bold; z-index: 100; box-shadow: 0 -4px 15px rgba(0,0,0,0.3); }
         .btn-whatsapp { background: #25d366; color: white; text-decoration: none; padding: 12px 30px; border-radius: 50px; display: inline-block; margin-top: 10px; font-size: 1.1rem; }
 
-        /* Estilos Admin */
         #admin-panel { display: none; background: #f0f2f5; padding: 20px; margin: 20px auto; max-width: 480px; border-radius: 12px; border: 3px dashed var(--oscuro); box-sizing: border-box; }
         .tabs-admin { display: flex; gap: 5px; margin-bottom: 15px; }
         .tab-btn { flex: 1; padding: 10px; border: none; background: #ddd; cursor: pointer; border-radius: 5px; font-weight: bold; }
@@ -54,6 +53,7 @@
         .tabla-inv td { padding: 8px; border-bottom: 1px solid #eee; }
         .resumen-inv { background: #d1ecf1; color: #0c5460; padding: 15px; border-radius: 8px; margin-top: 15px; font-weight: bold; text-align: center; }
         .btn-borrar { background: #ff4444; color: white; border: none; padding: 5px 8px; border-radius: 4px; cursor: pointer; font-size: 0.7rem; margin-top: 5px; }
+        .btn-reset { background: #000; color: #ff0000; border: 2px solid #ff0000; padding: 10px; border-radius: 5px; width: 100%; margin-top: 20px; font-weight: bold; cursor: pointer; }
         .seccion-respaldo { background: #fff3cd; padding: 15px; border-radius: 8px; margin-top: 20px; border: 1px solid #ffeeba; }
     </style>
 </head>
@@ -107,7 +107,7 @@
                 <div id="lista-admin-ventas"></div>
                 <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px; border: 1px solid var(--oro);">
                     <h4>➕ Nuevo Producto</h4>
-                    <input type="text" id="new-cat" class="input-datos" placeholder="Categoría (ej: Tintes)">
+                    <input type="text" id="new-cat" class="input-datos" placeholder="Categoría">
                     <input type="text" id="new-nom" class="input-datos" placeholder="Nombre">
                     <input type="number" id="new-prc" class="input-datos" placeholder="Precio Venta ($)">
                     <input type="number" id="new-stk" class="input-datos" placeholder="Stock Inicial">
@@ -124,12 +124,14 @@
             </div>
 
             <div class="seccion-respaldo">
-                <h4>💾 Seguridad</h4>
+                <h4>💾 Seguridad y Respaldo</h4>
                 <button onclick="exportarDatos()" style="width:100%; padding:8px; margin-bottom:5px; background:#007bff; color:white; border:none; border-radius:4px;">📤 COPIAR RESPALDO</button>
                 <button onclick="importarDatos()" style="width:100%; padding:8px; background:#6c757d; color:white; border:none; border-radius:4px;">📥 RECUPERAR RESPALDO</button>
             </div>
 
             <button onclick="guardarCambiosAdmin()" style="width:100%; padding:15px; background:var(--oscuro); color:white; border:none; border-radius:5px; margin-top:20px; font-weight:bold; cursor:pointer;">💾 GUARDAR TODO Y SALIR</button>
+            
+            <button onclick="resetTotal()" class="btn-reset">⚠️ BORRADO DE EMERGENCIA (Resetear catálogo)</button>
         </div>
     </div>
 
@@ -141,10 +143,13 @@
 <script>
     const MI_CLAVE = "061021041122";
 
-    let productos = [
+    // ESTA ES LA LISTA MAESTRA. Si haces un reset, volverá a este estado.
+    const PRODUCTOS_BASE = [
         {cat: "🎨 COLORACIÓN", nombre: "Tinte Stereo", precio: 490, stock: 10, costo: 300},
         {cat: "🧼 LIMPIEZA SADIER", nombre: "Peróxido SADIER Vol 20", precio: 550, stock: 5, costo: 350}
     ];
+
+    let productos = [...PRODUCTOS_BASE];
 
     if(localStorage.getItem('inventario_bella')) {
         productos = JSON.parse(localStorage.getItem('inventario_bella'));
@@ -154,13 +159,11 @@
         const contenedor = document.getElementById('contenedor-productos');
         contenedor.innerHTML = "";
         let catActual = "";
-
         productos.forEach((p, i) => {
             if(p.cat !== catActual) {
                 catActual = p.cat;
                 contenedor.innerHTML += `<div class="categoria-titulo">${p.cat}</div>`;
             }
-
             const sinStock = p.stock <= 0;
             contenedor.innerHTML += `
                 <div class="producto-item ${sinStock ? 'agotado' : ''}">
@@ -190,7 +193,7 @@
             document.getElementById('admin-panel').style.display = "block";
             renderizarListaAdmin();
             window.scrollTo(0, document.body.scrollHeight);
-        } else { alert("Error."); }
+        } else { alert("Acceso denegado."); }
     }
 
     function renderizarListaAdmin() {
@@ -231,18 +234,26 @@
         if(cat && nom) {
             productos.push({cat: cat, nombre: nom, precio: prc, stock: stk, costo: 0});
             renderizarListaAdmin();
+            alert("Producto agregado. No olvides pulsar GUARDAR.");
         }
     }
 
     function eliminarProducto(i) {
-        if(confirm("¿Eliminar producto?")) { productos.splice(i, 1); renderizarListaAdmin(); }
+        if(confirm("¿Seguro que quieres borrar este producto?")) { productos.splice(i, 1); renderizarListaAdmin(); }
     }
 
     function guardarCambiosAdmin() {
         localStorage.setItem('inventario_bella', JSON.stringify(productos));
-        alert("Guardado.");
+        alert("¡Cambios guardados con éxito!");
         cargarProductos();
         document.getElementById('admin-panel').style.display = "none";
+    }
+
+    function resetTotal() {
+        if(confirm("⚠️ ESTO BORRARÁ TODO TU INVENTARIO PERSONALIZADO y cargará los productos por defecto. ¿Estás segura?")) {
+            localStorage.removeItem('inventario_bella');
+            location.reload();
+        }
     }
 
     function actualizarEntrega() {
@@ -272,12 +283,10 @@
             }
         });
         if(!hay) return alert("Selecciona algo.");
-        
         const entrega = document.getElementById("metodoEntrega").value;
         if(entrega === "domicilio") {
             texto += `\n🏠 *ENTREGA A DOMICILIO*\n👤: ${document.getElementById("nombreCliente").value}\n📍: ${document.getElementById("direccionCliente").value}`;
         } else { texto += `\n🏪 *RECOGIDA EN TIENDA*`; }
-        
         texto += `\n\n💰 *TOTAL: $${document.getElementById("monto-total").innerText}*`;
         localStorage.setItem('inventario_bella', JSON.stringify(productos));
         window.location.href = `https://wa.me/5356247880?text=${encodeURIComponent(texto)}`;
@@ -288,15 +297,17 @@
         const el = document.createElement('textarea');
         el.value = JSON.stringify(productos);
         document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el);
-        alert("¡CÓDIGO COPIADO! Guárdalo en WhatsApp.");
+        alert("¡CÓDIGO DE RESPALDO COPIADO!");
     }
 
     function importarDatos() {
         const cod = prompt("Pega el código de respaldo:");
         if(cod) { 
-            productos = JSON.parse(cod); 
-            localStorage.setItem('inventario_bella', JSON.stringify(productos)); 
-            location.reload(); 
+            try {
+                productos = JSON.parse(cod); 
+                localStorage.setItem('inventario_bella', JSON.stringify(productos)); 
+                location.reload(); 
+            } catch(e) { alert("Código no válido."); }
         }
     }
 
@@ -304,4 +315,4 @@
 </script>
 </body>
                     </html>
-    
+                    
