@@ -12,63 +12,161 @@
             --oscuro: #2c3e50;
         }
 
-        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background-color: var(--rosa-fondo); color: #333; }
-        header { background: white; padding: 20px; text-align: center; border-bottom: 4px solid var(--oro); box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .logo { font-size: 2.2rem; font-weight: bold; color: var(--rosa-fuerte); margin: 0; }
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            margin: 0; 
+            background-color: var(--rosa-fondo); 
+            color: #333; 
+        }
+
+        header { 
+            background: white; 
+            padding: 15px; 
+            text-align: center; 
+            border-bottom: 3px solid var(--oro); 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
+        }
+
+        .logo { font-size: 1.8rem; font-weight: bold; color: var(--rosa-fuerte); margin: 0; }
+        .sublogo { font-size: 0.9rem; color: #666; margin: 5px 0 0 0; }
         
-        .categoria-titulo { background: var(--oscuro); color: white; padding: 12px; margin-top: 25px; text-align: center; font-weight: bold; text-transform: uppercase; }
-        .lista-productos { padding: 10px; max-width: 500px; margin: auto; padding-bottom: 160px; }
-        
-        /* TARJETA DE PRODUCTO */
-        .producto-item { background: white; display: flex; flex-direction: column; padding: 15px; margin-bottom: 15px; border-radius: 12px; border-left: 6px solid var(--oro); box-shadow: 0 3px 8px rgba(0,0,0,0.08); overflow: hidden; }
-        .agotado { opacity: 0.5; border-left-color: #ccc !important; }
-        
-        /* FOTO DEL PRODUCTO AJUSTADA */
-        .foto-producto { 
-            width: 100%; 
-            height: 140px; /* Tamaño ajustado para que quepa más en pantalla */
-            object-fit: cover; 
-            border-radius: 8px; 
-            margin-bottom: 10px; 
-            background-color: #f0f0f0; 
-            display: block;
+        /* DISEÑO DE CUADRÍCULA */
+        .lista-productos { 
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 2 productos por fila */
+            gap: 12px;
+            padding: 12px;
+            max-width: 600px;
+            margin: auto;
+            padding-bottom: 160px; /* Espacio para el total abajo */
         }
         
-        .badge-agotado { background: #ff4444; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; margin-left: 5px; }
-        
-        .fila-superior { display: flex; justify-content: space-between; align-items: center; }
-        .nombre { font-weight: bold; font-size: 1.1rem; display: block; margin-bottom: 5px; }
-        .precio { font-weight: bold; color: var(--rosa-fuerte); font-size: 1.2rem; display: block; }
-        .cant-input { width: 55px; text-align: center; border: 2px solid #f0f0f0; border-radius: 8px; padding: 10px; font-weight: bold; }
+        .categoria-titulo { 
+            grid-column: span 2; /* Ocupa las dos columnas */
+            background: var(--oscuro); 
+            color: white; 
+            padding: 10px; 
+            margin-top: 10px; 
+            text-align: center; 
+            font-weight: bold; 
+            text-transform: uppercase;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
 
-        .resumen-total { background: var(--oscuro); color: white; padding: 18px; position: fixed; bottom: 0; width: 100%; text-align: center; font-size: 1.4rem; font-weight: bold; z-index: 100; box-sizing: border-box; }
-        .btn-whatsapp { background: #25d366; color: white; text-decoration: none; padding: 14px 40px; border-radius: 50px; display: inline-block; margin-top: 12px; font-size: 1.1rem; }
+        /* TARJETA DE PRODUCTO */
+        .producto-item { 
+            background: white; 
+            display: flex; 
+            flex-direction: column; 
+            padding: 10px; 
+            border-radius: 12px; 
+            box-shadow: 0 3px 6px rgba(0,0,0,0.06); 
+            border: 1px solid #eee;
+            position: relative;
+        }
+
+        .agotado { opacity: 0.5; }
         
-        #panel-duena { display: none; background: white; margin: 20px auto; padding: 20px; max-width: 460px; border-radius: 15px; border: 2px dashed var(--oro); text-align: center; }
-        .btn-admin { background: var(--oscuro); color: white; padding: 10px; border-radius: 5px; text-decoration: none; display: block; margin: 10px 0; font-weight: bold; }
-        .inversion-txt { font-size: 1.1rem; color: #2ecc71; font-weight: bold; margin-top: 10px; }
+        /* FOTO AJUSTADA PARA QUE SALGA COMPLETA */
+        .foto-producto { 
+            width: 100%; 
+            height: 140px; 
+            object-fit: contain; /* Esto hace que la foto se vea ENTERA */
+            background-color: #f9f9f9; 
+            border-radius: 8px; 
+            margin-bottom: 8px; 
+        }
+        
+        .badge-agotado { 
+            background: #ff4444; 
+            color: white; 
+            padding: 2px 5px; 
+            border-radius: 4px; 
+            font-size: 0.7rem; 
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
+        
+        .nombre { 
+            font-weight: bold; 
+            font-size: 0.9rem; 
+            margin-bottom: 5px; 
+            height: 34px; /* Altura fija para que los botones se alineen */
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .precio { 
+            font-weight: bold; 
+            color: var(--rosa-fuerte); 
+            font-size: 1.1rem; 
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .cant-input { 
+            width: 100%; 
+            text-align: center; 
+            border: 1px solid #ddd; 
+            border-radius: 6px; 
+            padding: 8px; 
+            font-weight: bold; 
+            box-sizing: border-box;
+        }
+
+        /* BARRA DE TOTAL FIJA */
+        .resumen-total { 
+            background: var(--oscuro); 
+            color: white; 
+            padding: 15px; 
+            position: fixed; 
+            bottom: 0; 
+            width: 100%; 
+            text-align: center; 
+            z-index: 100; 
+            box-sizing: border-box; 
+            box-shadow: 0 -3px 10px rgba(0,0,0,0.2);
+        }
+
+        .btn-whatsapp { 
+            background: #25d366; 
+            color: white; 
+            text-decoration: none; 
+            padding: 12px 30px; 
+            border-radius: 50px; 
+            display: inline-block; 
+            margin-top: 10px; 
+            font-weight: bold;
+            font-size: 1rem;
+        }
+        
+        #panel-duena { display: none; background: #fff; margin: 20px; padding: 15px; border-radius: 10px; border: 2px dashed var(--oro); text-align: center; }
+        .btn-admin { background: var(--oscuro); color: white; padding: 10px; border-radius: 5px; text-decoration: none; display: block; margin: 5px 0; }
     </style>
 </head>
 <body>
 
     <header>
         <p class="logo">🌺 MÁS BELLA 🌺</p>
-        <p>Estética Profesional | Camagüey</p>
+        <p class="sublogo">Estética Profesional | Camagüey</p>
     </header>
 
-    <div class="lista-productos">
-        <div id="cargando" style="text-align:center; padding:20px;">Sincronizando almacén...</div>
-        <div id="contenedor-productos"></div>
+    <div id="cargando" style="text-align:center; padding:40px;">Buscando productos...</div>
+    
+    <div class="lista-productos" id="contenedor-productos"></div>
 
-        <div style="text-align: center; margin-top: 50px;">
-            <button onclick="accederDuena()" style="background:none; border:none; color:#ccc; font-size:0.7rem;">⚙️ Acceso Dueña</button>
-        </div>
+    <div style="text-align: center; margin-bottom: 160px;">
+        <button onclick="accederDuena()" style="background:none; border:none; color:#ddd; font-size:0.7rem;">⚙️ Acceso Dueña</button>
+    </div>
 
-        <div id="panel-duena">
-            <h3>📊 Panel de Control</h3>
-            <a href="https://docs.google.com/spreadsheets/d/1vSh6ypXBcxssEtPYB9l6ahApz-tHFPEoi5voACOA5ynv_gxA7Uo2nzXIPtlVTTTxOeN2vqjyygpGvOI/edit" class="btn-admin" target="_blank">📝 EDITAR PRECIOS Y STOCK</a>
-            <div id="resumen-inversion" class="inversion-txt">Cargando inversión...</div>
-        </div>
+    <div id="panel-duena">
+        <h3>📊 Panel de Control</h3>
+        <a href="https://docs.google.com/spreadsheets/d/1vSh6ypXBcxssEtPYB9l6ahApz-tHFPEoi5voACOA5ynv_gxA7Uo2nzXIPtlVTTTxOeN2vqjyygpGvOI/edit" class="btn-admin" target="_blank">EDITAR EXCEL</a>
+        <div id="resumen-inversion" style="font-weight:bold; color: #27ae60; margin-top:10px;"></div>
     </div>
 
     <div class="resumen-total">
@@ -101,11 +199,11 @@
                     nombre: col[1] ? col[1].trim() : "",
                     precio: parseFloat(col[2]) || 0,
                     stock: stock,
-                    foto: col[5] ? col[5].trim() : "" // Columna F
+                    foto: col[5] ? col[5].trim() : ""
                 };
             }).filter(p => p !== null && p.nombre !== "");
 
-            document.getElementById('resumen-inversion').innerText = `💰 Inversión en Almacén: $${inversionTotal.toLocaleString()}`;
+            document.getElementById('resumen-inversion').innerText = `Inversión: $${inversionTotal.toLocaleString()}`;
             document.getElementById('cargando').style.display = 'none';
             mostrarProductos();
         } catch (e) { console.error(e); }
@@ -113,24 +211,24 @@
 
     function mostrarProductos() {
         const contenedor = document.getElementById('contenedor-productos');
-        let html = ""; let cat = "";
+        let html = ""; let catActual = "";
+        
         productos.forEach((p, i) => {
-            if (p.cat !== cat) { cat = p.cat; html += `<div class="categoria-titulo">${p.cat}</div>`; }
-            const agotado = p.stock <= 0;
+            if (p.cat !== catActual) { 
+                catActual = p.cat; 
+                html += `<div class="categoria-titulo">${p.cat}</div>`; 
+            }
             
-            // Usamos referrerpolicy="no-referrer" para saltar bloqueos de Drive
-            const imgHtml = p.foto ? `<img src="${p.foto}" class="foto-producto" referrerpolicy="no-referrer" alt="${p.nombre}">` : "";
+            const agotado = p.stock <= 0;
+            const imgHtml = p.foto ? `<img src="${p.foto}" class="foto-producto" referrerpolicy="no-referrer" alt="${p.nombre}">` : `<div class="foto-producto" style="display:flex; align-items:center; justify-content:center; color:#ccc;">Sin Foto</div>`;
 
             html += `
                 <div class="producto-item ${agotado ? 'agotado' : ''}">
+                    ${agotado ? '<span class="badge-agotado">AGOTADO</span>' : ''}
                     ${imgHtml}
-                    <div class="fila-superior">
-                        <div style="flex:1">
-                            <span class="nombre">${p.nombre} ${agotado ? '<span class="badge-agotado">AGOTADO</span>' : ''}</span>
-                            <span class="precio">$${p.precio}</span>
-                        </div>
-                        <input type="number" class="cant-input" id="cant-${i}" value="0" min="0" max="${p.stock}" ${agotado ? 'disabled' : ''} onchange="actualizarTotal()">
-                    </div>
+                    <span class="nombre">${p.nombre}</span>
+                    <span class="precio">$${p.precio}</span>
+                    <input type="number" class="cant-input" id="cant-${i}" placeholder="Cant." min="0" max="${p.stock}" ${agotado ? 'disabled' : ''} onchange="actualizarTotal()">
                 </div>`;
         });
         contenedor.innerHTML = html;
@@ -162,8 +260,8 @@
                 hay = true;
             }
         });
-        if (!hay) return alert("Selecciona productos");
-        texto += `\n💰 *TOTAL: $${document.getElementById("monto-total").innerText}*`;
+        if (!hay) return alert("Por favor, selecciona al menos un producto.");
+        texto += `\n💰 *TOTAL A PAGAR: $${document.getElementById("monto-total").innerText}*`;
         window.location.href = `https://wa.me/5356247880?text=${encodeURIComponent(texto)}`;
     }
 
