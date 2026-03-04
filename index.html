@@ -19,11 +19,20 @@
         .categoria-titulo { background: var(--oscuro); color: white; padding: 12px; margin-top: 25px; text-align: center; font-weight: bold; text-transform: uppercase; }
         .lista-productos { padding: 10px; max-width: 500px; margin: auto; padding-bottom: 160px; }
         
+        /* TARJETA DE PRODUCTO */
         .producto-item { background: white; display: flex; flex-direction: column; padding: 15px; margin-bottom: 15px; border-radius: 12px; border-left: 6px solid var(--oro); box-shadow: 0 3px 8px rgba(0,0,0,0.08); overflow: hidden; }
         .agotado { opacity: 0.5; border-left-color: #ccc !important; }
         
-        /* Estilo para la Foto */
-        .foto-producto { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; background-color: #eee; }
+        /* FOTO DEL PRODUCTO AJUSTADA */
+        .foto-producto { 
+            width: 100%; 
+            height: 150px; /* Tamaño ajustado para que quepa más en pantalla */
+            object-fit: cover; 
+            border-radius: 8px; 
+            margin-bottom: 10px; 
+            background-color: #f0f0f0; 
+            display: block;
+        }
         
         .badge-agotado { background: #ff4444; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; margin-left: 5px; }
         
@@ -48,7 +57,7 @@
     </header>
 
     <div class="lista-productos">
-        <div id="cargando" style="text-align:center; padding:20px;">Sincronizando...</div>
+        <div id="cargando" style="text-align:center; padding:20px;">Sincronizando almacén...</div>
         <div id="contenedor-productos"></div>
 
         <div style="text-align: center; margin-top: 50px;">
@@ -75,7 +84,6 @@
         try {
             const respuesta = await fetch(URL_CSV);
             const data = await respuesta.text();
-            // Dividimos las filas correctamente considerando posibles comas dentro de textos
             const filas = data.split('\n').slice(1);
             
             let inversionTotal = 0;
@@ -93,7 +101,7 @@
                     nombre: col[1] ? col[1].trim() : "",
                     precio: parseFloat(col[2]) || 0,
                     stock: stock,
-                    foto: col[5] ? col[5].trim() : "" // COLUMNA F
+                    foto: col[5] ? col[5].trim() : "" // Columna F
                 };
             }).filter(p => p !== null && p.nombre !== "");
 
@@ -110,8 +118,8 @@
             if (p.cat !== cat) { cat = p.cat; html += `<div class="categoria-titulo">${p.cat}</div>`; }
             const agotado = p.stock <= 0;
             
-            // Si hay foto, creamos la etiqueta de imagen, si no, no ponemos nada
-            const imgHtml = p.foto ? `<img src="${p.foto}" class="foto-producto" alt="${p.nombre}">` : "";
+            // Usamos referrerpolicy="no-referrer" para saltar bloqueos de Drive
+            const imgHtml = p.foto ? `<img src="${p.foto}" class="foto-producto" referrerpolicy="no-referrer" alt="${p.nombre}">` : "";
 
             html += `
                 <div class="producto-item ${agotado ? 'agotado' : ''}">
@@ -162,5 +170,5 @@
     window.onload = obtenerDatos;
 </script>
 </body>
-            </html>
+    </html>
     
