@@ -3,61 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Inventario en Tiempo Real</title>
+    <title>MÁS BELLA - Tienda Virtual</title>
     <style>
-        /* Estilos para que se vea bien en celulares */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f7f6;
-            color: #333;
-            text-align: center;
+        :root { 
+            --oro: #d4af37; 
+            --rosa-fondo: #fff5f8;
+            --rosa-fuerte: #d81b60;
+            --oscuro: #2c3e50;
         }
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-        p {
-            color: #7f8c8d;
-            margin-bottom: 30px;
-        }
-        /* Contenedor de la tabla con scroll lateral para móvil */
-        .contenedor-tabla {
-            width: 100%;
-            max-width: 1000px;
-            margin: 0 auto;
-            background: white;
-            padding: 10px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            overflow-x: auto; /* Permite deslizar si la tabla es ancha */
-            -webkit-overflow-scrolling: touch;
-        }
-        iframe {
-            width: 100%;
-            height: 750px;
-            border: none;
-            border-radius: 8px;
-        }
-        footer {
-            margin-top: 30px;
-            font-size: 0.8em;
-            color: #bdc3c7;
-        }
+
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background-color: var(--rosa-fondo); color: #333; }
+        header { background: white; padding: 20px; text-align: center; border-bottom: 4px solid var(--oro); box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .logo { font-size: 2.2rem; font-weight: bold; color: var(--rosa-fuerte); margin: 0; }
+        
+        .categoria-titulo { background: var(--oscuro); color: white; padding: 12px; margin-top: 25px; text-align: center; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+        .lista-productos { padding: 10px; max-width: 500px; margin: auto; padding-bottom: 160px; }
+        
+        .producto-item { background: white; display: flex; flex-direction: column; padding: 15px; margin-bottom: 10px; border-radius: 12px; border-left: 6px solid var(--oro); box-shadow: 0 3px 8px rgba(0,0,0,0.08); }
+        .agotado { opacity: 0.5; border-left-color: #ccc !important; }
+        .badge-agotado { background: #ff4444; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; margin-left: 5px; }
+        
+        .fila-superior { display: flex; justify-content: space-between; align-items: center; }
+        .nombre { font-weight: bold; font-size: 1.1rem; color: #333; }
+        .precio { font-weight: bold; color: var(--rosa-fuerte); font-size: 1.2rem; margin-top: 5px; display: block; }
+        .cant-input { width: 55px; text-align: center; border: 2px solid #f0f0f0; border-radius: 8px; padding: 10px; font-weight: bold; font-size: 1.1rem; outline: none; transition: 0.3s; }
+        .cant-input:focus { border-color: var(--rosa-fuerte); }
+
+        .resumen-total { background: var(--oscuro); color: white; padding: 18px; position: fixed; bottom: 0; width: 100%; text-align: center; font-size: 1.4rem; font-weight: bold; z-index: 100; box-shadow: 0 -5px 20px rgba(0,0,0,0.3); box-sizing: border-box; }
+        .btn-whatsapp { background: #25d366; color: white; text-decoration: none; padding: 14px 40px; border-radius: 50px; display: inline-block; margin-top: 12px; font-size: 1.1rem; transition: 0.3s; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.4); }
+        
+        #cargando { text-align: center; padding: 40px; font-weight: bold; color: var(--rosa-fuerte); font-size: 1.2rem; }
     </style>
 </head>
 <body>
 
-    <h1>📦 Mi Inventario y Precios</h1>
-    <p>Los datos se actualizan automáticamente al realizar cambios en la hoja de cálculo.</p>
+    <header>
+        <p class="logo">🌺 MÁS BELLA 🌺</p>
+        <p>Estética Profesional | Camagüey</p>
+    </header>
 
-    <div class="contenedor-tabla">
-        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSh6ypXBcxssEtPYB9l6ahApz-tHFPEoi5voACOA5ynv_gxA7Uo2nzXIPtlVTTTxOeN2vqjyygpGvOI/pubhtml?widget=true&amp;headers=false"></iframe>
+    <div class="lista-productos">
+        <div id="cargando">✨ Sincronizando precios...</div>
+        <div id="contenedor-productos"></div>
     </div>
-    <footer>
-        &copy; 2026 - Gestión de Inventario mediante Google Sheets
-    </footer>
+
+    <div class="resumen-total">
+        TOTAL: $<span id="monto-total">0</span><br>
+        <a href="javascript:void(0);" onclick="enviarPedido()" class="btn-whatsapp">📲 PEDIR POR WHATSAPP</a>
+    </div>
+
+<script>
+    // TU ENLACE DE GOOGLE SHEETS EN FORMATO CSV
+    const URL_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSh6ypXBcxssEtPYB9l6ahApz-tHFPEoi5voACOA5ynv_gxA7Uo2nzXIPtlVTTTxOeN2vqjyygpGvOI/pub?output=csv';
+
+    let productos = [];
+
+    async function obtenerDatos() {
+        try {
+            const respuesta = await fetch(URL_CSV);
+            const data = await respuesta.text();
+            
+            // Convertimos el CSV en una lista de objetos
+            const filas = data.split('\n').slice(1); // Quitamos la cabecera
+            productos = filas.map(fila => {
+                const columnas = fila.split(',');
+                return {
+                    cat: columnas[0] ? columnas[0].trim() : "Otros",
+                    nombre: columnas[1] ? columnas[1].trim() : "",
+                    precio: parseFloat(columnas[2]) || 0,
+                    stock: parseInt(columnas[3]) || 0
+                };
+            }).filter(p => p.nombre !== ""); // Quitamos filas vacías
+
+            document.getElementById('cargando').style.display = 'none';
+            mostrarProductos();
+        } catch (error) {
+            document.getElementById('cargando').innerText = "❌ Error al cargar inventario";
+            console.error(error);
+        }
+    }
+
+    function mostrarProductos() {
+        const contenedor = document.getElementById('contenedor-productos');
+        let html = "";
+        let categoriaActual = "";
+
+        productos.forEach((p, i) => {
+            if (p.cat !== categoriaActual) {
+                categoriaActual = p.cat;
+                html += `<div class="categoria-titulo">${p.cat}</div>`;
+            }
+
+            const esAgotado = p.stock <= 0;
+
+            html += `
+                <div class="producto-item ${esAgotado ? 'agotado' : ''}">
+                    <div class="fila-superior">
+                        <div style="flex:1">
+                            <span class="nombre">${p.nombre} ${esAgotado ? '<span class="badge-agotado">AGOTADO</span>' : ''}</span>
+                            <span class="precio">$${p.precio}</span>
+                        </div>
+                        <div>
+                            <input type="number" class="cant-input" id="cant-${i}" 
+                                   value="0" min="0" max="${p.stock}" 
+                                   ${esAgotado ? 'disabled' : ''} 
+                                   onchange="actualizarTotal()">
+                        </div>
+                    </div>
+                </div>`;
+        });
+        contenedor.innerHTML = html;
+    }
+
+    function actualizarTotal() {
+        let sumaTotal = 0;
+        productos.forEach((p, i) => {
+            const cantidad = parseInt(document.getElementById(`cant-${i}`).value) || 0;
+            sumaTotal += cantidad * p.precio;
+        });
+        document.getElementById('monto-total').innerText = sumaTotal.toLocaleString();
+    }
+
+    function enviarPedido() {
+        let mensajeWA = `*🌺 NUEVO PEDIDO - MÁS BELLA 🌺*\n----------------------------\n`;
+        let totalFinal = 0;
+        let tieneProductos = false;
+
+        productos.forEach((p, i) => {
+            const cantidad = parseInt(document.getElementById(`cant-${i}`).value) || 0;
+            if (cantidad > 0) {
+                mensajeWA += `✅ ${cantidad}x ${p.nombre} ($${(cantidad * p.precio).toLocaleString()})\n`;
+                totalFinal += cantidad * p.precio;
+                tieneProductos = true;
+            }
+        });
+
+        if (!tieneProductos) {
+            alert("⚠️ Por favor, selecciona al menos un producto.");
+            return;
+        }
+
+        mensajeWA += `\n💰 *TOTAL A PAGAR: $${totalFinal.toLocaleString()}*`;
+        mensajeWA += `\n\n_Deseo coordinar la entrega._`;
+
+        // Tu número de WhatsApp
+        const linkWA = `https://wa.me/5356247880?text=${encodeURIComponent(mensajeWA)}`;
+        window.location.href = linkWA;
+    }
+
+    // Iniciar la carga al abrir la página
+    window.onload = obtenerDatos;
+</script>
 
 </body>
-</html>
+    </html>
+    
