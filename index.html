@@ -12,170 +12,70 @@
             --oscuro: #2c3e50;
         }
 
-        body { 
-            font-family: 'Segoe UI', Arial, sans-serif; 
-            margin: 0; 
-            background-color: var(--rosa-fondo); 
-            color: #333; 
-        }
-
-        header { 
-            background: white; 
-            padding: 15px; 
-            text-align: center; 
-            border-bottom: 3px solid var(--oro); 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
-        }
-
-        .logo { font-size: 1.8rem; font-weight: bold; color: var(--rosa-fuerte); margin: 0; }
-        .sublogo { font-size: 0.8rem; color: #666; margin: 3px 0 0 0; letter-spacing: 1px; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background-color: var(--rosa-fondo); color: #333; }
+        header { background: white; padding: 20px; text-align: center; border-bottom: 4px solid var(--oro); box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .logo { font-size: 2.2rem; font-weight: bold; color: var(--rosa-fuerte); margin: 0; }
         
-        /* DISEÑO DE CUADRÍCULA (2 COLUMNAS) */
-        .lista-productos { 
-            display: grid;
-            grid-template-columns: 1fr 1fr; 
-            gap: 10px;
-            padding: 10px;
-            max-width: 600px;
-            margin: auto;
-            padding-bottom: 160px; 
-        }
+        .categoria-titulo { background: var(--oscuro); color: white; padding: 12px; margin-top: 25px; text-align: center; font-weight: bold; text-transform: uppercase; }
+        .lista-productos { padding: 10px; max-width: 500px; margin: auto; padding-bottom: 200px; }
         
-        .categoria-titulo { 
-            grid-column: span 2; 
-            background: var(--oscuro); 
-            color: white; 
-            padding: 8px; 
-            margin-top: 15px; 
-            text-align: center; 
-            font-weight: bold; 
-            text-transform: uppercase;
-            border-radius: 6px;
-            font-size: 0.85rem;
-        }
-
-        /* TARJETA DE PRODUCTO */
-        .producto-item { 
-            background: white; 
-            display: flex; 
-            flex-direction: column; 
-            padding: 8px; 
-            border-radius: 12px; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
-            border: 1px solid #eee;
-            position: relative;
-            text-align: center;
-        }
-
-        .agotado { opacity: 0.5; }
+        .producto-item { background: white; display: flex; flex-direction: column; padding: 15px; margin-bottom: 10px; border-radius: 12px; border-left: 6px solid var(--oro); box-shadow: 0 3px 8px rgba(0,0,0,0.08); }
+        .agotado { opacity: 0.5; border-left-color: #ccc !important; }
+        .badge-agotado { background: #ff4444; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; margin-left: 5px; }
         
-        /* AJUSTE DE FOTO: AHORA LLENA EL ANCHO */
-        .foto-producto { 
-            width: 100%; 
-            height: 150px; /* Altura fija para uniformidad */
-            object-fit: cover; /* <--- LLENA TODO EL ESPACIO SIN BORDES BLANCOS */
-            background-color: #f0f0f0; 
-            border-radius: 8px; 
-            margin-bottom: 8px; 
-        }
+        .fila-superior { display: flex; justify-content: space-between; align-items: center; }
+        .nombre { font-weight: bold; font-size: 1.1rem; }
+        .precio { font-weight: bold; color: var(--rosa-fuerte); font-size: 1.2rem; display: block; }
+        .cant-input { width: 55px; text-align: center; border: 2px solid #f0f0f0; border-radius: 8px; padding: 10px; font-weight: bold; }
+
+        /* Estilos Domicilio */
+        .seccion-entrega { background: white; padding: 20px; border-radius: 15px; border: 2px solid var(--rosa-fuerte); margin-top: 20px; }
+        .selector, .input-datos { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box; font-size: 1rem; }
+
+        .resumen-total { background: var(--oscuro); color: white; padding: 18px; position: fixed; bottom: 0; width: 100%; text-align: center; font-size: 1.4rem; font-weight: bold; z-index: 100; box-sizing: border-box; }
+        .btn-whatsapp { background: #25d366; color: white; text-decoration: none; padding: 14px 40px; border-radius: 50px; display: inline-block; margin-top: 12px; font-size: 1.1rem; }
         
-        .badge-agotado { 
-            background: #ff4444; 
-            color: white; 
-            padding: 2px 6px; 
-            border-radius: 4px; 
-            font-size: 0.65rem; 
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            z-index: 10;
-        }
-        
-        .nombre { 
-            font-weight: bold; 
-            font-size: 0.85rem; 
-            margin-bottom: 4px; 
-            height: 32px; 
-            overflow: hidden;
-            line-height: 1.2;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-        }
-
-        .precio { 
-            font-weight: bold; 
-            color: var(--rosa-fuerte); 
-            font-size: 1rem; 
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        .cant-input { 
-            width: 100%; 
-            text-align: center; 
-            border: 1px solid #ccc; 
-            border-radius: 6px; 
-            padding: 6px; 
-            font-weight: bold; 
-            box-sizing: border-box;
-            font-size: 0.9rem;
-        }
-
-        /* BARRA DE TOTAL FIJA */
-        .resumen-total { 
-            background: var(--oscuro); 
-            color: white; 
-            padding: 12px; 
-            position: fixed; 
-            bottom: 0; 
-            width: 100%; 
-            text-align: center; 
-            z-index: 100; 
-            box-sizing: border-box; 
-            box-shadow: 0 -3px 10px rgba(0,0,0,0.2);
-        }
-
-        .btn-whatsapp { 
-            background: #25d366; 
-            color: white; 
-            text-decoration: none; 
-            padding: 10px 25px; 
-            border-radius: 50px; 
-            display: inline-block; 
-            margin-top: 8px; 
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-        
-        #panel-duena { display: none; background: #fff; margin: 20px; padding: 15px; border-radius: 10px; border: 2px dashed var(--oro); text-align: center; }
-        .btn-admin { background: var(--oscuro); color: white; padding: 8px; border-radius: 5px; text-decoration: none; display: block; margin: 5px 0; font-size: 0.8rem; }
+        #panel-duena { display: none; background: white; margin: 20px auto; padding: 20px; max-width: 460px; border-radius: 15px; border: 2px dashed var(--oro); text-align: center; }
+        .btn-admin { background: var(--oscuro); color: white; padding: 10px; border-radius: 5px; text-decoration: none; display: block; margin: 10px 0; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <header>
         <p class="logo">🌺 MÁS BELLA 🌺</p>
-        <p class="sublogo">ESTÉTICA PROFESIONAL | CAMAGÜEY</p>
+        <p>Estética Profesional | Camagüey</p>
     </header>
 
-    <div id="cargando" style="text-align:center; padding:40px; color:#999;">Sincronizando productos...</div>
-    
-    <div class="lista-productos" id="contenedor-productos"></div>
+    <div class="lista-productos">
+        <div id="cargando" style="text-align:center; padding:20px;">Sincronizando inventario...</div>
+        <div id="contenedor-productos"></div>
 
-    <div style="text-align: center; margin-bottom: 160px;">
-        <button onclick="accederDuena()" style="background:none; border:none; color:#ddd; font-size:0.7rem;">⚙️ Acceso Dueña</button>
-    </div>
+        <div class="seccion-entrega">
+            <h3>🛵 Método de Entrega</h3>
+            <select id="metodoEntrega" class="selector" onchange="actualizarInterfaz()">
+                <option value="tienda">🏪 Recogida en Tienda ($0)</option>
+                <option value="domicilio">🏠 Servicio a Domicilio</option>
+            </select>
+            <div id="campos-domicilio" style="display:none;">
+                <input type="text" id="nombreCliente" class="input-datos" placeholder="Tu Nombre Completo">
+                <textarea id="direccionCliente" class="input-datos" placeholder="Dirección Exacta (Calle, No, entre...)"></textarea>
+            </div>
+        </div>
 
-    <div id="panel-duena">
-        <h3>📊 Panel de Control</h3>
-        <a href="https://docs.google.com/spreadsheets/d/1vSh6ypXBcxssEtPYB9l6ahApz-tHFPEoi5voACOA5ynv_gxA7Uo2nzXIPtlVTTTxOeN2vqjyygpGvOI/edit" class="btn-admin" target="_blank">EDITAR EXCEL</a>
-        <div id="resumen-inversion" style="font-weight:bold; color: #27ae60; margin-top:10px; font-size: 0.9rem;"></div>
+        <div style="text-align: center; margin-top: 50px;">
+            <button onclick="accederDuena()" style="background:none; border:none; color:#ccc; font-size:0.7rem;">⚙️ Acceso Dueña</button>
+        </div>
+
+        <div id="panel-duena">
+            <h3>📊 Panel de Control</h3>
+            <a href="https://docs.google.com/spreadsheets/d/1vSh6ypXBcxssEtPYB9l6ahApz-tHFPEoi5voACOA5ynv_gxA7Uo2nzXIPtlVTTTxOeN2vqjyygpGvOI/edit" class="btn-admin" target="_blank">📝 ABRIR EXCEL</a>
+            <div id="resumen-inversion" style="font-weight:bold; color:#2ecc71;"></div>
+        </div>
     </div>
 
     <div class="resumen-total">
-        TOTAL PEDIDO: $<span id="monto-total">0</span><br>
-        <a href="javascript:void(0);" onclick="enviarPedido()" class="btn-whatsapp">📲 ENVIAR POR WHATSAPP</a>
+        TOTAL: $<span id="monto-total">0</span><br>
+        <a href="javascript:void(0);" onclick="enviarPedido()" class="btn-whatsapp">📲 PEDIR POR WHATSAPP</a>
     </div>
 
 <script>
@@ -187,27 +87,22 @@
             const respuesta = await fetch(URL_CSV);
             const data = await respuesta.text();
             const filas = data.split('\n').slice(1);
-            
             let inversionTotal = 0;
 
             productos = filas.map(fila => {
                 const col = fila.split(',');
-                if(col.length < 3) return null;
-
                 const stock = parseInt(col[3]) || 0;
                 const costo = parseFloat(col[4]) || 0;
                 inversionTotal += (stock * costo);
-
                 return {
                     cat: col[0] ? col[0].trim() : "Otros",
                     nombre: col[1] ? col[1].trim() : "",
                     precio: parseFloat(col[2]) || 0,
-                    stock: stock,
-                    foto: col[5] ? col[5].trim() : ""
+                    stock: stock
                 };
-            }).filter(p => p !== null && p.nombre !== "");
+            }).filter(p => p.nombre !== "");
 
-            document.getElementById('resumen-inversion').innerText = `Inversión: $${inversionTotal.toLocaleString()}`;
+            document.getElementById('resumen-inversion').innerText = `💰 Inversión en Almacén: $${inversionTotal.toLocaleString()}`;
             document.getElementById('cargando').style.display = 'none';
             mostrarProductos();
         } catch (e) { console.error(e); }
@@ -215,26 +110,19 @@
 
     function mostrarProductos() {
         const contenedor = document.getElementById('contenedor-productos');
-        let html = ""; let catActual = "";
-        
+        let html = ""; let cat = "";
         productos.forEach((p, i) => {
-            if (p.cat !== catActual) { 
-                catActual = p.cat; 
-                html += `<div class="categoria-titulo">${p.cat}</div>`; 
-            }
-            
+            if (p.cat !== cat) { cat = p.cat; html += `<div class="categoria-titulo">${p.cat}</div>`; }
             const agotado = p.stock <= 0;
-            // Se usa referrerpolicy="no-referrer" para evitar bloqueos de Google Drive
-            const imgHtml = p.foto ? `<img src="${p.foto}" class="foto-producto" referrerpolicy="no-referrer" alt="${p.nombre}">` : `<div class="foto-producto" style="display:flex; align-items:center; justify-content:center; color:#ccc; font-size:0.7rem;">Sin Foto</div>`;
-
-            html += `
-                <div class="producto-item ${agotado ? 'agotado' : ''}">
-                    ${agotado ? '<span class="badge-agotado">AGOTADO</span>' : ''}
-                    ${imgHtml}
-                    <span class="nombre">${p.nombre}</span>
-                    <span class="precio">$${p.precio}</span>
-                    <input type="number" class="cant-input" id="cant-${i}" placeholder="0" min="0" max="${p.stock}" ${agotado ? 'disabled' : ''} onchange="actualizarTotal()">
-                </div>`;
+            html += `<div class="producto-item ${agotado ? 'agotado' : ''}">
+                <div class="fila-superior">
+                    <div style="flex:1">
+                        <span class="nombre">${p.nombre} ${agotado ? '<span class="badge-agotado">AGOTADO</span>' : ''}</span>
+                        <span class="precio">$${p.precio}</span>
+                    </div>
+                    <input type="number" class="cant-input" id="cant-${i}" value="0" min="0" max="${p.stock}" ${agotado ? 'disabled' : ''} onchange="actualizarTotal()">
+                </div>
+            </div>`;
         });
         contenedor.innerHTML = html;
     }
@@ -247,16 +135,34 @@
         document.getElementById('monto-total').innerText = suma.toLocaleString();
     }
 
+    function actualizarInterfaz() {
+        const entrega = document.getElementById("metodoEntrega").value;
+        document.getElementById("campos-domicilio").style.display = (entrega === "domicilio") ? "block" : "none";
+    }
+
     function accederDuena() {
-        const clave = prompt("Clave de Dueña:");
-        if (clave === "061021041122") {
+        if (prompt("Clave de Dueña:") === "061021041122") {
             document.getElementById('panel-duena').style.display = "block";
             window.scrollTo(0, document.body.scrollHeight);
-        } else { alert("Clave incorrecta"); }
+        }
     }
 
     function enviarPedido() {
-        let texto = `*🌺 NUEVO PEDIDO - MÁS BELLA 🌺*\n----------------------------\n`;
+        let metodo = document.getElementById("metodoEntrega").value;
+        let nombre = document.getElementById("nombreCliente").value;
+        let direccion = document.getElementById("direccionCliente").value;
+
+        if (metodo === "domicilio" && (!nombre || !direccion)) {
+            return alert("Por favor, pon tu nombre y dirección para el envío.");
+        }
+
+        let texto = `*🌺 NUEVO PEDIDO - MÁS BELLA 🌺*\n`;
+        texto += `Entrega: ${metodo === "domicilio" ? "🏠 Domicilio" : "🏪 Tienda"}\n`;
+        if(metodo === "domicilio") {
+            texto += `Cliente: ${nombre}\nDir: ${direccion}\n`;
+        }
+        texto += `----------------------------\n`;
+
         let hay = false;
         productos.forEach((p, i) => {
             const c = parseInt(document.getElementById(`cant-${i}`).value) || 0;
@@ -265,13 +171,14 @@
                 hay = true;
             }
         });
-        if (!hay) return alert("Por favor, selecciona al menos un producto.");
-        texto += `\n💰 *TOTAL A PAGAR: $${document.getElementById("monto-total").innerText}*`;
+
+        if (!hay) return alert("Selecciona productos.");
+        texto += `\n💰 *TOTAL: $${document.getElementById("monto-total").innerText}*`;
         window.location.href = `https://wa.me/5356247880?text=${encodeURIComponent(texto)}`;
     }
 
     window.onload = obtenerDatos;
 </script>
 </body>
-        </html>
-        
+    </html>
+                
