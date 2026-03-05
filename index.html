@@ -11,28 +11,29 @@
         .logo { font-size: 1.8rem; font-weight: bold; color: var(--rosa-fuerte); margin: 0; }
         .sublogo { font-size: 0.8rem; color: #666; margin: 3px 0 0 0; }
         
-        /* DISEÑO DE CUADRÍCULA 2 COLUMNAS */
-        .lista-productos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; max-width: 600px; margin: auto; padding-bottom: 250px; }
+        .lista-productos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; max-width: 600px; margin: auto; }
         .categoria-titulo { grid-column: span 2; background: var(--oscuro); color: white; padding: 8px; margin-top: 15px; text-align: center; font-weight: bold; text-transform: uppercase; border-radius: 6px; font-size: 0.85rem; }
         
-        /* TARJETA DE PRODUCTO CON FOTO */
-        .producto-item { background: white; display: flex; flex-direction: column; padding: 8px; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #eee; position: relative; text-align: center; overflow: hidden; }
-        .foto-producto { width: 100%; height: 140px; object-fit: cover; background-color: #f9f9f9; border-radius: 8px; margin-bottom: 8px; border: 1px solid #f0f0f0; }
-        .badge-agotado { background: #ff4444; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; position: absolute; top: 12px; right: 12px; z-index: 5; }
-        .nombre { font-weight: bold; font-size: 0.85rem; height: 34px; overflow: hidden; margin-bottom: 4px; color: var(--oscuro); line-height: 1.2; }
-        .precio { font-weight: bold; color: var(--rosa-fuerte); font-size: 1rem; margin-bottom: 8px; display: block; }
-        .cant-input { width: 100%; text-align: center; border: 1px solid #ccc; border-radius: 6px; padding: 8px; font-weight: bold; box-sizing: border-box; background: #fff; }
+        /* ESTILO PRODUCTO NORMAL */
+        .producto-item { background: white; display: flex; flex-direction: column; padding: 8px; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #eee; position: relative; text-align: center; overflow: hidden; transition: 0.3s; }
+        .foto-producto { width: 100%; height: 140px; object-fit: cover; background-color: #f9f9f9; border-radius: 8px; margin-bottom: 8px; }
+        
+        /* ESTILO PRODUCTO AGOTADO (Transparente) */
+        .producto-item.agotado { opacity: 0.5; filter: grayscale(0.5); }
+        .badge-agotado { background: #ff4444; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; font-weight: bold; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
 
-        /* SECCIÓN ENTREGA Y ZONAS */
-        .seccion-entrega { grid-column: span 2; background: white; padding: 15px; border-radius: 12px; border: 2px solid var(--oro); margin-top: 20px; box-sizing: border-box; }
+        .nombre { font-weight: bold; font-size: 0.85rem; height: 34px; overflow: hidden; margin-bottom: 4px; color: var(--oscuro); line-height: 1.2; }
+        .precio { font-weight: bold; color: var(--rosa-fuerte); font-size: 1rem; margin-bottom: 8px; }
+        .cant-input { width: 100%; text-align: center; border: 1px solid #ccc; border-radius: 6px; padding: 8px; font-weight: bold; box-sizing: border-box; }
+
+        .contenedor-entrega { max-width: 600px; margin: 0 auto 250px auto; padding: 0 10px; }
+        .seccion-entrega { background: white; padding: 15px; border-radius: 12px; border: 2px solid var(--oro); margin-top: 10px; box-sizing: border-box; }
         .selector, .input-datos { width: 100%; padding: 12px; margin: 5px 0; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box; font-size: 0.95rem; }
 
-        /* BARRA TOTAL FIJA */
         .resumen-total { background: var(--oscuro); color: white; padding: 15px; position: fixed; bottom: 0; width: 100%; text-align: center; z-index: 100; box-shadow: 0 -3px 10px rgba(0,0,0,0.2); box-sizing: border-box; }
-        .btn-whatsapp { background: #25d366; color: white; text-decoration: none; padding: 12px 30px; border-radius: 50px; display: inline-block; margin-top: 8px; font-weight: bold; font-size: 1rem; box-shadow: 0 4px 10px rgba(37,211,102,0.3); }
+        .btn-whatsapp { background: #25d366; color: white; text-decoration: none; padding: 12px 30px; border-radius: 50px; display: inline-block; margin-top: 8px; font-weight: bold; font-size: 1rem; }
         
-        /* PANEL DUEÑA */
-        #panel-duena { display: none; grid-column: span 2; background: #fff; padding: 15px; border-radius: 10px; border: 2px dashed var(--oro); text-align: center; margin-top: 20px; }
+        #panel-duena { display: none; background: #fff; padding: 15px; border-radius: 10px; border: 2px dashed var(--oro); text-align: center; margin-top: 20px; }
         .btn-admin { background: var(--oscuro); color: white; padding: 10px; border-radius: 5px; text-decoration: none; display: block; margin: 5px 0; font-size: 0.85rem; font-weight: bold; }
     </style>
 </head>
@@ -44,29 +45,67 @@
     </header>
 
     <div class="lista-productos" id="contenedor-productos">
-        <div id="cargando" style="grid-column: span 2; text-align:center; padding:40px; color: var(--rosa-fuerte);">🌸 Sincronizando productos y fotos...</div>
+        <div id="cargando" style="grid-column: span 2; text-align:center; padding:40px; color: var(--rosa-fuerte);">🌸 Cargando inventario...</div>
     </div>
 
-    <div style="max-width: 600px; margin: auto; padding: 10px;">
+    <div class="contenedor-entrega">
         <div class="seccion-entrega">
             <h3 style="margin-top:0; font-size: 1.1rem; color: var(--rosa-fuerte); text-align: center;">🛵 Servicio de Entrega</h3>
             <select id="metodoEntrega" class="selector" onchange="calc()">
                 <option value="0">🏪 Recogida en Tienda ($0)</option>
-                <optgroup label="Domicilio (Selecciona tu zona)">
-                    <option value="100">📍 Zona Centro ($100)</option>
-                    <option value="150">📍 Reparto Guernica ($150)</option>
-                    <option value="150">📍 La Caridad ($150)</option>
-                    <option value="200">📍 Garrido / Torreblanca ($200)</option>
-                    <option value="200">📍 Previsora ($200)</option>
-                    <option value="250">📍 Modelo / El Carmen ($250)</option>
-                    <option value="300">📍 Casino Campestre ($300)</option>
-                    <option value="350">📍 Zonas Periféricas ($350)</option>
+                <optgroup label="Zonas de Domicilio">
+                    <option value="300">📍 Centro del pueblo ($300)</option>
+                    <option value="500">📍 Lenin ($500)</option>
+                    <option value="400">📍 Modelo ($400)</option>
+                    <option value="350">📍 La Caridad ($350)</option>
+                    <option value="400">📍 La Vigía ($400)</option>
+                    <option value="400">📍 Florat ($400)</option>
+                    <option value="350">📍 Vista Hermosa ($350)</option>
+                    <option value="400">📍 Versalles ($400)</option>
+                    <option value="350">📍 Agramonte ($350)</option>
+                    <option value="500">📍 Jayama ($500)</option>
+                    <option value="400">📍 Monte Carlos ($400)</option>
+                    <option value="400">📍 La Mosca ($400)</option>
+                    <option value="400">📍 Marquesado ($400)</option>
+                    <option value="450">📍 La Esperanza ($450)</option>
+                    <option value="450">📍 Nueva Esperanza ($450)</option>
+                    <option value="400">📍 Garrido ($400)</option>
+                    <option value="450">📍 El Micro ($450)</option>
+                    <option value="400">📍 Palomino ($400)</option>
+                    <option value="400">📍 Juanito ($400)</option>
+                    <option value="350">📍 Previsora ($350)</option>
+                    <option value="450">📍 La Guernica ($450)</option>
+                    <option value="450">📍 La Belén ($450)</option>
+                    <option value="350">📍 Casino Campestre ($350)</option>
+                    <option value="350">📍 Las Mercedes ($350)</option>
+                    <option value="350">📍 Simoni ($350)</option>
+                    <option value="400">📍 Montejo ($400)</option>
+                    <option value="450">📍 La Yaba ($450)</option>
+                    <option value="450">📍 Nadales ($450)</option>
+                    <option value="400">📍 Bella Vista ($400)</option>
+                    <option value="450">📍 Vista Bella ($450)</option>
+                    <option value="400">📍 Inra ($400)</option>
+                    <option value="450">📍 Imán ($450)</option>
+                    <option value="400">📍 Mascota ($400)</option>
+                    <option value="400">📍 Puerto Príncipe ($400)</option>
+                    <option value="500">📍 Isabel Hortensia ($500)</option>
+                    <option value="400">📍 Villa Mariana ($400)</option>
+                    <option value="450">📍 Los Coquitos ($450)</option>
+                    <option value="450">📍 La Zambrana ($450)</option>
+                    <option value="500">📍 Saratoga ($500)</option>
+                    <option value="400">📍 El Jardín ($400)</option>
+                    <option value="350">📍 Floiran Quiroz ($350)</option>
+                    <option value="350">📍 Porvenir ($350)</option>
+                    <option value="450">📍 Nitrógeno ($450)</option>
+                    <option value="400">📍 Buenos Aires ($400)</option>
+                    <option value="400">📍 Camino de la Matanza ($400)</option>
+                    <option value="350">📍 Sanchez Soto ($350)</option>
                 </optgroup>
             </select>
 
             <div id="campos-domicilio" style="display:none;">
                 <input type="text" id="nombreCliente" class="input-datos" placeholder="Tu Nombre">
-                <textarea id="direccionCliente" class="input-datos" placeholder="Dirección exacta y entre qué calles"></textarea>
+                <textarea id="direccionCliente" class="input-datos" placeholder="Dirección exacta y teléfono"></textarea>
             </div>
         </div>
 
@@ -75,8 +114,8 @@
         </div>
 
         <div id="panel-duena">
-            <h3 style="margin-top:0;">📊 Resumen de Inventario</h3>
-            <a href="https://docs.google.com/spreadsheets/d/1vSh6ypXBcxssEtPYB9l6ahApz-tHFPEoi5voACOA5ynv_gxA7Uo2nzXIPtlVTTTxOeN2vqjyygpGvOI/edit" class="btn-admin" target="_blank">📝 EDITAR PRECIOS / STOCK / FOTOS</a>
+            <h3 style="margin-top:0;">📊 Panel Administrativo</h3>
+            <a href="https://docs.google.com/spreadsheets/d/1vSh6ypXBcxssEtPYB9l6ahApz-tHFPEoi5voACOA5ynv_gxA7Uo2nzXIPtlVTTTxOeN2vqjyygpGvOI/edit" class="btn-admin" target="_blank">EDITAR EXCEL</a>
             <div id="resumen-inversion" style="font-weight:bold; color: #27ae60; font-size: 0.95rem; margin-top:10px;"></div>
         </div>
     </div>
@@ -100,43 +139,30 @@
             productos = filas.map(fila => {
                 const col = fila.split(',');
                 if(col.length < 3) return null;
-                const stk = parseInt(col[3]) || 0;
+                const stkStr = col[3]?.trim();
+                const stk = (stkStr === "" || stkStr === undefined) ? 0 : parseInt(stkStr);
                 const cst = parseFloat(col[4]) || 0;
                 inv += (stk * cst);
-                // Leemos la columna F (col[5]) para la foto
-                return { 
-                    cat: col[0]?.trim(), 
-                    nombre: col[1]?.trim(), 
-                    precio: parseFloat(col[2]) || 0, 
-                    stock: stk, 
-                    foto: col[5]?.trim() 
-                };
+                return { cat: col[0]?.trim(), nombre: col[1]?.trim(), precio: parseFloat(col[2]) || 0, stock: stk, foto: col[5]?.trim() };
             }).filter(p => p && p.nombre !== "");
 
-            document.getElementById('resumen-inversion').innerText = `Inversión estimada: $${inv.toLocaleString()}`;
+            document.getElementById('resumen-inversion').innerText = `Inversión total: $${inv.toLocaleString()}`;
             document.getElementById('cargando').style.display = 'none';
             mostrar();
-        } catch (e) { 
-            document.getElementById('cargando').innerText = "❌ Error al conectar con Google Sheets";
-            console.error(e); 
-        }
+        } catch (e) { console.error(e); }
     }
 
     function mostrar() {
         const cont = document.getElementById('contenedor-productos');
         let html = ""; let cat = "";
         productos.forEach((p, i) => {
-            if (p.cat !== cat) { 
-                cat = p.cat; 
-                html += `<div class="categoria-titulo">${p.cat}</div>`; 
-            }
+            if (p.cat !== cat) { cat = p.cat; html += `<div class="categoria-titulo">${p.cat}</div>`; }
             const agotado = p.stock <= 0;
-            // Si no hay foto, ponemos una imagen de placeholder rosa
-            const imagen = p.foto ? p.foto : 'https://placehold.co/400x400/fff5f8/d81b60?text=MÁS+BELLA';
+            const imagen = p.foto ? p.foto : 'https://placehold.co/400x400/fff5f8/d81b60?text=Sin+Foto';
 
             html += `
                 <div class="producto-item ${agotado ? 'agotado' : ''}">
-                    ${agotado ? '<span class="badge-agotado">AGOTADO</span>' : ''}
+                    ${agotado ? '<span class="badge-agotado">AGOTADA</span>' : ''}
                     <img src="${imagen}" class="foto-producto" referrerpolicy="no-referrer" alt="${p.nombre}">
                     <span class="nombre">${p.nombre}</span>
                     <span class="precio">$${p.precio}</span>
@@ -151,58 +177,42 @@
         productos.forEach((p, i) => { 
             s += (parseInt(document.getElementById(`cant-${i}`).value) || 0) * p.precio; 
         });
-
-        const selector = document.getElementById("metodoEntrega");
-        const costoDom = parseInt(selector.value);
+        const costoDom = parseInt(document.getElementById("metodoEntrega").value);
         s += costoDom;
-
         document.getElementById("campos-domicilio").style.display = (costoDom > 0) ? "block" : "none";
         document.getElementById('monto-total').innerText = s.toLocaleString();
     }
 
     function accederDuena() {
-        if (prompt("Clave Secreta:") === "061021041122") {
-            document.getElementById('panel-duena').style.display = "block";
-            window.scrollTo(0, document.body.scrollHeight);
-        }
+        if (prompt("Clave:") === "061021041122") document.getElementById('panel-duena').style.display = "block";
     }
 
     function enviarPedido() {
-        const selector = document.getElementById("metodoEntrega");
-        const costoDom = parseInt(selector.value);
-        const zonaTexto = selector.options[selector.selectedIndex].text;
-        
+        const sel = document.getElementById("metodoEntrega");
+        const costoDom = parseInt(sel.value);
+        const zona = sel.options[sel.selectedIndex].text;
         let nom = document.getElementById("nombreCliente").value;
         let dir = document.getElementById("direccionCliente").value;
         
-        if (costoDom > 0 && (!nom || !dir)) {
-            return alert("Por favor, completa tu nombre y dirección para el domicilio.");
-        }
+        if (costoDom > 0 && (!nom || !dir)) return alert("Falta nombre o dirección");
 
-        let txt = `*🌺 PEDIDO - MÁS BELLA 🌺*\n`;
-        txt += `📍 Entrega: ${zonaTexto}\n`;
-        if(costoDom > 0) {
-            txt += `👤 Cliente: ${nom}\n🏠 Dir: ${dir}\n`;
-        }
+        let txt = `*🌺 PEDIDO - MÁS BELLA 🌺*\n📍 Entrega: ${zona}\n`;
+        if(costoDom > 0) txt += `👤 Cliente: ${nom}\n🏠 Dir: ${dir}\n`;
         txt += `----------------------------\n`;
 
         let ok = false;
         productos.forEach((p, i) => {
             const c = parseInt(document.getElementById(`cant-${i}`).value) || 0;
-            if (c > 0) { 
-                txt += `✅ ${c}x ${p.nombre} ($${(c*p.precio).toLocaleString()})\n`; 
-                ok = true; 
-            }
+            if (c > 0) { txt += `✅ ${c}x ${p.nombre} ($${(c*p.precio).toLocaleString()})\n`; ok = true; }
         });
 
-        if (!ok) return alert("Selecciona al menos un producto para pedir.");
+        if (!ok) return alert("Selecciona productos");
         txt += `\n💰 *TOTAL FINAL: $${document.getElementById("monto-total").innerText}*`;
-        
         window.location.href = `https://wa.me/5356247880?text=${encodeURIComponent(txt)}`;
     }
 
     window.onload = obtenerDatos;
 </script>
 </body>
-    </html>
+        </html>
     
