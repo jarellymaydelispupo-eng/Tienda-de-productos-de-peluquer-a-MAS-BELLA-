@@ -14,17 +14,20 @@
         .lista-productos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; max-width: 600px; margin: auto; }
         .categoria-titulo { grid-column: span 2; background: var(--oscuro); color: white; padding: 8px; margin-top: 15px; text-align: center; font-weight: bold; text-transform: uppercase; border-radius: 6px; font-size: 0.85rem; }
         
-        .producto-item { background: white; display: flex; flex-direction: column; padding: 8px; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #eee; position: relative; text-align: center; }
+        .producto-item { background: white; display: flex; flex-direction: column; padding: 8px; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #eee; position: relative; text-align: center; overflow: hidden; }
         .foto-producto { width: 100%; height: 140px; object-fit: cover; background-color: #f9f9f9; border-radius: 8px; margin-bottom: 8px; }
         
-        .nombre { font-weight: bold; font-size: 0.85rem; height: 34px; overflow: hidden; margin-bottom: 4px; color: var(--oscuro); line-height: 1.2; }
-        .precio { font-weight: bold; color: var(--rosa-fuerte); font-size: 0.95rem; margin-top: 5px; }
-        .promo-tag { font-size: 0.7rem; font-weight: bold; margin: 5px 0; min-height: 25px; color: #666; }
-        
-        .cant-input { width: 100%; text-align: center; border: 2px solid var(--oro); border-radius: 6px; padding: 8px; font-weight: bold; box-sizing: border-box; }
-        .aviso-stock { color: #ff4444; font-size: 0.65rem; font-weight: bold; height: 15px; margin-top: 2px; }
+        .producto-item.agotado { opacity: 0.5; filter: grayscale(0.5); }
+        .badge-agotado { background: #ff4444; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; font-weight: bold; }
 
-        .resumen-total { background: var(--oscuro); color: white; padding: 15px; position: fixed; bottom: 0; width: 100%; text-align: center; z-index: 100; }
+        .nombre { font-weight: bold; font-size: 0.85rem; height: 34px; overflow: hidden; margin-bottom: 4px; color: var(--oscuro); line-height: 1.2; }
+        .precio { font-weight: bold; color: var(--rosa-fuerte); font-size: 0.95rem; }
+        .promo-tag { font-size: 0.65rem; color: var(--verde); font-weight: bold; margin-bottom: 5px; min-height: 15px; }
+        
+        .cant-input { width: 100%; text-align: center; border: 1px solid #ccc; border-radius: 6px; padding: 8px; font-weight: bold; box-sizing: border-box; margin-top: 5px; }
+        .aviso-stock { color: #ff4444; font-size: 0.65rem; font-weight: bold; min-height: 15px; margin-top: 2px; }
+
+        .resumen-total { background: var(--oscuro); color: white; padding: 15px; position: fixed; bottom: 0; width: 100%; text-align: center; z-index: 100; box-sizing: border-box; }
         .btn-whatsapp { background: #25d366; color: white; text-decoration: none; padding: 12px 30px; border-radius: 50px; display: inline-block; margin-top: 8px; font-weight: bold; }
         
         .contenedor-entrega { max-width: 600px; margin: 0 auto 250px auto; padding: 0 10px; }
@@ -40,25 +43,28 @@
     </header>
 
     <div class="lista-productos" id="contenedor-productos">
-        <div id="cargando" style="grid-column: span 2; text-align:center; padding:40px;">🌸 Cargando inventario...</div>
+        <div id="cargando" style="grid-column: span 2; text-align:center; padding:40px; color: var(--rosa-fuerte);">🌸 Cargando inventario...</div>
     </div>
 
     <div class="contenedor-entrega">
         <div class="seccion-entrega">
-            <h3 style="margin-top:0; text-align: center;">🛵 Servicio de Entrega</h3>
+            <h3 style="margin-top:0; font-size: 1.1rem; color: var(--rosa-fuerte); text-align: center;">🛵 Servicio de Entrega</h3>
             <select id="metodoEntrega" class="selector" onchange="calc()">
                 <option value="0">🏪 Recogida en Tienda ($0)</option>
-                <option value="300">📍 Centro ($300)</option>
+                <optgroup label="Zonas de Domicilio">
+                    <option value="300">📍 Centro del pueblo ($300)</option>
+                    <option value="400">📍 La Vigía ($400)</option>
+                    </optgroup>
             </select>
             <div id="campos-domicilio" style="display:none;">
                 <input type="text" id="nombreCliente" class="input-datos" placeholder="Tu Nombre">
-                <textarea id="direccionCliente" class="input-datos" placeholder="Dirección y teléfono"></textarea>
+                <textarea id="direccionCliente" class="input-datos" placeholder="Dirección exacta y teléfono"></textarea>
             </div>
         </div>
     </div>
 
     <div class="resumen-total">
-        TOTAL: $<span id="monto-total">0</span><br>
+        TOTAL A PAGAR: $<span id="monto-total">0</span><br>
         <a href="javascript:void(0);" onclick="enviarPedido()" class="btn-whatsapp">📲 PEDIR POR WHATSAPP</a>
     </div>
 
@@ -67,70 +73,113 @@
     let productos = [];
 
     async function obtenerDatos() {
-        const res = await fetch(URL_CSV);
-        const data = await res.text();
-        const filas = data.split('\n').slice(1);
-        productos = filas.map(f => {
-            const c = f.split(',');
-            return { cat: c[0], nombre: c[1], precio: parseFloat(c[2]), stock: parseInt(c[3]), foto: c[5], mayoreo: parseFloat(c[6]), min: parseInt(c[7]) };
-        }).filter(p => p.nombre);
-        document.getElementById('cargando').style.display = 'none';
-        mostrar();
+        try {
+            const respuesta = await fetch(URL_CSV);
+            const data = await respuesta.text();
+            const filas = data.split('\n').slice(1);
+
+            productos = filas.map(fila => {
+                const col = fila.split(',');
+                if(col.length < 3) return null;
+                return { 
+                    cat: col[0]?.trim(), 
+                    nombre: col[1]?.trim(), 
+                    precio: parseFloat(col[2]) || 0, 
+                    stock: parseInt(col[3]) || 0, 
+                    foto: col[5]?.trim(),
+                    precioMayoreo: parseFloat(col[6]) || null, // Columna G
+                    cantMinima: parseInt(col[7]) || null      // Columna H
+                };
+            }).filter(p => p && p.nombre !== "");
+
+            document.getElementById('cargando').style.display = 'none';
+            mostrar();
+        } catch (e) { console.error(e); }
     }
 
     function mostrar() {
+        const cont = document.getElementById('contenedor-productos');
         let html = ""; let cat = "";
         productos.forEach((p, i) => {
             if (p.cat !== cat) { cat = p.cat; html += `<div class="categoria-titulo">${p.cat}</div>`; }
+            const agotado = p.stock <= 0;
+            const imagen = p.foto ? p.foto : 'https://placehold.co/400x400/fff5f8/d81b60?text=Sin+Foto';
+            
+            // Texto de promoción si existe mayoreo
+            const promo = (p.precioMayoreo && p.cantMinima) ? 
+                `Lleva ${p.cantMinima}+ a $${p.precioMayoreo}` : "";
+
             html += `
-                <div class="producto-item">
-                    <img src="${p.foto || 'https://placehold.co/400x400'}" class="foto-producto">
+                <div class="producto-item ${agotado ? 'agotado' : ''}">
+                    ${agotado ? '<span class="badge-agotado">AGOTADA</span>' : ''}
+                    <img src="${imagen}" class="foto-producto" referrerpolicy="no-referrer">
                     <span class="nombre">${p.nombre}</span>
-                    <span class="precio" id="p-vis-${i}">$${p.precio}</span>
-                    <div class="promo-tag" id="promo-${i}">${(p.mayoreo && p.min) ? `Lleva ${p.min}+ a $${p.mayoreo}` : ""}</div>
-                    <input type="number" class="cant-input" id="cant-${i}" value="0" min="0" max="${p.stock}" oninput="calc()">
+                    <span class="precio" id="p-visual-${i}">$${p.precio}</span>
+                    <div class="promo-tag">${promo}</div>
+                    <input type="number" class="cant-input" id="cant-${i}" value="0" min="0" max="${p.stock}" ${agotado ? 'disabled' : ''} oninput="calc()">
                     <div class="aviso-stock" id="aviso-${i}"></div>
                 </div>`;
         });
-        document.getElementById('contenedor-productos').innerHTML = html;
+        cont.innerHTML = html;
     }
 
     function calc() {
-        let total = 0;
+        let totalGeneral = 0;
         productos.forEach((p, i) => { 
             let input = document.getElementById(`cant-${i}`);
-            let pVis = document.getElementById(`p-vis-${i}`);
-            let pTag = document.getElementById(`promo-${i}`);
+            let pVisual = document.getElementById(`p-visual-${i}`);
             let aviso = document.getElementById(`aviso-${i}`);
-            let val = parseInt(input.value) || 0;
+            let cantidad = parseInt(input.value) || 0;
+            let precioEfectivo = p.precio;
 
-            if (val > p.stock) { val = p.stock; input.value = p.stock; aviso.innerText = "¡Stock máximo alcanzado!"; }
-            else { aviso.innerText = ""; }
-
-            if (p.mayoreo && p.min && val >= p.min) {
-                total += val * p.mayoreo;
-                pVis.style.color = "var(--verde)"; pVis.innerText = `$${p.mayoreo} (¡Mayoreo!)`;
-                pTag.innerHTML = `<span style="color:var(--verde)">🎉 ¡Ahorro aplicado!</span>`;
+            // 1. Validar Stock
+            if (cantidad > p.stock) {
+                cantidad = p.stock;
+                input.value = p.stock;
+                aviso.innerText = `Solo hay ${p.stock} disp.`;
+                setTimeout(() => { aviso.innerText = ""; }, 2000);
             } else {
-                total += val * p.precio;
-                pVis.style.color = "var(--rosa-fuerte)"; pVis.innerText = `$${p.precio}`;
-                if(p.min) pTag.innerHTML = `Faltan <b>${p.min - val}</b> para descuento`;
+                aviso.innerText = "";
             }
+
+            // 2. Lógica de Mayoreo
+            if (p.precioMayoreo && p.cantMinima && cantidad >= p.cantMinima) {
+                precioEfectivo = p.precioMayoreo;
+                pVisual.style.color = "var(--verde)";
+                pVisual.innerText = `$${p.precioMayoreo} 🔥`;
+            } else {
+                pVisual.style.color = "var(--rosa-fuerte)";
+                pVisual.innerText = `$${p.precio}`;
+            }
+
+            totalGeneral += cantidad * precioEfectivo; 
         });
-        const dom = parseInt(document.getElementById("metodoEntrega").value);
-        document.getElementById("campos-domicilio").style.display = dom > 0 ? "block" : "none";
-        document.getElementById('monto-total').innerText = (total + dom).toLocaleString();
+
+        const costoDom = parseInt(document.getElementById("metodoEntrega").value);
+        document.getElementById("campos-domicilio").style.display = (costoDom > 0) ? "block" : "none";
+        document.getElementById('monto-total').innerText = (totalGeneral + costoDom).toLocaleString();
     }
 
     function enviarPedido() {
-        let txt = `*🌺 PEDIDO - MÁS BELLA 🌺*\n`;
+        const sel = document.getElementById("metodoEntrega");
+        const zona = sel.options[sel.selectedIndex].text;
+        let txt = `*🌺 PEDIDO - MÁS BELLA 🌺*\n📍 Entrega: ${zona}\n----------------------------\n`;
+        
+        let hayProductos = false;
         productos.forEach((p, i) => {
-            let c = parseInt(document.getElementById(`cant-${i}`).value) || 0;
-            if (c > 0) txt += `✅ ${c}x ${p.nombre}\n`;
+            const cant = parseInt(document.getElementById(`cant-${i}`).value) || 0;
+            if (cant > 0) {
+                let precioFinal = (p.precioMayoreo && cant >= p.cantMinima) ? p.precioMayoreo : p.precio;
+                txt += `✅ ${cant}x ${p.nombre} ($${(cant * precioFinal).toLocaleString()})\n`;
+                hayProductos = true;
+            }
         });
-        txt += `\n💰 *TOTAL: $${document.getElementById("monto-total").innerText}*`;
+
+        if (!hayProductos) return alert("Selecciona al menos un producto");
+        txt += `\n💰 *TOTAL FINAL: $${document.getElementById("monto-total").innerText}*`;
         window.location.href = `https://wa.me/5356247880?text=${encodeURIComponent(txt)}`;
     }
+
     window.onload = obtenerDatos;
 </script>
 </body>
