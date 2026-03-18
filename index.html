@@ -114,6 +114,10 @@
 
 <script>
     const URL_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSh6ypXBcxssEtPYB9l6ahApz-tHFPEoi5voACOA5ynv_gxA7Uo2nzXIPtlVTTTxOeN2vqjyygpGvOI/pub?output=csv';
+    
+    // --- PEGA TU URL DE GOOGLE APPS SCRIPT AQUÍ ---
+    const URL_SCRIPT_GOOGLE = 'TU_URL_AQUÍ'; 
+    
     let productos = [];
 
     async function obtenerDatos() {
@@ -148,9 +152,7 @@
             if (p.cat !== cat) { cat = p.cat; html += `<div class="categoria-titulo">${p.cat}</div>`; }
             const agotado = p.stock <= 0;
             const imagen = p.foto ? p.foto : 'https://placehold.co/400x400/fff5f8/d81b60?text=Sin+Foto';
-            
-            const promo = (p.precioMayoreo && p.cantMinima) ? 
-                `Lleva ${p.cantMinima}+ a $${p.precioMayoreo}` : "";
+            const promo = (p.precioMayoreo && p.cantMinima) ? `Lleva ${p.cantMinima}+ a $${p.precioMayoreo}` : "";
 
             html += `
                 <div class="producto-item ${agotado ? 'agotado' : ''}">
@@ -176,13 +178,10 @@
             let precioEfectivo = p.precio;
 
             if (cantidad > p.stock) {
-                cantidad = p.stock;
-                input.value = p.stock;
+                cantidad = p.stock; input.value = p.stock;
                 aviso.innerText = `Solo hay ${p.stock} disp.`;
                 setTimeout(() => { aviso.innerText = ""; }, 2000);
-            } else {
-                aviso.innerText = "";
-            }
+            } else { aviso.innerText = ""; }
 
             if (p.precioMayoreo && p.cantMinima && cantidad >= p.cantMinima) {
                 precioEfectivo = p.precioMayoreo;
@@ -192,7 +191,6 @@
                 pVisual.style.color = "var(--rosa-fuerte)";
                 pVisual.innerText = `$${p.precio}`;
             }
-
             totalGeneral += cantidad * precioEfectivo; 
         });
 
@@ -201,12 +199,13 @@
         document.getElementById('monto-total').innerText = (totalGeneral + costoDom).toLocaleString();
     }
 
-    function enviarPedido() {
+    async function enviarPedido() {
         const sel = document.getElementById("metodoEntrega");
         const zona = sel.options[sel.selectedIndex].text;
         const nombre = document.getElementById("nombreCliente").value;
         const direccion = document.getElementById("direccionCliente").value;
         
+        let productosVendidos = [];
         let txt = `*🌺 PEDIDO - MÁS BELLA 🌺*\n📍 Entrega: ${zona}\n`;
         if(nombre) txt += `👤 Cliente: ${nombre}\n`;
         if(direccion) txt += `🏠 Dir: ${direccion}\n`;
@@ -218,17 +217,29 @@
             if (cant > 0) {
                 let precioFinal = (p.precioMayoreo && cant >= p.cantMinima) ? p.precioMayoreo : p.precio;
                 txt += `✅ ${cant}x ${p.nombre} ($${(cant * precioFinal).toLocaleString()})\n`;
+                productosVendidos.push({ nombre: p.nombre, cantidad: cant });
                 hayProductos = true;
             }
         });
 
         if (!hayProductos) return alert("Selecciona al menos un producto");
         txt += `\n💰 *TOTAL FINAL: $${document.getElementById("monto-total").innerText}*`;
+
+        // ACTUALIZAR STOCK EN GOOGLE
+        try {
+            fetch(URL_SCRIPT_GOOGLE, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ items: productosVendidos })
+            });
+        } catch (e) { console.error("Error stock:", e); }
+
         window.location.href = `https://wa.me/5356247880?text=${encodeURIComponent(txt)}`;
     }
 
     window.onload = obtenerDatos;
 </script>
 </body>
-                        </html>
-                        
+    </html>
+    
