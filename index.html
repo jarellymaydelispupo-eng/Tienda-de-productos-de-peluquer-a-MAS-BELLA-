@@ -115,8 +115,8 @@
 <script>
     const URL_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSh6ypXBcxssEtPYB9l6ahApz-tHFPEoi5voACOA5ynv_gxA7Uo2nzXIPtlVTTTxOeN2vqjyygpGvOI/pub?output=csv';
     
-    // --- PEGA TU URL DE GOOGLE APPS SCRIPT AQUÍ ---
-    const URL_SCRIPT_GOOGLE = 'TU_URL_AQUÍ'; 
+    // URL de tu Google Apps Script actualizada
+    const URL_SCRIPT_GOOGLE = 'https://script.google.com/macros/s/AKfycbwJUCXUaeu54tjAELBDJAq706M7NqCTrNGYEJor1Ya-fUOncWXg_4JWtX5lycNxkaTKCw/exec'; 
     
     let productos = [];
 
@@ -225,7 +225,7 @@
         if (!hayProductos) return alert("Selecciona al menos un producto");
         txt += `\n💰 *TOTAL FINAL: $${document.getElementById("monto-total").innerText}*`;
 
-        // ACTUALIZAR STOCK EN GOOGLE
+        // ENVIAR A GOOGLE SHEETS PARA ACTUALIZAR STOCK
         try {
             fetch(URL_SCRIPT_GOOGLE, {
                 method: 'POST',
@@ -241,5 +241,5 @@
     window.onload = obtenerDatos;
 </script>
 </body>
-    </html>
-    
+                                                                    </html>
+                        
