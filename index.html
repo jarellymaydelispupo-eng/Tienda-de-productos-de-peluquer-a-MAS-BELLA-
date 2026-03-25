@@ -1,265 +1,449 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MÁS BELLA - Tienda Virtual</title>
-    <style>
-        :root { --oro: #d4af37; --rosa-fondo: #fff5f8; --rosa-fuerte: #d81b60; --oscuro: #2c3e50; --verde: #27ae60; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background-color: var(--rosa-fondo); color: #333; }
-        header { background: white; padding: 15px; text-align: center; border-bottom: 3px solid var(--oro); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .logo { font-size: 1.8rem; font-weight: bold; color: var(--rosa-fuerte); margin: 0; }
-        .sublogo { font-size: 0.8rem; color: #666; margin: 3px 0 0 0; }
-        
-        .lista-productos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; max-width: 600px; margin: auto; }
-        .categoria-titulo { grid-column: span 2; background: var(--oscuro); color: white; padding: 8px; margin-top: 15px; text-align: center; font-weight: bold; text-transform: uppercase; border-radius: 6px; font-size: 0.85rem; }
-        
-        .producto-item { background: white; display: flex; flex-direction: column; padding: 8px; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #eee; position: relative; text-align: center; overflow: hidden; }
-        .foto-producto { width: 100%; height: 140px; object-fit: cover; background-color: #f9f9f9; border-radius: 8px; margin-bottom: 8px; }
-        
-        .producto-item.agotado { opacity: 0.5; filter: grayscale(0.5); }
-        .badge-agotado { background: #ff4444; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; font-weight: bold; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAS BELLA</title>
 
-        .nombre { font-weight: bold; font-size: 0.85rem; height: 34px; overflow: hidden; margin-bottom: 4px; color: var(--oscuro); line-height: 1.2; }
-        .precio { font-weight: bold; color: var(--rosa-fuerte); font-size: 0.95rem; }
-        .promo-tag { font-size: 0.65rem; color: var(--verde); font-weight: bold; margin-bottom: 5px; min-height: 15px; }
-        
-        .cant-input { width: 100%; text-align: center; border: 1px solid #ccc; border-radius: 6px; padding: 8px; font-weight: bold; box-sizing: border-box; margin-top: 5px; }
-        .aviso-stock { color: #ff4444; font-size: 0.65rem; font-weight: bold; min-height: 15px; margin-top: 2px; }
+<style>
 
-        /* Estilos del Resumen Inferior */
-        .resumen-total { background: var(--oscuro); color: white; padding: 12px; position: fixed; bottom: 0; width: 100%; text-align: center; z-index: 100; box-sizing: border-box; box-shadow: 0 -2px 10px rgba(0,0,0,0.2); }
-        .desglose-lineas { font-size: 0.85rem; margin-bottom: 8px; line-height: 1.4; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 8px; display: none; }
-        .total-destacado { font-size: 1.1rem; font-weight: bold; display: block; margin-bottom: 5px; }
-        .btn-whatsapp { background: #25d366; color: white; text-decoration: none; padding: 10px 25px; border-radius: 50px; display: inline-block; font-weight: bold; transition: 0.3s; }
-        
-        .contenedor-entrega { max-width: 600px; margin: 0 auto 280px auto; padding: 0 10px; }
-        .seccion-entrega { background: white; padding: 15px; border-radius: 12px; border: 2px solid var(--oro); margin-top: 10px; }
-        .selector, .input-datos { width: 100%; padding: 12px; margin: 5px 0; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box; }
-    </style>
+/* ===========================
+   HEADER ESTILO YERROMENÚ
+   =========================== */
+.mb-header {
+  background: #ffffff;
+  padding: 12px 14px 8px;
+  border-bottom: 1px solid #f0f0f0;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.mb-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mb-store-name {
+  font-size: 20px;
+  margin: 0;
+  color: #222;
+  font-weight: 700;
+}
+
+.mb-store-status {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.mb-status-open {
+  color: #28a745;
+}
+
+.mb-status-closed {
+  color: #d9534f;
+}
+
+.mb-header-bottom {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+}
+
+.mb-chip {
+  border-radius: 999px;
+  border: 1px solid #e0e0e0;
+  padding: 6px 14px;
+  font-size: 13px;
+  background: #ffffff;
+  color: #444;
+  cursor: pointer;
+}
+
+.mb-chip-active {
+  background: #ffe0f0;
+  border-color: #ff7bbf;
+  color: #c2185b;
+}
+
+/* ===========================
+   PANEL DOMICILIO / RECOGIDA
+   =========================== */
+.mb-panel {
+  background: #ffffff;
+  padding: 10px 14px 6px;
+  border-bottom: 1px solid #f3f3f3;
+}
+
+.mb-panel-hidden {
+  display: none;
+}
+
+.mb-panel-title {
+  font-size: 15px;
+  margin: 4px 0 8px;
+  color: #333;
+  font-weight: 600;
+}
+
+.mb-panel-text {
+  font-size: 13px;
+  color: #555;
+}
+
+/* LISTA DE ZONAS */
+.mb-zones-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.mb-zones-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 13px;
+  border-bottom: 1px dashed #f0f0f0;
+}
+
+.mb-zones-list li span:first-child {
+  color: #444;
+}
+
+.mb-zones-list li span:last-child {
+  color: #c2185b;
+  font-weight: 600;
+}
+
+/* ===========================
+   CATEGORÍAS
+   =========================== */
+.mb-section-title {
+  font-size: 18px;
+  margin: 16px 14px 10px;
+  color: #333;
+  font-weight: 600;
+}
+
+.mb-categories {
+  padding-bottom: 10px;
+}
+
+.mb-categories-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 0 14px;
+}
+
+.mb-category-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 16px 10px;
+  text-align: center;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+  transition: transform 0.15s ease;
+  cursor: pointer;
+}
+
+.mb-category-card:hover {
+  transform: scale(1.05);
+}
+
+.mb-category-icon {
+  font-size: 26px;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.mb-category-name {
+  font-size: 14px;
+  color: #444;
+  font-weight: 500;
+}
+
+/* ===========================
+   TARJETAS DE PRODUCTO
+   =========================== */
+.product-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 14px;
+  margin: 14px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.10);
+  transition: transform 0.15s ease;
+}
+
+.product-card:hover {
+  transform: scale(1.02);
+}
+
+.product-card img {
+  width: 100%;
+  border-radius: 12px;
+}
+
+.product-card h3 {
+  font-size: 17px;
+  margin-top: 10px;
+  color: #333;
+}
+
+.product-card p {
+  font-size: 14px;
+  color: #666;
+}
+
+.product-card .price {
+  font-size: 19px;
+  font-weight: bold;
+  color: #ff7bbf;
+  margin-top: 8px;
+}
+
+/* BOTÓN WHATSAPP */
+.btn-whatsapp {
+  width: 100%;
+  background: #25D366;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 15px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.btn-whatsapp:hover {
+  background: #1ebe5d;
+}
+
+/* ===========================
+   MENÚ INFERIOR
+   =========================== */
+.bottom-menu {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 65px;
+  background: #ffffff;
+  border-top: 1px solid #e5e5e5;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 9999;
+}
+
+.menu-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 13px;
+  color: #444;
+}
+
+.menu-item.active {
+  color: #ff7bbf;
+  font-weight: bold;
+}
+
+</style>
 </head>
+
 <body>
 
-    <header>
-        <p class="logo">🌺 MÁS BELLA 🌺</p>
-        <p class="sublogo">ESTÉTICA PROFESIONAL | CAMAGÜEY</p>
-    </header>
-
-    <div class="lista-productos" id="contenedor-productos">
-        <div id="cargando" style="grid-column: span 2; text-align:center; padding:40px; color: var(--rosa-fuerte);">🌸 Cargando inventario...</div>
+<!-- ===========================
+     HEADER COMPLETO
+     =========================== -->
+<header class="mb-header">
+  <div class="mb-header-top">
+    <div class="mb-store-info">
+      <h1 class="mb-store-name">MAS BELLA</h1>
+      <span id="estadoTienda" class="mb-store-status">Cargando horario...</span>
     </div>
+  </div>
 
-    <div class="contenedor-entrega">
-        <div class="seccion-entrega">
-            <h3 style="margin-top:0; font-size: 1.1rem; color: var(--rosa-fuerte); text-align: center;">🛵 Servicio de Entrega</h3>
-            <select id="metodoEntrega" class="selector" onchange="calc()">
-                <option value="0">🏪 Recogida en Tienda ($0)</option>
-                <optgroup label="Zonas de Domicilio">
-                    <option value="300">📍 Centro del pueblo ($300)</option>
-                    <option value="350">📍 Agramonte ($350)</option>
-                    <option value="400">📍 Bella Vista ($400)</option>
-                    <option value="400">📍 Buenos Aires ($400)</option>
-                    <option value="400">📍 Camino de la Matanza ($400)</option>
-                    <option value="350">📍 Casino Campestre ($350)</option>
-                    <option value="400">📍 El Jardín ($400)</option>
-                    <option value="450">📍 El Micro ($450)</option>
-                    <option value="350">📍 Floiran Quiroz ($350)</option>
-                    <option value="400">📍 Florat ($400)</option>
-                    <option value="400">📍 Garrido ($400)</option>
-                    <option value="450">📍 Imán ($450)</option>
-                    <option value="400">📍 Inra ($400)</option>
-                    <option value="500">📍 Isabel Hortensia ($500)</option>
-                    <option value="500">📍 Jayama ($500)</option>
-                    <option value="400">📍 Juanito ($400)</option>
-                    <option value="450">📍 La Belén ($450)</option>
-                    <option value="350">📍 La Caridad ($350)</option>
-                    <option value="450">📍 La Esperanza ($450)</option>
-                    <option value="450">📍 La Guernina ($450)</option>
-                    <option value="400">📍 La Mosca ($400)</option>
-                    <option value="400">📍 La Vigía ($400)</option>
-                    <option value="450">📍 La Yaba ($450)</option>
-                    <option value="450">📍 La Zambrana ($450)</option>
-                    <option value="350">📍 Las Mercedes ($350)</option>
-                    <option value="500">📍 Lenin ($500)</option>
-                    <option value="450">📍 Los Coquitos ($450)</option>
-                    <option value="400">📍 Marquesado ($400)</option>
-                    <option value="400">📍 Mascota ($400)</option>
-                    <option value="400">📍 Modelo ($400)</option>
-                    <option value="400">📍 Monte Carlos ($400)</option>
-                    <option value="400">📍 Montejo ($400)</option>
-                    <option value="450">📍 Nadales ($450)</option>
-                    <option value="450">📍 Nitrógeno ($450)</option>
-                    <option value="450">📍 Nueva Esperanza ($450)</option>
-                    <option value="400">📍 Palomino ($400)</option>
-                    <option value="350">📍 Porvenir ($350)</option>
-                    <option value="350">📍 Previsora ($350)</option>
-                    <option value="400">📍 Puerto Príncipe ($400)</option>
-                    <option value="350">📍 Sanchez Soto ($350)</option>
-                    <option value="500">📍 Saratoga ($500)</option>
-                    <option value="350">📍 Simoni ($350)</option>
-                    <option value="400">📍 Versalles ($400)</option>
-                    <option value="400">📍 Villa Mariana ($400)</option>
-                    <option value="450">📍 Vista Bella ($450)</option>
-                    <option value="350">📍 Vista Hermosa ($350)</option>
-                </optgroup>
-            </select>
-            <div id="campos-domicilio" style="display:none;">
-                <input type="text" id="nombreCliente" class="input-datos" placeholder="Tu Nombre">
-                <textarea id="direccionCliente" class="input-datos" placeholder="Dirección exacta y teléfono"></textarea>
-            </div>
-        </div>
-    </div>
+  <div class="mb-header-bottom">
+    <button class="mb-chip mb-chip-active" id="btnDomicilio">Domicilio</button>
+    <button class="mb-chip" id="btnRecogida">Recogida</button>
+  </div>
 
-    <div class="resumen-total">
-        <div id="desglose" class="desglose-lineas">
-            Importe de mercancía: $<span id="monto-mercancia">0</span><br>
-            Importe de domicilio: $<span id="monto-domicilio">0</span>
-        </div>
-        <span class="total-destacado">TOTAL A PAGAR: $<span id="monto-total">0</span></span>
-        <a href="javascript:void(0);" onclick="enviarPedido()" class="btn-whatsapp">📲 PEDIR POR WHATSAPP</a>
-    </div>
+  <div class="mb-panel" id="panelDomicilio">
+    <h2 class="mb-panel-title">Zonas de domicilio</h2>
+    <ul class="mb-zones-list">
 
+      <li><span>Centro del pueblo</span><span>$300</span></li>
+      <li><span>Lenin</span><span>$500</span></li>
+      <li><span>Modelo</span><span>$400</span></li>
+      <li><span>La Caridad</span><span>$350</span></li>
+      <li><span>La Vigía</span><span>$400</span></li>
+      <li><span>Florat</span><span>$400</span></li>
+      <li><span>Vista Hermosa</span><span>$350</span></li>
+      <li><span>Versalles</span><span>$400</span></li>
+      <li><span>Agramonte</span><span>$350</span></li>
+      <li><span>Jayama</span><span>$500</span></li>
+      <li><span>Monte Carlos</span><span>$400</span></li>
+      <li><span>La Mosca</span><span>$400</span></li>
+      <li><span>Marquesado</span><span>$400</span></li>
+      <li><span>La Esperanza</span><span>$450</span></li>
+      <li><span>Nueva Esperanza</span><span>$450</span></li>
+      <li><span>Garrido</span><span>$400</span></li>
+      <li><span>El Micro</span><span>$450</span></li>
+      <li><span>Palomino</span><span>$350–400</span></li>
+      <li><span>Juanito</span><span>$400</span></li>
+      <li><span>Previsora</span><span>$350</span></li>
+      <li><span>La Guernina</span><span>$450</span></li>
+      <li><span>La Belén</span><span>$450</span></li>
+      <li><span>Casino Campestre</span><span>$350</span></li>
+      <li><span>Las Mercedes</span><span>$350</span></li>
+      <li><span>Simoni</span><span>$350</span></li>
+      <li><span>Montejo</span><span>$400</span></li>
+      <li><span>La Yaba</span><span>$450</span></li>
+      <li><span>Nadales</span><span>$450</span></li>
+      <li><span>Bella Vista</span><span>$400</span></li>
+      <li><span>Vista Bella</span><span>$450</span></li>
+      <li><span>Inra</span><span>$400</span></li>
+      <li><span>Imán</span><span>$450</span></li>
+      <li><span>Mascota</span><span>$400</span></li>
+      <li><span>Puerto Príncipe</span><span>$400</span></li>
+      <li><span>Isabel Hortensia</span><span>$500</span></li>
+      <li><span>Villa Mariana</span><span>$400</span></li>
+      <li><span>Los Coquitos</span><span>$450</span></li>
+      <li><span>La Zambrana</span><span>$450</span></li>
+      <li><span>Saratoga</span><span>$500</span></li>
+      <li><span>El Jardín</span><span>$400</span></li>
+      <li><span>Floiran Quiroz</span><span>$350</span></li>
+      <li><span>Porvenir</span><span>$350</span></li>
+      <li><span>Nitrógeno</span><span>$450</span></li>
+      <li><span>Buenos Aires</span><span>$400</span></li>
+      <li><span>Camino de la Matanza</span><span>$400</span></li>
+      <li><span>Sanchez Soto</span><span>$350</span></li>
+
+    </ul>
+  </div>
+
+  <div class="mb-panel mb-panel-hidden" id="panelRecogida">
+    <h2 class="mb-panel-title">Recogida en el local</h2>
+    <p class="mb-panel-text">
+      Puedes recoger tu pedido en MAS BELLA en el horario acordado.
+    </p>
+  </div>
+</header>
+
+<!-- ===========================
+     CATEGORÍAS
+     =========================== -->
+<section class="mb-categories">
+  <h2 class="mb-section-title">Categorías</h2>
+
+  <div class="mb-categories-grid">
+
+    <div class="mb-category-card"><span class="mb-category-icon">💇‍♀️</span><span class="mb-category-name">Tintes</span></div>
+    <div class="mb-category-card"><span class="mb-category-icon">🧴</span><span class="mb-category-name">Tratamientos</span></div>
+    <div class="mb-category-card"><span class="mb-category-icon">🪮</span><span class="mb-category-name">Accesorios</span></div>
+    <div class="mb-category-card"><span class="mb-category-icon">💅</span><span class="mb-category-name">Uñas</span></div>
+    <div class="mb-category-card"><span class="mb-category-icon">🧼</span><span class="mb-category-name">Cremas</span></div>
+    <div class="mb-category-card"><span class="mb-category-icon">🧖‍♀️</span><span class="mb-category-name">Cuidado personal</span></div>
+
+  </div>
+</section>
+
+<!-- ===========================
+     AQUÍ VAN TUS PRODUCTOS
+     (tu script los genera solo)
+     =========================== -->
+
+<!-- ===========================
+     MENÚ INFERIOR
+     =========================== -->
+<div class="bottom-menu">
+    <a class="menu-item active"><span>Inicio</span></a>
+    <a class="menu-item"><span>Productos</span></a>
+    <a class="menu-item"><span>Categorías</span></a>
+    <a class="menu-item"><span>Catálogo</span></a>
+    <a class="menu-item"><span>Ajustes</span></a>
+</div>
+
+<!-- ===========================
+     SCRIPT COMPLETO
+     =========================== -->
 <script>
-    const URL_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSh6ypXBcxssEtPYB9l6ahApz-tHFPEoi5voACOA5ynv_gxA7Uo2nzXIPtlVTTTxOeN2vqjyygpGvOI/pub?output=csv';
-    const URL_SCRIPT_GOOGLE = 'TU_URL_AQUÍ'; 
-    let productos = [];
 
-    async function obtenerDatos() {
-        try {
-            const respuesta = await fetch(URL_CSV);
-            const data = await respuesta.text();
-            const filas = data.split('\n').slice(1);
-            productos = filas.map(fila => {
-                const col = fila.split(',');
-                if(col.length < 3) return null;
-                return { 
-                    cat: col[0]?.trim(), 
-                    nombre: col[1]?.trim(), 
-                    precio: parseFloat(col[2]) || 0, 
-                    stock: parseInt(col[3]) || 0, 
-                    foto: col[5]?.trim(),
-                    precioMayoreo: parseFloat(col[6]) || null, 
-                    cantMinima: parseInt(col[7]) || null      
-                };
-            }).filter(p => p && p.nombre !== "");
-            document.getElementById('cargando').style.display = 'none';
-            mostrar();
-        } catch (e) { console.error(e); }
+  /* ===========================
+     CAMBIO ENTRE DOMICILIO Y RECOGIDA
+     =========================== */
+  const btnDomicilio = document.getElementById('btnDomicilio');
+  const btnRecogida = document.getElementById('btnRecogida');
+  const panelDomicilio = document.getElementById('panelDomicilio');
+  const panelRecogida = document.getElementById('panelRecogida');
+
+  btnDomicilio.addEventListener('click', () => {
+    btnDomicilio.classList.add('mb-chip-active');
+    btnRecogida.classList.remove('mb-chip-active');
+    panelDomicilio.classList.remove('mb-panel-hidden');
+    panelRecogida.classList.add('mb-panel-hidden');
+  });
+
+  btnRecogida.addEventListener('click', () => {
+    btnRecogida.classList.add('mb-chip-active');
+    btnDomicilio.classList.remove('mb-chip-active');
+    panelRecogida.classList.remove('mb-panel-hidden');
+    panelDomicilio.classList.add('mb-panel-hidden');
+  });
+
+  /* ===========================
+     BOTÓN WHATSAPP
+     =========================== */
+  function enviarPedidoWhatsApp(nombre, precio) {
+    const numero = "56746691";
+    const mensaje = `Hola, quiero hacer un pedido:\n\nProducto: ${nombre}\nPrecio: ${precio}\n\n¿Está disponible?`;
+    const url = `https://wa.me/53${numero}?text=${encodeURIComponent(mensaje)}`;
+    window.open(url, "_blank");
+  }
+
+  /* ===========================
+     HORARIO AUTOMÁTICO
+     =========================== */
+
+  const horario = {
+    0: { inicio: 13, fin: 20 }, // Domingo
+    1: { inicio: 8, fin: 20 },  // Lunes
+    2: { inicio: 8, fin: 20 },  // Martes
+    3: { inicio: 7, fin: 15 },  // Miércoles
+    4: { inicio: 8, fin: 20 },  // Jueves
+    5: { inicio: 8, fin: 20 },  // Viernes
+    6: { inicio: 7, fin: 13 }   // Sábado
+  };
+
+  function actualizarEstado() {
+    const ahora = new Date();
+    const dia = ahora.getDay();
+    const hora = ahora.getHours();
+
+    const estado = document.getElementById("estadoTienda");
+    const hoy = horario[dia];
+
+    if (hora >= hoy.inicio && hora < hoy.fin) {
+      estado.textContent = "Abierto ahora";
+      estado.classList.remove("mb-status-closed");
+      estado.classList.add("mb-status-open");
+    } else {
+      estado.textContent = "Cerrado ahora";
+      estado.classList.remove("mb-status-open");
+      estado.classList.add("mb-status-closed");
     }
+  }
 
-    function mostrar() {
-        const cont = document.getElementById('contenedor-productos');
-        let html = ""; let cat = "";
-        productos.forEach((p, i) => {
-            if (p.cat !== cat) { cat = p.cat; html += `<div class="categoria-titulo">${p.cat}</div>`; }
-            const agotado = p.stock <= 0;
-            const imagen = p.foto ? p.foto : 'https://placehold.co/400x400/fff5f8/d81b60?text=Sin+Foto';
-            const promo = (p.precioMayoreo && p.cantMinima) ? `Lleva ${p.cantMinima}+ a $${p.precioMayoreo}` : "";
-            html += `
-                <div class="producto-item ${agotado ? 'agotado' : ''}">
-                    ${agotado ? '<span class="badge-agotado">AGOTADA</span>' : ''}
-                    <img src="${imagen}" class="foto-producto" referrerpolicy="no-referrer">
-                    <span class="nombre">${p.nombre}</span>
-                    <span class="precio" id="p-visual-${i}">$${p.precio}</span>
-                    <div class="promo-tag">${promo}</div>
-                    <input type="number" class="cant-input" id="cant-${i}" value="0" min="0" max="${p.stock}" ${agotado ? 'disabled' : ''} oninput="calc()">
-                    <div class="aviso-stock" id="aviso-${i}"></div>
-                </div>`;
-        });
-        cont.innerHTML = html;
-    }
+  actualizarEstado();
+  setInterval(actualizarEstado, 60000);
 
-    function calc() {
-        let subtotalMercancia = 0;
-        productos.forEach((p, i) => { 
-            let input = document.getElementById(`cant-${i}`);
-            let pVisual = document.getElementById(`p-visual-${i}`);
-            let aviso = document.getElementById(`aviso-${i}`);
-            let cantidad = parseInt(input.value) || 0;
-            let precioEfectivo = p.precio;
-
-            if (cantidad > p.stock) {
-                cantidad = p.stock; input.value = p.stock;
-                aviso.innerText = `Solo hay ${p.stock} disp.`;
-                setTimeout(() => { aviso.innerText = ""; }, 2000);
-            } else { aviso.innerText = ""; }
-
-            if (p.precioMayoreo && p.cantMinima && cantidad >= p.cantMinima) {
-                precioEfectivo = p.precioMayoreo;
-                pVisual.style.color = "var(--verde)";
-                pVisual.innerText = `$${p.precioMayoreo} 🔥`;
-            } else {
-                pVisual.style.color = "var(--rosa-fuerte)";
-                pVisual.innerText = `$${p.precio}`;
-            }
-            subtotalMercancia += cantidad * precioEfectivo; 
-        });
-
-        const costoDomicilio = parseInt(document.getElementById("metodoEntrega").value);
-        
-        // Mostrar desglose solo si hay algo seleccionado
-        const divDesglose = document.getElementById("desglose");
-        if(subtotalMercancia > 0 || costoDomicilio > 0) {
-            divDesglose.style.display = "block";
-        } else {
-            divDesglose.style.display = "none";
-        }
-
-        document.getElementById("monto-mercancia").innerText = subtotalMercancia.toLocaleString();
-        document.getElementById("monto-domicilio").innerText = costoDomicilio.toLocaleString();
-        document.getElementById("monto-total").innerText = (subtotalMercancia + costoDomicilio).toLocaleString();
-        
-        document.getElementById("campos-domicilio").style.display = (costoDomicilio > 0) ? "block" : "none";
-    }
-
-    async function enviarPedido() {
-        const sel = document.getElementById("metodoEntrega");
-        const zona = sel.options[sel.selectedIndex].text;
-        const nombre = document.getElementById("nombreCliente").value;
-        const direccion = document.getElementById("direccionCliente").value;
-        const mMercancia = document.getElementById("monto-mercancia").innerText;
-        const mDomicilio = document.getElementById("monto-domicilio").innerText;
-        const mTotal = document.getElementById("monto-total").innerText;
-        
-        let productosVendidos = [];
-        let txt = `*🌺 PEDIDO - MÁS BELLA 🌺*\n`;
-        if(nombre) txt += `👤 Cliente: ${nombre}\n`;
-        if(direccion) txt += `🏠 Dir: ${direccion}\n`;
-        txt += `📍 Entrega: ${zona}\n`;
-        txt += `----------------------------\n`;
-        
-        let hayProductos = false;
-        productos.forEach((p, i) => {
-            const cant = parseInt(document.getElementById(`cant-${i}`).value) || 0;
-            if (cant > 0) {
-                let precioFinal = (p.precioMayoreo && cant >= p.cantMinima) ? p.precioMayoreo : p.precio;
-                txt += `✅ ${cant}x ${p.nombre} ($${(cant * precioFinal).toLocaleString()})\n`;
-                productosVendidos.push({ nombre: p.nombre, cantidad: cant });
-                hayProductos = true;
-            }
-        });
-
-        if (!hayProductos) return alert("Selecciona al menos un producto");
-        
-        txt += `----------------------------\n`;
-        txt += `📦 Mercancía: $${mMercancia}\n`;
-        txt += `🛵 Domicilio: $${mDomicilio}\n`;
-        txt += `💰 *TOTAL FINAL: $${mTotal}*`;
-
-        try {
-            fetch(URL_SCRIPT_GOOGLE, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ items: productosVendidos })
-            });
-        } catch (e) { console.error("Error stock:", e); }
-
-        window.location.href = `https://wa.me/5356247880?text=${encodeURIComponent(txt)}`;
-    }
-
-    window.onload = obtenerDatos;
 </script>
+
 </body>
-                        </html>
-                                                           
+          </html>
