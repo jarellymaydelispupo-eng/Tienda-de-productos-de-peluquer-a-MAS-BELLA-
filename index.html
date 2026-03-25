@@ -16,6 +16,24 @@
         .categoria-titulo { grid-column: span 2; background: var(--oscuro); color: white; padding: 8px; margin-top: 10px; text-align: center; font-weight: bold; text-transform: uppercase; border-radius: 6px; font-size: 0.85rem; }
         
         .producto-item { background: white; display: flex; flex-direction: column; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #eee; position: relative; overflow: hidden; }
+        
+        /* ESTILO PARA PRODUCTO AGOTADO */
+        .producto-item.agotado { opacity: 0.7; }
+        .badge-agotado { 
+            background: #ff4444; 
+            color: white; 
+            padding: 8px 15px; 
+            border-radius: 5px; 
+            font-size: 0.9rem; 
+            position: absolute; 
+            top: 40%; 
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            z-index: 10; 
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
         .foto-producto { width: 100%; height: 200px; object-fit: cover; background-color: #f9f9f9; }
         
         .producto-info { padding: 10px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; text-align: center; }
@@ -28,6 +46,7 @@
         .precio { font-weight: bold; color: var(--rosa-fuerte); font-size: 1.2rem; }
         .badge-poca-dispo { color: var(--naranja); font-size: 0.7rem; font-weight: bold; margin-bottom: 5px; display: block; }
         .cant-input { width: 100%; text-align: center; border: 1px solid #ccc; border-radius: 8px; padding: 10px; font-weight: bold; box-sizing: border-box; font-size: 1rem; }
+        .cant-input:disabled { background: #eee; cursor: not-allowed; }
 
         .contenedor-entrega { max-width: 600px; margin: 0 auto 180px auto; padding: 0 10px; }
         .seccion-entrega { background: white; padding: 15px; border-radius: 12px; border: 2px solid var(--oro); }
@@ -150,18 +169,23 @@
         let html = ""; let cat = "";
         productos.forEach((p, i) => {
             if (p.cat !== cat) { cat = p.cat; html += `<div class="categoria-titulo">${p.cat}</div>`; }
+            
+            // Lógica para AGOTADO y POCA DISPO
             const agotado = p.stock <= 0;
             const pocaDispo = !agotado && p.stock <= 10;
             const imagen = p.foto ? p.foto : 'https://placehold.co/600x800/fff5f8/d81b60?text=Sin+Foto';
             
             html += `
-                <div class="producto-item">
+                <div class="producto-item ${agotado ? 'agotado' : ''}">
+                    ${agotado ? '<div class="badge-agotado">AGOTADO</div>' : ''}
                     <img src="${imagen}" class="foto-producto" loading="lazy">
                     <div class="producto-info">
                         <span class="nombre">${p.nombre}</span>
                         ${p.descripcion ? `<button class="btn-desc" onclick="this.nextElementSibling.classList.toggle('abierto')">Ver detalles ▼</button><div class="panel-desc">${p.descripcion}</div>` : ''}
                         <span class="precio">$${p.precio.toLocaleString()}</span>
-                        <div style="min-height:18px;">${pocaDispo ? '<span class="badge-poca-dispo">⚠️ Poca disponibilidad</span>' : ''}</div>
+                        <div style="min-height:18px;">
+                            ${pocaDispo ? '<span class="badge-poca-dispo">⚠️ Poca disponibilidad</span>' : ''}
+                        </div>
                         <input type="number" class="cant-input" id="cant-${i}" value="0" min="0" max="${p.stock}" ${agotado ? 'disabled' : ''} oninput="calc()">
                     </div>
                 </div>`;
@@ -172,7 +196,9 @@
     function calc() {
         let subtotal = 0;
         productos.forEach((p, i) => { 
-            let cant = parseInt(document.getElementById(`cant-${i}`).value) || 0;
+            let cantInput = document.getElementById(`cant-${i}`);
+            let cant = parseInt(cantInput.value) || 0;
+            if (cant > p.stock) { cant = p.stock; cantInput.value = p.stock; }
             subtotal += cant * p.precio; 
         });
         const dom = parseInt(document.getElementById("metodoEntrega").value);
@@ -184,7 +210,8 @@
         let txt = `*🌺 PEDIDO - MÁS BELLA 🌺*\n\n`;
         let hay = false;
         productos.forEach((p, i) => {
-            const cant = parseInt(document.getElementById(`cant-${i}`).value) || 0;
+            const cantInput = document.getElementById(`cant-${i}`);
+            const cant = parseInt(cantInput.value) || 0;
             if (cant > 0) { txt += `✅ ${cant}x ${p.nombre}\n`; hay = true; }
         });
         if (!hay) return alert("Por favor, selecciona al menos un producto.");
@@ -202,5 +229,5 @@
     window.onload = obtenerDatos;
 </script>
 </body>
-                                                              </html>
-                                                                
+    </html>
+    
