@@ -5,36 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MÁS BELLA - Tienda Virtual</title>
     <style>
-        :root { --oro: #d4af37; --rosa-fondo: #fff5f8; --rosa-fuerte: #d81b60; --oscuro: #2c3e50; --verde: #27ae60; --rosa-detalles: #ffebee; --naranja: #e67e22; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background-color: var(--rosa-fondo); color: #333; overflow-x: hidden; }
-        
-        header { background: white; padding: 15px; text-align: center; border-bottom: 3px solid var(--oro); box-shadow: 0 2px 8px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        :root { --oro: #d4af37; --rosa-fondo: #fff5f8; --rosa-fuerte: #d81b60; --oscuro: #2c3e50; --verde: #27ae60; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background-color: var(--rosa-fondo); color: #333; }
+        header { background: white; padding: 15px; text-align: center; border-bottom: 3px solid var(--oro); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
         .logo { font-size: 1.8rem; font-weight: bold; color: var(--rosa-fuerte); margin: 0; }
         .sublogo { font-size: 0.8rem; color: #666; margin: 3px 0 0 0; }
+        
+        .lista-productos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; max-width: 600px; margin: auto; }
+        .categoria-titulo { grid-column: span 2; background: var(--oscuro); color: white; padding: 8px; margin-top: 15px; text-align: center; font-weight: bold; text-transform: uppercase; border-radius: 6px; font-size: 0.85rem; }
+        
+        .producto-item { background: white; display: flex; flex-direction: column; padding: 8px; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #eee; position: relative; text-align: center; overflow: hidden; }
+        .foto-producto { width: 100%; height: 140px; object-fit: cover; background-color: #f9f9f9; border-radius: 8px; margin-bottom: 8px; }
+        
+        .producto-item.agotado { opacity: 0.5; filter: grayscale(0.5); }
+        .badge-agotado { background: #ff4444; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; font-weight: bold; }
 
-        .lista-productos { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 6px; max-width: 800px; margin: auto; padding-bottom: 300px; }
-        .categoria-titulo { grid-column: span 2; background: var(--oscuro); color: white; padding: 8px; margin-top: 10px; text-align: center; font-weight: bold; text-transform: uppercase; border-radius: 6px; font-size: 0.85rem; }
+        .nombre { font-weight: bold; font-size: 0.85rem; height: 34px; overflow: hidden; margin-bottom: 4px; color: var(--oscuro); line-height: 1.2; }
+        .precio { font-weight: bold; color: var(--rosa-fuerte); font-size: 0.95rem; }
+        .promo-tag { font-size: 0.65rem; color: var(--verde); font-weight: bold; margin-bottom: 5px; min-height: 15px; }
         
-        .producto-item { background: white; display: flex; flex-direction: column; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #eee; position: relative; overflow: hidden; }
-        .foto-producto { width: 100%; height: 250px; object-fit: cover; background-color: #f9f9f9; }
-        
-        .producto-info { padding: 10px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; text-align: center; }
-        .nombre { font-weight: bold; font-size: 1.1rem; margin-bottom: 6px; color: var(--oscuro); line-height: 1.2; min-height: 38px; display: flex; align-items: center; justify-content: center; }
-        
-        .precio { font-weight: bold; color: var(--rosa-fuerte); font-size: 1.5rem; margin-top: auto; margin-bottom: 4px; }
-        .badge-poca-dispo { color: var(--naranja); font-size: 0.7rem; font-weight: bold; margin-bottom: 5px; display: block; }
-        .cant-input { width: 100%; text-align: center; border: 1px solid #ccc; border-radius: 8px; padding: 10px; font-weight: bold; box-sizing: border-box; margin-top: 5px; font-size: 1rem; }
+        .cant-input { width: 100%; text-align: center; border: 1px solid #ccc; border-radius: 6px; padding: 8px; font-weight: bold; box-sizing: border-box; margin-top: 5px; }
+        .aviso-stock { color: #ff4444; font-size: 0.65rem; font-weight: bold; min-height: 15px; margin-top: 2px; }
 
-        .resumen-total { background: var(--oscuro); color: white; padding: 15px; position: fixed; bottom: 0; width: 100%; text-align: center; z-index: 1000; box-sizing: border-box; border-top: 2px solid var(--oro); }
-        .total-destacado { font-size: 1.2rem; font-weight: bold; display: block; margin-bottom: 10px; }
-        .btn-whatsapp { background: #25d366; color: white; text-decoration: none; padding: 12px 30px; border-radius: 50px; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1rem; }
+        /* Estilos del Resumen Inferior */
+        .resumen-total { background: var(--oscuro); color: white; padding: 12px; position: fixed; bottom: 0; width: 100%; text-align: center; z-index: 100; box-sizing: border-box; box-shadow: 0 -2px 10px rgba(0,0,0,0.2); }
+        .desglose-lineas { font-size: 0.85rem; margin-bottom: 8px; line-height: 1.4; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 8px; display: none; }
+        .total-destacado { font-size: 1.1rem; font-weight: bold; display: block; margin-bottom: 5px; }
+        .btn-whatsapp { background: #25d366; color: white; text-decoration: none; padding: 10px 25px; border-radius: 50px; display: inline-block; font-weight: bold; transition: 0.3s; }
         
-        .contenedor-entrega { max-width: 600px; margin: 0 auto 20px auto; padding: 0 10px; }
+        .contenedor-entrega { max-width: 600px; margin: 0 auto 280px auto; padding: 0 10px; }
         .seccion-entrega { background: white; padding: 15px; border-radius: 12px; border: 2px solid var(--oro); margin-top: 10px; }
         .selector, .input-datos { width: 100%; padding: 12px; margin: 5px 0; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box; }
-        .btn-desplegar-desc { background: none; border: none; color: #888; font-size: 0.75rem; cursor: pointer; padding: 5px 0; margin-bottom: 8px; }
-        .contenedor-descripcion { max-height: 0; overflow: hidden; transition: 0.3s; background-color: var(--rosa-detalles); border-radius: 8px; }
-        .contenedor-descripcion.abierto { max-height: 150px; padding: 10px; }
     </style>
 </head>
 <body>
@@ -50,22 +51,22 @@
 
     <div class="contenedor-entrega">
         <div class="seccion-entrega">
-            <h3 style="text-align:center; color: var(--rosa-fuerte); margin-top:0">🛵 Servicio de Entrega</h3>
+            <h3 style="margin-top:0; font-size: 1.1rem; color: var(--rosa-fuerte); text-align: center;">🛵 Servicio de Entrega</h3>
             <select id="metodoEntrega" class="selector" onchange="calc()">
                 <option value="0">🏪 Recogida en Tienda ($0)</option>
                 <optgroup label="Zonas de Domicilio">
+                    <option value="300">📍 Centro del pueblo ($300)</option>
                     <option value="350">📍 Agramonte ($350)</option>
                     <option value="400">📍 Bella Vista ($400)</option>
                     <option value="400">📍 Buenos Aires ($400)</option>
                     <option value="400">📍 Camino de la Matanza ($400)</option>
                     <option value="350">📍 Casino Campestre ($350)</option>
-                    <option value="300">📍 Centro del pueblo ($300)</option>
-                    <option value="450">📍 El Imán ($450)</option>
                     <option value="400">📍 El Jardín ($400)</option>
                     <option value="450">📍 El Micro ($450)</option>
-                    <option value="400">📍 Florat ($400)</option>
                     <option value="350">📍 Floiran Quiroz ($350)</option>
+                    <option value="400">📍 Florat ($400)</option>
                     <option value="400">📍 Garrido ($400)</option>
+                    <option value="450">📍 Imán ($450)</option>
                     <option value="400">📍 Inra ($400)</option>
                     <option value="500">📍 Isabel Hortensia ($500)</option>
                     <option value="500">📍 Jayama ($500)</option>
@@ -103,22 +104,24 @@
                 </optgroup>
             </select>
             <div id="campos-domicilio" style="display:none;">
-                <input type="text" id="nombreCliente" class="input-datos" placeholder="👤 Tu Nombre">
-                <textarea id="direccionCliente" class="input-datos" placeholder="🏠 Dirección exacta y teléfono" rows="2"></textarea>
+                <input type="text" id="nombreCliente" class="input-datos" placeholder="Tu Nombre">
+                <textarea id="direccionCliente" class="input-datos" placeholder="Dirección exacta y teléfono"></textarea>
             </div>
         </div>
     </div>
 
     <div class="resumen-total">
-        <div id="desglose" style="display:none; font-size:0.8rem; margin-bottom:8px">
-            Mercancía: $<span id="monto-mercancia">0</span> | Domicilio: $<span id="monto-domicilio">0</span>
+        <div id="desglose" class="desglose-lineas">
+            Importe de mercancía: $<span id="monto-mercancia">0</span><br>
+            Importe de domicilio: $<span id="monto-domicilio">0</span>
         </div>
-        <span class="total-destacado">TOTAL: $<span id="monto-total">0</span></span>
-        <a href="javascript:void(0);" onclick="enviarPedido()" class="btn-whatsapp">PEDIR POR WHATSAPP</a>
+        <span class="total-destacado">TOTAL A PAGAR: $<span id="monto-total">0</span></span>
+        <a href="javascript:void(0);" onclick="enviarPedido()" class="btn-whatsapp">📲 PEDIR POR WHATSAPP</a>
     </div>
 
 <script>
     const URL_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSh6ypXBcxssEtPYB9l6ahApz-tHFPEoi5voACOA5ynv_gxA7Uo2nzXIPtlVTTTxOeN2vqjyygpGvOI/pub?output=csv';
+    const URL_SCRIPT_GOOGLE = 'TU_URL_AQUÍ'; 
     let productos = [];
 
     async function obtenerDatos() {
@@ -128,21 +131,20 @@
             const filas = data.split('\n').slice(1);
             productos = filas.map(fila => {
                 const col = fila.split(',');
-                if(col.length < 8) return null; 
+                if(col.length < 3) return null;
                 return { 
                     cat: col[0]?.trim(), 
                     nombre: col[1]?.trim(), 
                     precio: parseFloat(col[2]) || 0, 
                     stock: parseInt(col[3]) || 0, 
-                    foto: col[5]?.trim(), 
+                    foto: col[5]?.trim(),
                     precioMayoreo: parseFloat(col[6]) || null, 
-                    cantMinima: parseInt(col[7]) || null,
-                    descripcion: col[7]?.trim() || "" 
+                    cantMinima: parseInt(col[7]) || null      
                 };
             }).filter(p => p && p.nombre !== "");
             document.getElementById('cargando').style.display = 'none';
             mostrar();
-        } catch (e) { document.getElementById('cargando').innerText = "❌ Error de conexión."; }
+        } catch (e) { console.error(e); }
     }
 
     function mostrar() {
@@ -151,65 +153,112 @@
         productos.forEach((p, i) => {
             if (p.cat !== cat) { cat = p.cat; html += `<div class="categoria-titulo">${p.cat}</div>`; }
             const agotado = p.stock <= 0;
-            const pocaDispo = !agotado && p.stock <= 10;
-            const imagen = p.foto ? p.foto : 'https://placehold.co/600x800/fff5f8/d81b60?text=Cargando...';
-            
+            const imagen = p.foto ? p.foto : 'https://placehold.co/400x400/fff5f8/d81b60?text=Sin+Foto';
+            const promo = (p.precioMayoreo && p.cantMinima) ? `Lleva ${p.cantMinima}+ a $${p.precioMayoreo}` : "";
             html += `
                 <div class="producto-item ${agotado ? 'agotado' : ''}">
                     ${agotado ? '<span class="badge-agotado">AGOTADA</span>' : ''}
-                    <img src="${imagen}" class="foto-producto" loading="lazy">
-                    <div class="producto-info">
-                        <span class="nombre">${p.nombre}</span>
-                        ${p.descripcion ? `<button class="btn-desplegar-desc" onclick="this.nextElementSibling.classList.toggle('abierto')">Ver descripción ▼</button><div class="contenedor-descripcion"><p class="descripcion-texto">${p.descripcion}</p></div>` : '<div style="height:20px"></div>'}
-                        <span class="precio" id="p-visual-${i}">$${p.precio.toLocaleString()}</span>
-                        <div style="min-height:20px;">${pocaDispo ? '<span class="badge-poca-dispo">⚠️ Poca disponibilidad</span>' : ''}</div>
-                        <input type="number" class="cant-input" id="cant-${i}" value="0" min="0" max="${p.stock}" ${agotado ? 'disabled' : ''} oninput="calc()">
-                    </div>
+                    <img src="${imagen}" class="foto-producto" referrerpolicy="no-referrer">
+                    <span class="nombre">${p.nombre}</span>
+                    <span class="precio" id="p-visual-${i}">$${p.precio}</span>
+                    <div class="promo-tag">${promo}</div>
+                    <input type="number" class="cant-input" id="cant-${i}" value="0" min="0" max="${p.stock}" ${agotado ? 'disabled' : ''} oninput="calc()">
+                    <div class="aviso-stock" id="aviso-${i}"></div>
                 </div>`;
         });
         cont.innerHTML = html;
     }
 
     function calc() {
-        let subtotal = 0;
+        let subtotalMercancia = 0;
         productos.forEach((p, i) => { 
             let input = document.getElementById(`cant-${i}`);
             let pVisual = document.getElementById(`p-visual-${i}`);
+            let aviso = document.getElementById(`aviso-${i}`);
             let cantidad = parseInt(input.value) || 0;
-            let precioEfectivo = (p.precioMayoreo && cantidad >= p.cantMinima) ? p.precioMayoreo : p.precio;
-            if (cantidad > p.stock) { cantidad = p.stock; input.value = p.stock; }
-            subtotal += cantidad * precioEfectivo; 
-            pVisual.innerText = `$${precioEfectivo.toLocaleString()}`;
+            let precioEfectivo = p.precio;
+
+            if (cantidad > p.stock) {
+                cantidad = p.stock; input.value = p.stock;
+                aviso.innerText = `Solo hay ${p.stock} disp.`;
+                setTimeout(() => { aviso.innerText = ""; }, 2000);
+            } else { aviso.innerText = ""; }
+
+            if (p.precioMayoreo && p.cantMinima && cantidad >= p.cantMinima) {
+                precioEfectivo = p.precioMayoreo;
+                pVisual.style.color = "var(--verde)";
+                pVisual.innerText = `$${p.precioMayoreo} 🔥`;
+            } else {
+                pVisual.style.color = "var(--rosa-fuerte)";
+                pVisual.innerText = `$${p.precio}`;
+            }
+            subtotalMercancia += cantidad * precioEfectivo; 
         });
-        const costoDom = parseInt(document.getElementById("metodoEntrega").value);
-        document.getElementById("desglose").style.display = (subtotal > 0) ? "block" : "none";
-        document.getElementById("monto-mercancia").innerText = subtotal.toLocaleString();
-        document.getElementById("monto-domicilio").innerText = costoDom.toLocaleString();
-        document.getElementById("monto-total").innerText = (subtotal + costoDom).toLocaleString();
-        document.getElementById("campos-domicilio").style.display = (costoDom > 0) ? "block" : "none";
+
+        const costoDomicilio = parseInt(document.getElementById("metodoEntrega").value);
+        
+        // Mostrar desglose solo si hay algo seleccionado
+        const divDesglose = document.getElementById("desglose");
+        if(subtotalMercancia > 0 || costoDomicilio > 0) {
+            divDesglose.style.display = "block";
+        } else {
+            divDesglose.style.display = "none";
+        }
+
+        document.getElementById("monto-mercancia").innerText = subtotalMercancia.toLocaleString();
+        document.getElementById("monto-domicilio").innerText = costoDomicilio.toLocaleString();
+        document.getElementById("monto-total").innerText = (subtotalMercancia + costoDomicilio).toLocaleString();
+        
+        document.getElementById("campos-domicilio").style.display = (costoDomicilio > 0) ? "block" : "none";
     }
 
-    function enviarPedido() {
-        let txt = `*🌺 PEDIDO - MÁS BELLA 🌺*\n\n`;
-        let hay = false;
+    async function enviarPedido() {
+        const sel = document.getElementById("metodoEntrega");
+        const zona = sel.options[sel.selectedIndex].text;
+        const nombre = document.getElementById("nombreCliente").value;
+        const direccion = document.getElementById("direccionCliente").value;
+        const mMercancia = document.getElementById("monto-mercancia").innerText;
+        const mDomicilio = document.getElementById("monto-domicilio").innerText;
+        const mTotal = document.getElementById("monto-total").innerText;
+        
+        let productosVendidos = [];
+        let txt = `*🌺 PEDIDO - MÁS BELLA 🌺*\n`;
+        if(nombre) txt += `👤 Cliente: ${nombre}\n`;
+        if(direccion) txt += `🏠 Dir: ${direccion}\n`;
+        txt += `📍 Entrega: ${zona}\n`;
+        txt += `----------------------------\n`;
+        
+        let hayProductos = false;
         productos.forEach((p, i) => {
             const cant = parseInt(document.getElementById(`cant-${i}`).value) || 0;
-            if (cant > 0) { txt += `✅ ${cant}x ${p.nombre}\n`; hay = true; }
+            if (cant > 0) {
+                let precioFinal = (p.precioMayoreo && cant >= p.cantMinima) ? p.precioMayoreo : p.precio;
+                txt += `✅ ${cant}x ${p.nombre} ($${(cant * precioFinal).toLocaleString()})\n`;
+                productosVendidos.push({ nombre: p.nombre, cantidad: cant });
+                hayProductos = true;
+            }
         });
-        if (!hay) return alert("Selecciona productos");
+
+        if (!hayProductos) return alert("Selecciona al menos un producto");
         
-        const costoDom = document.getElementById("monto-domicilio").innerText;
-        if(costoDom !== "0") {
-            txt += `\n🏠 *Entrega en:* ${document.getElementById("metodoEntrega").options[document.getElementById("metodoEntrega").selectedIndex].text}`;
-            txt += `\n👤 *Cliente:* ${document.getElementById("nombreCliente").value}`;
-            txt += `\n📍 *Dirección:* ${document.getElementById("direccionCliente").value}`;
-        }
-        
-        txt += `\n\n*TOTAL A PAGAR: $${document.getElementById("monto-total").innerText}*`;
+        txt += `----------------------------\n`;
+        txt += `📦 Mercancía: $${mMercancia}\n`;
+        txt += `🛵 Domicilio: $${mDomicilio}\n`;
+        txt += `💰 *TOTAL FINAL: $${mTotal}*`;
+
+        try {
+            fetch(URL_SCRIPT_GOOGLE, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ items: productosVendidos })
+            });
+        } catch (e) { console.error("Error stock:", e); }
+
         window.location.href = `https://wa.me/5356247880?text=${encodeURIComponent(txt)}`;
     }
+
     window.onload = obtenerDatos;
 </script>
 </body>
-                                                  </html>
-    
+                        </html>
