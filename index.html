@@ -5,35 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MÁS BELLA - Tienda Virtual</title>
     <style>
-        :root { --oro: #d4af37; --rosa-fondo: #fff5f8; --rosa-fuerte: #d81b60; --oscuro: #2c3e50; --verde: #27ae60; }
+        :root { --oro: #d4af37; --rosa-fondo: #fff5f8; --rosa-fuerte: #d81b60; --oscuro: #2c3e50; --verde: #27ae60; --rosa-detalles: #ffebee; --naranja: #e67e22; }
         body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background-color: var(--rosa-fondo); color: #333; }
-        header { background: white; padding: 15px; text-align: center; border-bottom: 3px solid var(--oro); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        
+        header { background: white; padding: 15px; text-align: center; border-bottom: 3px solid var(--oro); box-shadow: 0 2px 8px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
         .logo { font-size: 1.8rem; font-weight: bold; color: var(--rosa-fuerte); margin: 0; }
         .sublogo { font-size: 0.8rem; color: #666; margin: 3px 0 0 0; }
         
-        .lista-productos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; max-width: 600px; margin: auto; }
+        .lista-productos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; max-width: 600px; margin: auto; padding-bottom: 280px; }
         .categoria-titulo { grid-column: span 2; background: var(--oscuro); color: white; padding: 8px; margin-top: 15px; text-align: center; font-weight: bold; text-transform: uppercase; border-radius: 6px; font-size: 0.85rem; }
         
-        .producto-item { background: white; display: flex; flex-direction: column; padding: 8px; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #eee; position: relative; text-align: center; overflow: hidden; }
-        .foto-producto { width: 100%; height: 140px; object-fit: cover; background-color: #f9f9f9; border-radius: 8px; margin-bottom: 8px; }
+        .producto-item { background: white; display: flex; flex-direction: column; padding: 10px; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #eee; position: relative; text-align: center; overflow: hidden; }
+        .foto-producto { width: 100%; height: 160px; object-fit: cover; background-color: #f9f9f9; border-radius: 8px; margin-bottom: 8px; }
         
         .producto-item.agotado { opacity: 0.5; filter: grayscale(0.5); }
         .badge-agotado { background: #ff4444; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; font-weight: bold; }
 
-        .nombre { font-weight: bold; font-size: 0.85rem; height: 34px; overflow: hidden; margin-bottom: 4px; color: var(--oscuro); line-height: 1.2; }
-        .precio { font-weight: bold; color: var(--rosa-fuerte); font-size: 0.95rem; }
+        /* Estilo para Poca Disponibilidad */
+        .badge-poca-dispo { color: var(--naranja); font-size: 0.7rem; font-weight: bold; margin-bottom: 5px; display: block; }
+
+        .nombre { font-weight: bold; font-size: 0.9rem; margin-bottom: 4px; color: var(--oscuro); line-height: 1.2; min-height: 34px; display: flex; align-items: center; justify-content: center; }
+        
+        /* Estilos de la Descripción Desplegable */
+        .btn-desplegar-desc { background: none; border: none; color: #888; font-size: 0.75rem; cursor: pointer; padding: 5px 0; margin-bottom: 8px; font-family: inherit; display: inline-flex; align-items: center; justify-content: center; width: 100%; }
+        .flecha-desc { font-size: 0.7rem; margin-left: 4px; transition: transform 0.3s ease; }
+        .btn-desplegar-desc.activo .flecha-desc { transform: rotate(180deg); }
+
+        .contenedor-descripcion { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out, padding 0.3s ease-out; background-color: var(--rosa-detalles); border-radius: 8px; margin-bottom: 8px; padding: 0 10px; }
+        .contenedor-descripcion.abierto { max-height: 150px; padding: 10px; }
+        .descripcion-texto { font-size: 0.75rem; color: #555; margin: 0; line-height: 1.4; text-align: left; }
+
+        .precio { font-weight: bold; color: var(--rosa-fuerte); font-size: 1.1rem; }
         .promo-tag { font-size: 0.65rem; color: var(--verde); font-weight: bold; margin-bottom: 5px; min-height: 15px; }
         
         .cant-input { width: 100%; text-align: center; border: 1px solid #ccc; border-radius: 6px; padding: 8px; font-weight: bold; box-sizing: border-box; margin-top: 5px; }
         .aviso-stock { color: #ff4444; font-size: 0.65rem; font-weight: bold; min-height: 15px; margin-top: 2px; }
 
-        /* Estilos del Resumen Inferior */
-        .resumen-total { background: var(--oscuro); color: white; padding: 12px; position: fixed; bottom: 0; width: 100%; text-align: center; z-index: 100; box-sizing: border-box; box-shadow: 0 -2px 10px rgba(0,0,0,0.2); }
-        .desglose-lineas { font-size: 0.85rem; margin-bottom: 8px; line-height: 1.4; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 8px; display: none; }
+        .resumen-total { background: var(--oscuro); color: white; padding: 12px; position: fixed; bottom: 0; width: 100%; text-align: center; z-index: 1100; box-sizing: border-box; box-shadow: 0 -2px 10px rgba(0,0,0,0.2); }
         .total-destacado { font-size: 1.1rem; font-weight: bold; display: block; margin-bottom: 5px; }
-        .btn-whatsapp { background: #25d366; color: white; text-decoration: none; padding: 10px 25px; border-radius: 50px; display: inline-block; font-weight: bold; transition: 0.3s; }
+        .btn-whatsapp { background: #25d366; color: white; text-decoration: none; padding: 10px 25px; border-radius: 50px; display: inline-block; font-weight: bold; }
         
-        .contenedor-entrega { max-width: 600px; margin: 0 auto 280px auto; padding: 0 10px; }
+        .contenedor-entrega { max-width: 600px; margin: 0 auto 20px auto; padding: 0 10px; }
         .seccion-entrega { background: white; padding: 15px; border-radius: 12px; border: 2px solid var(--oro); margin-top: 10px; }
         .selector, .input-datos { width: 100%; padding: 12px; margin: 5px 0; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box; }
     </style>
@@ -57,50 +69,6 @@
                 <optgroup label="Zonas de Domicilio">
                     <option value="300">📍 Centro del pueblo ($300)</option>
                     <option value="350">📍 Agramonte ($350)</option>
-                    <option value="400">📍 Bella Vista ($400)</option>
-                    <option value="400">📍 Buenos Aires ($400)</option>
-                    <option value="400">📍 Camino de la Matanza ($400)</option>
-                    <option value="350">📍 Casino Campestre ($350)</option>
-                    <option value="400">📍 El Jardín ($400)</option>
-                    <option value="450">📍 El Micro ($450)</option>
-                    <option value="350">📍 Floiran Quiroz ($350)</option>
-                    <option value="400">📍 Florat ($400)</option>
-                    <option value="400">📍 Garrido ($400)</option>
-                    <option value="450">📍 Imán ($450)</option>
-                    <option value="400">📍 Inra ($400)</option>
-                    <option value="500">📍 Isabel Hortensia ($500)</option>
-                    <option value="500">📍 Jayama ($500)</option>
-                    <option value="400">📍 Juanito ($400)</option>
-                    <option value="450">📍 La Belén ($450)</option>
-                    <option value="350">📍 La Caridad ($350)</option>
-                    <option value="450">📍 La Esperanza ($450)</option>
-                    <option value="450">📍 La Guernina ($450)</option>
-                    <option value="400">📍 La Mosca ($400)</option>
-                    <option value="400">📍 La Vigía ($400)</option>
-                    <option value="450">📍 La Yaba ($450)</option>
-                    <option value="450">📍 La Zambrana ($450)</option>
-                    <option value="350">📍 Las Mercedes ($350)</option>
-                    <option value="500">📍 Lenin ($500)</option>
-                    <option value="450">📍 Los Coquitos ($450)</option>
-                    <option value="400">📍 Marquesado ($400)</option>
-                    <option value="400">📍 Mascota ($400)</option>
-                    <option value="400">📍 Modelo ($400)</option>
-                    <option value="400">📍 Monte Carlos ($400)</option>
-                    <option value="400">📍 Montejo ($400)</option>
-                    <option value="450">📍 Nadales ($450)</option>
-                    <option value="450">📍 Nitrógeno ($450)</option>
-                    <option value="450">📍 Nueva Esperanza ($450)</option>
-                    <option value="400">📍 Palomino ($400)</option>
-                    <option value="350">📍 Porvenir ($350)</option>
-                    <option value="350">📍 Previsora ($350)</option>
-                    <option value="400">📍 Puerto Príncipe ($400)</option>
-                    <option value="350">📍 Sanchez Soto ($350)</option>
-                    <option value="500">📍 Saratoga ($500)</option>
-                    <option value="350">📍 Simoni ($350)</option>
-                    <option value="400">📍 Versalles ($400)</option>
-                    <option value="400">📍 Villa Mariana ($400)</option>
-                    <option value="450">📍 Vista Bella ($450)</option>
-                    <option value="350">📍 Vista Hermosa ($350)</option>
                 </optgroup>
             </select>
             <div id="campos-domicilio" style="display:none;">
@@ -111,18 +79,28 @@
     </div>
 
     <div class="resumen-total">
-        <div id="desglose" class="desglose-lineas">
-            Importe de mercancía: $<span id="monto-mercancia">0</span><br>
-            Importe de domicilio: $<span id="monto-domicilio">0</span>
-        </div>
         <span class="total-destacado">TOTAL A PAGAR: $<span id="monto-total">0</span></span>
         <a href="javascript:void(0);" onclick="enviarPedido()" class="btn-whatsapp">📲 PEDIR POR WHATSAPP</a>
     </div>
 
 <script>
     const URL_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSh6ypXBcxssEtPYB9l6ahApz-tHFPEoi5voACOA5ynv_gxA7Uo2nzXIPtlVTTTxOeN2vqjyygpGvOI/pub?output=csv';
-    const URL_SCRIPT_GOOGLE = 'TU_URL_AQUÍ'; 
     let productos = [];
+
+    // Función para mostrar/ocultar descripción
+    function toggleDescripcion(boton) {
+        const contenedor = boton.nextElementSibling;
+        const textoBoton = boton.querySelector('.texto-btn-desc');
+        if (contenedor.classList.contains('abierto')) {
+            contenedor.classList.remove('abierto');
+            boton.classList.remove('activo');
+            textoBoton.innerText = 'Ver descripción';
+        } else {
+            contenedor.classList.add('abierto');
+            boton.classList.add('activo');
+            textoBoton.innerText = 'Cerrar descripción';
+        }
+    }
 
     async function obtenerDatos() {
         try {
@@ -139,7 +117,8 @@
                     stock: parseInt(col[3]) || 0, 
                     foto: col[5]?.trim(),
                     precioMayoreo: parseFloat(col[6]) || null, 
-                    cantMinima: parseInt(col[7]) || null      
+                    cantMinima: parseInt(col[7]) || null,
+                    descripcion: col[7]?.trim() || "" // <--- AQUÍ LEE LA COLUMNA H
                 };
             }).filter(p => p && p.nombre !== "");
             document.getElementById('cargando').style.display = 'none';
@@ -152,16 +131,37 @@
         let html = ""; let cat = "";
         productos.forEach((p, i) => {
             if (p.cat !== cat) { cat = p.cat; html += `<div class="categoria-titulo">${p.cat}</div>`; }
+            
             const agotado = p.stock <= 0;
+            // Lógica para aviso de poca disponibilidad (menor o igual a 10)
+            const pocaDispo = !agotado && p.stock <= 10;
+            
             const imagen = p.foto ? p.foto : 'https://placehold.co/400x400/fff5f8/d81b60?text=Sin+Foto';
             const promo = (p.precioMayoreo && p.cantMinima) ? `Lleva ${p.cantMinima}+ a $${p.precioMayoreo}` : "";
+            
             html += `
                 <div class="producto-item ${agotado ? 'agotado' : ''}">
                     ${agotado ? '<span class="badge-agotado">AGOTADA</span>' : ''}
                     <img src="${imagen}" class="foto-producto" referrerpolicy="no-referrer">
                     <span class="nombre">${p.nombre}</span>
+                    
+                    ${p.descripcion ? `
+                        <button class="btn-desplegar-desc" onclick="toggleDescripcion(this)">
+                            <span class="texto-btn-desc">Ver descripción</span>
+                            <span class="flecha-desc">▼</span>
+                        </button>
+                        <div class="contenedor-descripcion">
+                            <p class="descripcion-texto">${p.descripcion}</p>
+                        </div>
+                    ` : '<div style="height:20px"></div>'}
+                    
                     <span class="precio" id="p-visual-${i}">$${p.precio}</span>
                     <div class="promo-tag">${promo}</div>
+                    
+                    <div style="min-height:20px;">
+                        ${pocaDispo ? '<span class="badge-poca-dispo">⚠️ Poca disponibilidad</span>' : ''}
+                    </div>
+
                     <input type="number" class="cant-input" id="cant-${i}" value="0" min="0" max="${p.stock}" ${agotado ? 'disabled' : ''} oninput="calc()">
                     <div class="aviso-stock" id="aviso-${i}"></div>
                 </div>`;
@@ -196,32 +196,16 @@
         });
 
         const costoDomicilio = parseInt(document.getElementById("metodoEntrega").value);
-        
-        // Mostrar desglose solo si hay algo seleccionado
-        const divDesglose = document.getElementById("desglose");
-        if(subtotalMercancia > 0 || costoDomicilio > 0) {
-            divDesglose.style.display = "block";
-        } else {
-            divDesglose.style.display = "none";
-        }
-
-        document.getElementById("monto-mercancia").innerText = subtotalMercancia.toLocaleString();
-        document.getElementById("monto-domicilio").innerText = costoDomicilio.toLocaleString();
         document.getElementById("monto-total").innerText = (subtotalMercancia + costoDomicilio).toLocaleString();
-        
         document.getElementById("campos-domicilio").style.display = (costoDomicilio > 0) ? "block" : "none";
     }
 
-    async function enviarPedido() {
+    function enviarPedido() {
         const sel = document.getElementById("metodoEntrega");
         const zona = sel.options[sel.selectedIndex].text;
         const nombre = document.getElementById("nombreCliente").value;
         const direccion = document.getElementById("direccionCliente").value;
-        const mMercancia = document.getElementById("monto-mercancia").innerText;
-        const mDomicilio = document.getElementById("monto-domicilio").innerText;
-        const mTotal = document.getElementById("monto-total").innerText;
         
-        let productosVendidos = [];
         let txt = `*🌺 PEDIDO - MÁS BELLA 🌺*\n`;
         if(nombre) txt += `👤 Cliente: ${nombre}\n`;
         if(direccion) txt += `🏠 Dir: ${direccion}\n`;
@@ -232,28 +216,13 @@
         productos.forEach((p, i) => {
             const cant = parseInt(document.getElementById(`cant-${i}`).value) || 0;
             if (cant > 0) {
-                let precioFinal = (p.precioMayoreo && cant >= p.cantMinima) ? p.precioMayoreo : p.precio;
-                txt += `✅ ${cant}x ${p.nombre} ($${(cant * precioFinal).toLocaleString()})\n`;
-                productosVendidos.push({ nombre: p.nombre, cantidad: cant });
+                txt += `✅ ${cant}x ${p.nombre}\n`;
                 hayProductos = true;
             }
         });
 
         if (!hayProductos) return alert("Selecciona al menos un producto");
-        
-        txt += `----------------------------\n`;
-        txt += `📦 Mercancía: $${mMercancia}\n`;
-        txt += `🛵 Domicilio: $${mDomicilio}\n`;
-        txt += `💰 *TOTAL FINAL: $${mTotal}*`;
-
-        try {
-            fetch(URL_SCRIPT_GOOGLE, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ items: productosVendidos })
-            });
-        } catch (e) { console.error("Error stock:", e); }
+        txt += `\n💰 *TOTAL FINAL: $${document.getElementById("monto-total").innerText}*`;
 
         window.location.href = `https://wa.me/5356247880?text=${encodeURIComponent(txt)}`;
     }
@@ -261,4 +230,4 @@
     window.onload = obtenerDatos;
 </script>
 </body>
-                        </html>
+</html>
