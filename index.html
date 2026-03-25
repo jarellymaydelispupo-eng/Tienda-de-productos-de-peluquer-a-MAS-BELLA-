@@ -29,8 +29,10 @@
         .panel-desc.abierto { max-height: 150px; padding: 8px; margin-bottom: 8px; }
 
         .precio { font-weight: bold; color: var(--rosa-fuerte); font-size: 1.2rem; }
-        .stock-texto { font-size: 0.75rem; color: #666; display: block; margin-top: 5px; }
-        .badge-poca-dispo { color: var(--naranja); font-size: 0.7rem; font-weight: bold; margin-bottom: 5px; display: block; }
+        
+        /* ESTILOS DE STOCK */
+        .badge-poca-dispo { color: var(--naranja); font-size: 0.75rem; font-weight: bold; margin-bottom: 2px; display: block; }
+        .stock-numero { font-size: 0.7rem; color: #7f8c8d; font-style: italic; display: block; margin-bottom: 5px; }
         
         .cant-input { width: 100%; text-align: center; border: 1px solid #ccc; border-radius: 8px; padding: 10px; font-weight: bold; box-sizing: border-box; font-size: 1rem; }
         .cant-input:disabled { background: #eee; cursor: not-allowed; }
@@ -64,52 +66,10 @@
                 <option value="0">🏪 Recogida en Tienda ($0)</option>
                 <optgroup label="Zonas de Domicilio">
                     <option value="350">📍 Agramonte ($350)</option>
-                    <option value="400">📍 Bella Vista ($400)</option>
-                    <option value="400">📍 Buenos Aires ($400)</option>
-                    <option value="400">📍 Camino de la Matanza ($400)</option>
-                    <option value="350">📍 Casino Campestre ($350)</option>
                     <option value="300">📍 Centro del pueblo ($300)</option>
-                    <option value="450">📍 El Imán ($450)</option>
-                    <option value="400">📍 El Jardín ($400)</option>
-                    <option value="450">📍 El Micro ($450)</option>
-                    <option value="350">📍 Floiran Quiroz ($350)</option>
-                    <option value="400">📍 Florat ($400)</option>
-                    <option value="400">📍 Garrido ($400)</option>
-                    <option value="400">📍 Inra ($400)</option>
-                    <option value="500">📍 Isabel Hortensia ($500)</option>
-                    <option value="500">📍 Jayama ($500)</option>
-                    <option value="400">📍 Juanito ($400)</option>
-                    <option value="450">📍 La Belén ($450)</option>
                     <option value="350">📍 La Caridad ($350)</option>
-                    <option value="450">📍 La Esperanza ($450)</option>
-                    <option value="450">📍 La Guernina ($450)</option>
-                    <option value="400">📍 La Mosca ($400)</option>
-                    <option value="400">📍 La Vigía ($400)</option>
-                    <option value="450">📍 La Yaba ($450)</option>
-                    <option value="450">📍 La Zambrana ($450)</option>
-                    <option value="350">📍 Las Mercedes ($350)</option>
                     <option value="500">📍 Lenin ($500)</option>
-                    <option value="450">📍 Los Coquitos ($450)</option>
-                    <option value="400">📍 Marquesado ($400)</option>
-                    <option value="400">📍 Mascota ($400)</option>
-                    <option value="400">📍 Modelo ($400)</option>
-                    <option value="400">📍 Monte Carlos ($400)</option>
-                    <option value="400">📍 Montejo ($400)</option>
-                    <option value="450">📍 Nadales ($450)</option>
-                    <option value="450">📍 Nitrógeno ($450)</option>
-                    <option value="450">📍 Nueva Esperanza ($450)</option>
-                    <option value="400">📍 Palomino ($400)</option>
-                    <option value="350">📍 Porvenir ($350)</option>
-                    <option value="350">📍 Previsora ($350)</option>
-                    <option value="400">📍 Puerto Príncipe ($400)</option>
-                    <option value="350">📍 Sanchez Soto ($350)</option>
-                    <option value="500">📍 Saratoga ($500)</option>
-                    <option value="350">📍 Simoni ($350)</option>
-                    <option value="400">📍 Versalles ($400)</option>
-                    <option value="400">📍 Villa Mariana ($400)</option>
-                    <option value="450">📍 Vista Bella ($450)</option>
-                    <option value="350">📍 Vista Hermosa ($350)</option>
-                </optgroup>
+                    </optgroup>
             </select>
             <div id="campos-domicilio" style="display:none;">
                 <input type="text" id="nombreCliente" class="input-datos" placeholder="👤 Tu Nombre">
@@ -141,14 +101,12 @@
                     precio: parseFloat(col[2]) || 0, 
                     stock: parseInt(col[3]) || 0, 
                     foto: col[5]?.trim(), 
-                    precioMayoreo: parseFloat(col[6]) || null, 
-                    cantMinima: parseInt(col[7]) || null,
                     descripcion: col[7]?.trim() || "" 
                 };
             }).filter(p => p && p.nombre !== "");
             document.getElementById('cargando').style.display = 'none';
             mostrar();
-        } catch (e) { document.getElementById('cargando').innerText = "❌ Error al cargar inventario."; }
+        } catch (e) { document.getElementById('cargando').innerText = "❌ Error al cargar."; }
     }
 
     function mostrar() {
@@ -171,8 +129,8 @@
                         <span class="precio">$${p.precio.toLocaleString()}</span>
                         
                         <div style="min-height:35px; margin-top: 5px;">
-                            <span class="stock-texto">Existencia: ${p.stock} unidades</span>
                             ${pocaDispo ? '<span class="badge-poca-dispo">⚠️ Poca disponibilidad</span>' : ''}
+                            ${!agotado ? `<span class="stock-numero">Quedan ${p.stock} unidades</span>` : ''}
                         </div>
 
                         <input type="number" class="cant-input" id="cant-${i}" value="0" min="0" max="${p.stock}" ${agotado ? 'disabled' : ''} oninput="calc()">
@@ -218,4 +176,4 @@
 </script>
 </body>
     </html>
-                        
+    
