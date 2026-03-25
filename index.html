@@ -6,30 +6,34 @@
     <title>MÁS BELLA - Tienda Virtual</title>
     <style>
         :root { --oro: #d4af37; --rosa-fondo: #fff5f8; --rosa-fuerte: #d81b60; --oscuro: #2c3e50; --verde: #27ae60; --rosa-detalles: #ffebee; --naranja: #e67e22; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background-color: var(--rosa-fondo); color: #333; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background-color: var(--rosa-fondo); color: #333; overflow-x: hidden; }
         
         header { background: white; padding: 15px; text-align: center; border-bottom: 3px solid var(--oro); box-shadow: 0 2px 8px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
         .logo { font-size: 1.8rem; font-weight: bold; color: var(--rosa-fuerte); margin: 0; }
         .sublogo { font-size: 0.8rem; color: #666; margin: 3px 0 0 0; }
         
-        .hero-banner { width: 100%; max-width: 600px; margin: 0 auto; line-height: 0; }
+        /* --- AJUSTE BANNER SUPERIOR: Ancho completo y arriba --- */
+        .hero-banner { width: 100%; max-width: 100%; margin: 0; line-height: 0; padding: 0; }
         .hero-banner img { width: 100%; height: auto; display: block; }
 
-        .lista-productos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; max-width: 600px; margin: auto; padding-bottom: 300px; }
+        /* --- REDUCCIÓN DE BORDES BLANCOS LATERALES --- */
+        .lista-productos { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 8px; /* Reducción drástica de padding lateral */ max-width: 600px; margin: auto; padding-bottom: 300px; }
         .categoria-titulo { grid-column: span 2; background: var(--oscuro); color: white; padding: 8px; margin-top: 15px; text-align: center; font-weight: bold; text-transform: uppercase; border-radius: 6px; font-size: 0.85rem; }
         
         .producto-item { background: white; display: flex; flex-direction: column; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #eee; position: relative; overflow: hidden; }
-        .foto-producto { width: 100%; height: 180px; object-fit: cover; background-color: #f9f9f9; }
+        
+        /* --- AJUSTE FOTOS PRODUCTO: MÁS GRANDES (más altas) --- */
+        .foto-producto { width: 100%; height: 220px; /* Aumentado de 180px a 220px */ object-fit: cover; background-color: #f9f9f9; }
         
         .producto-info { padding: 10px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; text-align: center; }
 
         .producto-item.agotado { opacity: 0.5; filter: grayscale(0.5); }
         .badge-agotado { background: #ff4444; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; font-weight: bold; }
 
-        /* Letrero de Poca Disponibilidad */
         .badge-poca-dispo { color: var(--naranja); font-size: 0.7rem; font-weight: bold; margin-bottom: 5px; display: block; }
 
-        .nombre { font-weight: bold; font-size: 0.9rem; margin-bottom: 6px; color: var(--oscuro); line-height: 1.2; min-height: 34px; display: flex; align-items: center; justify-content: center; }
+        /* --- AJUSTE NOMBRE PRODUCTO: MÁS GRANDE --- */
+        .nombre { font-weight: bold; font-size: 1.1rem; /* Aumentado de 0.9rem a 1.1rem */ margin-bottom: 6px; color: var(--oscuro); line-height: 1.2; min-height: 38px; display: flex; align-items: center; justify-content: center; }
         
         .btn-desplegar-desc { background: none; border: none; color: #888; font-size: 0.75rem; cursor: pointer; padding: 5px 0; margin-bottom: 8px; font-family: inherit; display: inline-flex; align-items: center; justify-content: center; width: 100%; }
         .flecha-desc { font-size: 0.7rem; margin-left: 4px; transition: transform 0.3s ease; }
@@ -39,7 +43,8 @@
         .contenedor-descripcion.abierto { max-height: 150px; padding: 10px; }
         .descripcion-texto { font-size: 0.75rem; color: #555; margin: 0; line-height: 1.4; text-align: left; }
         
-        .precio { font-weight: bold; color: var(--rosa-fuerte); font-size: 1.1rem; margin-top: auto; margin-bottom: 4px; }
+        /* --- AJUSTE PRECIO: MUCHO MÁS GRANDE --- */
+        .precio { font-weight: bold; color: var(--rosa-fuerte); font-size: 1.5rem; /* Aumentado de 1.1rem a 1.5rem */ margin-top: auto; margin-bottom: 4px; }
         .promo-tag { font-size: 0.65rem; color: var(--verde); font-weight: bold; margin-bottom: 5px; min-height: 15px; }
         
         .cant-input { width: 100%; text-align: center; border: 1px solid #ccc; border-radius: 8px; padding: 10px; font-weight: bold; box-sizing: border-box; margin-top: 5px; font-size: 1rem; }
@@ -62,7 +67,7 @@
     </header>
 
     <div class="hero-banner">
-        <img src="https://m.media-amazon.com/images/I/71D0Y7qYtEL.png" alt="Más Bella Promo">
+        <img src="https://i.ibb.co/5T0Y7g0/Mas-Bella-Promo.png" alt="Más Bella Promo">
     </div>
 
     <div class="lista-productos" id="contenedor-productos">
@@ -77,6 +82,7 @@
                 <optgroup label="Zonas de Domicilio">
                     <option value="300">📍 Centro del pueblo ($300)</option>
                     <option value="350">📍 Agramonte ($350)</option>
+                    <option value="400">📍 Bella Vista ($400)</option>
                     </optgroup>
             </select>
             <div id="campos-domicilio" style="display:none;">
@@ -119,20 +125,21 @@
             const filas = data.split('\n').slice(1);
             productos = filas.map(fila => {
                 const col = fila.split(',');
+                if(col.length < 8) return null; // Ajustado para requerir columna H
                 return { 
                     cat: col[0]?.trim(), 
                     nombre: col[1]?.trim(), 
                     precio: parseFloat(col[2]) || 0, 
                     stock: parseInt(col[3]) || 0, 
-                    descripcion: col[7]?.trim() || "", // COLUMNA H (Posición 7)
                     foto: col[5]?.trim(), 
                     precioMayoreo: parseFloat(col[6]) || null, 
-                    cantMinima: parseInt(col[7]) || null      
+                    cantMinima: parseInt(col[7]) || null,
+                    descripcion: col[7]?.trim() || "" // COLUMNA H (Índice 7)
                 };
             }).filter(p => p && p.nombre !== "");
             document.getElementById('cargando').style.display = 'none';
             mostrar();
-        } catch (e) { console.error(e); }
+        } catch (e) { console.error("Error cargando datos:", e); document.getElementById('cargando').innerText = "❌ Error cargando inventario."; }
     }
 
     function mostrar() {
@@ -142,8 +149,8 @@
             if (p.cat !== cat) { cat = p.cat; html += `<div class="categoria-titulo">${p.cat}</div>`; }
             
             const agotado = p.stock <= 0;
-            const pocaDispo = !agotado && p.stock <= 10; // Condición: 10 o menos
-            const imagen = p.foto ? p.foto : 'https://placehold.co/600x600/fff5f8/d81b60?text=Sin+Foto';
+            const pocaDispo = !agotado && p.stock <= 10;
+            const imagen = p.foto ? p.foto : 'https://placehold.co/600x800/fff5f8/d81b60?text=Sin+Foto';
             
             html += `
                 <div class="producto-item ${agotado ? 'agotado' : ''}">
@@ -162,9 +169,9 @@
                             </div>
                         ` : '<div style="height:20px"></div>'}
                         
-                        <span class="precio" id="p-visual-${i}">$${p.precio}</span>
+                        <span class="precio" id="p-visual-${i}">$${p.precio.toLocaleString()}</span>
                         
-                        <div style="min-height:20px">
+                        <div style="min-height:20px; margin-top:5px;">
                             ${pocaDispo ? '<span class="badge-poca-dispo">⚠️ Poca disponibilidad</span>' : ''}
                         </div>
 
@@ -177,7 +184,7 @@
     }
 
     function calc() {
-        let subtotal = 0;
+        let subtotal Mercancia = 0;
         productos.forEach((p, i) => { 
             let input = document.getElementById(`cant-${i}`);
             let pVisual = document.getElementById(`p-visual-${i}`);
@@ -185,15 +192,15 @@
             let precioEfectivo = (p.precioMayoreo && cantidad >= p.cantMinima) ? p.precioMayoreo : p.precio;
             
             if (cantidad > p.stock) { cantidad = p.stock; input.value = p.stock; }
-            subtotal += cantidad * precioEfectivo; 
-            pVisual.innerText = `$${precioEfectivo}`;
+            subtotalMercancia += cantidad * precioEfectivo; 
+            pVisual.innerText = `$${precioEfectivo.toLocaleString()}`;
         });
 
         const costoDom = parseInt(document.getElementById("metodoEntrega").value);
-        document.getElementById("desglose").style.display = (subtotal > 0) ? "block" : "none";
-        document.getElementById("monto-mercancia").innerText = subtotal.toLocaleString();
+        document.getElementById("desglose").style.display = (subtotalMercancia > 0) ? "block" : "none";
+        document.getElementById("monto-mercancia").innerText = subtotalMercancia.toLocaleString();
         document.getElementById("monto-domicilio").innerText = costoDom.toLocaleString();
-        document.getElementById("monto-total").innerText = (subtotal + costoDom).toLocaleString();
+        document.getElementById("monto-total").innerText = (subtotalMercancia + costoDom).toLocaleString();
         document.getElementById("campos-domicilio").style.display = (costoDom > 0) ? "block" : "none";
     }
 
@@ -207,12 +214,13 @@
                 hay = true;
             }
         });
-        if (!hay) return alert("Selecciona productos");
-        txt += `\n*TOTAL: $${document.getElementById("monto-total").innerText}*`;
+        if (!hay) return alert("Por favor, selecciona al menos un producto.");
+        txt += `\n*TOTAL A PAGAR: $${document.getElementById("monto-total").innerText}*`;
         window.location.href = `https://wa.me/5356247880?text=${encodeURIComponent(txt)}`;
     }
 
     window.onload = obtenerDatos;
 </script>
 </body>
-</html>
+                    </html>
+                    
