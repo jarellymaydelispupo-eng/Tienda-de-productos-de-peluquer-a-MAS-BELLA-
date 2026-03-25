@@ -156,7 +156,7 @@
                     foto: col[5]?.trim(), 
                     precioMayoreo: parseFloat(col[6]) || null, 
                     cantMinima: parseInt(col[7]) || null,
-                    descripcion: col[7]?.trim() || "" 
+                    descripcion: col[8]?.trim() || "" 
                 };
             }).filter(p => p && p.nombre !== "");
             document.getElementById('cargando').style.display = 'none';
