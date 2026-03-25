@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Más Bella</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #f4f4f4; }
+        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        input, select, button { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        button { background: #e91e63; color: white; border: none; font-weight: bold; cursor: pointer; }
+        button:active { background: #c2185b; }
+        h2 { color: #333; text-align: center; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Panel de Inventario</h2>
+    <input type="text" id="nombre" placeholder="Nombre exacto del producto">
+    <input type="number" id="precio" placeholder="Nuevo Precio ($)">
+    <select id="stock">
+        <option value="Disponible">Disponible</option>
+        <option value="Agotado">Agotado</option>
+    </select>
+    <input type="number" id="mayoreo" placeholder="Precio Mayoreo">
+    
+    <button onclick="enviarDatos()" id="btn">ACTUALIZAR PRODUCTO</button>
+    <p id="msg" style="text-align:center; font-size: 14px;"></p>
+</div>
+
+<script>
+    async function enviarDatos() {
+        const btn = document.getElementById('btn');
+        const msg = document.getElementById('msg');
+        // REEMPLAZA LA URL DE ABAJO CON TU ENLACE DE GOOGLE
+        const URL_GOOGLE = "https://script.google.com/macros/s/AKfycbw71COvfIOAAea4pGI71ohUlC8lqFZxTcEq11IwWc_a-HthFFNg4nIJUJ9ojeiSoXFgYg/exec";
+
+        const datos = {
+            nombre: document.getElementById('nombre').value,
+            precio: document.getElementById('precio').value,
+            stock: document.getElementById('stock').value,
+            mayoreo: document.getElementById('mayoreo').value
+        };
+
+        btn.disabled = true;
+        msg.innerText = "Enviando...";
+
+        try {
+            await fetch(URL_GOOGLE, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify(datos)
+            });
+            msg.style.color = "green";
+            msg.innerText = "¡Actualizado con éxito!";
+        } catch (error) {
+            msg.style.color = "red";
+            msg.innerText = "Error al conectar";
+        }
+        btn.disabled = false;
+    }
+</script>
+
+</body>
+</html>
