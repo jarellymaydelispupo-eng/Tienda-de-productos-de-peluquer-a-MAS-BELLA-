@@ -195,7 +195,15 @@
     }
 
     function enviarPedido() {
-        let txt = `*🌺 PEDIDO - MÁS BELLA 🌺*\n\n`;
+        // GENERACIÓN DE CÓDIGO DE PEDIDO LEGIBLE (FECHA Y HORA)
+        const ahora = new Date();
+        const dia = String(ahora.getDate()).padStart(2, '0');
+        const mes = String(ahora.getMonth() + 1).padStart(2, '0');
+        const hora = String(ahora.getHours()).padStart(2, '0');
+        const min = String(ahora.getMinutes()).padStart(2, '0');
+        const codigoPedido = `#PED-${dia}/${mes}-${hora}:${min}`;
+
+        let txt = `*🌺 PEDIDO ${codigoPedido} - MÁS BELLA 🌺*\n\n`;
         let subtotalMercancia = 0;
         let hay = false;
 
@@ -234,5 +242,5 @@
     window.onload = obtenerDatos;
 </script>
 </body>
-                        </html>
+                                                                </html>
                         
