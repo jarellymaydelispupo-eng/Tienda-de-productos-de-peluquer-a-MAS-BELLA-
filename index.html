@@ -12,7 +12,7 @@
         .logo { font-size: 1.8rem; font-weight: bold; color: var(--rosa-fuerte); margin: 0; }
         .sublogo { font-size: 0.8rem; color: #666; margin: 3px 0 0 0; }
 
-        .lista-productos { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 8px; max-width: 800px; margin: auto; padding-bottom: 250px; }
+        .lista-productos { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 8px; max-width: 800px; margin: auto; padding-bottom: 280px; }
         .categoria-titulo { grid-column: span 2; background: var(--oscuro); color: white; padding: 8px; margin-top: 10px; text-align: center; font-weight: bold; text-transform: uppercase; border-radius: 6px; font-size: 0.85rem; }
         
         .producto-item { background: white; display: flex; flex-direction: column; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #eee; position: relative; overflow: hidden; transition: 0.3s; }
@@ -34,14 +34,23 @@
         
         .cant-input { width: 100%; text-align: center; border: 1px solid #ccc; border-radius: 8px; padding: 8px; font-weight: bold; box-sizing: border-box; font-size: 1rem; }
 
-        /* BARRA INFERIOR REESTRUCTURADA */
-        .resumen-fijo { background: var(--oscuro); color: white; position: fixed; bottom: 0; width: 100%; z-index: 1000; border-top: 3px solid var(--oro); padding: 10px; box-sizing: border-box; max-height: 85vh; overflow-y: auto; }
-        .total-destacado { font-size: 1.1rem; font-weight: bold; text-align: center; display: block; margin-bottom: 8px; color: white; }
-        .btn-whatsapp { background: #25d366; color: white; text-decoration: none; padding: 12px; border-radius: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-bottom: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        /* BARRA INFERIOR MODERNA */
+        .resumen-fijo { background: var(--oscuro); color: white; position: fixed; bottom: 0; width: 100%; z-index: 1000; border-top: 3px solid var(--oro); padding: 12px; box-sizing: border-box; }
+        .total-destacado { font-size: 1.2rem; font-weight: bold; text-align: center; display: block; margin-bottom: 12px; color: white; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; }
         
-        .seccion-entrega-footer { background: rgba(255,255,255,0.1); padding: 10px; border-radius: 10px; border: 1px dashed var(--oro); }
+        .fila-botones { display: flex; gap: 10px; margin-bottom: 10px; }
+        
+        .btn-accion { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; transition: 0.3s; background: rgba(255,255,255,0.05); color: white; }
+        .btn-accion i { font-size: 1.2rem; margin-bottom: 4px; }
+        .btn-accion.activo { background: var(--oro); color: var(--oscuro); border-color: var(--oro); font-weight: bold; }
+        .btn-accion span { font-size: 0.75rem; text-align: center; line-height: 1.1; }
+
+        .btn-whatsapp { flex: 1.5; background: #25d366; color: white; text-decoration: none; padding: 12px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+
+        .formulario-domicilio { display: none; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; margin-top: 10px; border: 1px dashed var(--oro); animation: slideUp 0.3s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
         .selector, .input-datos { width: 100%; padding: 10px; margin: 4px 0; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box; font-size: 0.9rem; }
-        .label-footer { font-size: 0.8rem; color: var(--oro); font-weight: bold; margin-bottom: 5px; display: block; text-align: center; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -56,76 +65,80 @@
     </div>
 
     <div class="resumen-fijo">
-        <span class="total-destacado">Total: $<span id="monto-total">0</span></span>
+        <span class="total-destacado">TOTAL: $<span id="monto-total">0</span></span>
         
-        <a href="javascript:void(0);" onclick="enviarPedido()" class="btn-whatsapp">📲 PEDIR POR WHATSAPP</a>
-
-        <div class="seccion-entrega-footer">
-            <span class="label-footer">¿Cómo deseas recibir tu pedido?</span>
-            
-            <select id="tipoEntrega" class="selector" onchange="toggleEntrega()">
-                <option value="tienda">🏪 Recogida en Tienda</option>
-                <option value="domicilio">🛵 Servicio a Domicilio</option>
-            </select>
-
-            <div id="zona-domicilio" style="display:none;">
-                <select id="zonaPrecio" class="selector" onchange="calc()">
-                    <option value="300">📍 Centro del pueblo ($300)</option>
-                    <option value="350">📍 Agramonte ($350)</option>
-                    <option value="450">📍 Bella Vista ($450)</option>
-                    <option value="400">📍 Buenos Aires ($400)</option>
-                    <option value="400">📍 Camino de la Matanza ($400)</option>
-                    <option value="350">📍 Casino Campestre ($350)</option>
-                    <option value="400">📍 El Jardín ($400)</option>
-                    <option value="450">📍 El Micro ($450)</option>
-                    <option value="400">📍 Florat ($400)</option>
-                    <option value="350">📍 Floiran Quiroz ($350)</option>
-                    <option value="400">📍 Garrido ($400)</option>
-                    <option value="450">📍 Imán ($450)</option>
-                    <option value="400">📍 Inra ($400)</option>
-                    <option value="500">📍 Isabel Hortensia ($500)</option>
-                    <option value="500">📍 Jayama ($500)</option>
-                    <option value="400">📍 Juanito ($400)</option>
-                    <option value="450">📍 La Belén ($450)</option>
-                    <option value="350">📍 La Caridad ($350)</option>
-                    <option value="450">📍 La Esperanza ($450)</option>
-                    <option value="450">📍 La Guernina ($450)</option>
-                    <option value="400">📍 La Mosca ($400)</option>
-                    <option value="400">📍 La Vigía ($400)</option>
-                    <option value="450">📍 La Yaba ($450)</option>
-                    <option value="450">📍 La Zambrana ($450)</option>
-                    <option value="350">📍 Las Mercedes ($350)</option>
-                    <option value="500">📍 Lenin ($500)</option>
-                    <option value="450">📍 Los Coquitos ($450)</option>
-                    <option value="400">📍 Marquesado ($400)</option>
-                    <option value="400">📍 Mascota ($400)</option>
-                    <option value="400">📍 Modelo ($400)</option>
-                    <option value="400">📍 Monte Carlos ($400)</option>
-                    <option value="400">📍 Montejo ($400)</option>
-                    <option value="450">📍 Nadales ($450)</option>
-                    <option value="450">📍 Nitrógeno ($450)</option>
-                    <option value="450">📍 Nueva Esperanza ($450)</option>
-                    <option value="400">📍 Palomino ($400)</option>
-                    <option value="350">📍 Porvenir ($350)</option>
-                    <option value="350">📍 Previsora ($350)</option>
-                    <option value="400">📍 Puerto Príncipe ($400)</option>
-                    <option value="350">📍 Sanchez Soto ($350)</option>
-                    <option value="500">📍 Saratoga ($500)</option>
-                    <option value="350">📍 Simoni ($350)</option>
-                    <option value="400">📍 Versalles ($400)</option>
-                    <option value="400">📍 Villa Mariana ($400)</option>
-                    <option value="450">📍 Vista Bella ($450)</option>
-                    <option value="350">📍 Vista Hermosa ($350)</option>
-                </select>
-                <input type="text" id="nombreCliente" class="input-datos" placeholder="👤 Tu Nombre">
-                <textarea id="direccionCliente" class="input-datos" placeholder="🏠 Dirección y teléfono" rows="1"></textarea>
+        <div class="fila-botones">
+            <div id="btn-tienda" class="btn-accion activo" onclick="seleccionarEntrega('tienda')">
+                <span>🏪 Recogida<br>en Tienda</span>
             </div>
+
+            <div id="btn-domicilio" class="btn-accion" onclick="seleccionarEntrega('domicilio')">
+                <span>🛵 Servicio a<br>Domicilio</span>
+            </div>
+
+            <a href="javascript:void(0);" onclick="enviarPedido()" class="btn-whatsapp">
+                📲 ENVIAR PEDIDO
+            </a>
+        </div>
+
+        <div id="formulario-domicilio" class="formulario-domicilio">
+            <select id="zonaPrecio" class="selector" onchange="calc()">
+                <option value="300">📍 Centro del pueblo ($300)</option>
+                <option value="350">📍 Agramonte ($350)</option>
+                <option value="450">📍 Bella Vista ($450)</option>
+                <option value="400">📍 Buenos Aires ($400)</option>
+                <option value="400">📍 Camino de la Matanza ($400)</option>
+                <option value="350">📍 Casino Campestre ($350)</option>
+                <option value="400">📍 El Jardín ($400)</option>
+                <option value="450">📍 El Micro ($450)</option>
+                <option value="400">📍 Florat ($400)</option>
+                <option value="350">📍 Floiran Quiroz ($350)</option>
+                <option value="400">📍 Garrido ($400)</option>
+                <option value="450">📍 Imán ($450)</option>
+                <option value="400">📍 Inra ($400)</option>
+                <option value="500">📍 Isabel Hortensia ($500)</option>
+                <option value="500">📍 Jayama ($500)</option>
+                <option value="400">📍 Juanito ($400)</option>
+                <option value="450">📍 La Belén ($450)</option>
+                <option value="350">📍 La Caridad ($350)</option>
+                <option value="450">📍 La Esperanza ($450)</option>
+                <option value="450">📍 La Guernina ($450)</option>
+                <option value="400">📍 La Mosca ($400)</option>
+                <option value="400">📍 La Vigía ($400)</option>
+                <option value="450">📍 La Yaba ($450)</option>
+                <option value="450">📍 La Zambrana ($450)</option>
+                <option value="350">📍 Las Mercedes ($350)</option>
+                <option value="500">📍 Lenin ($500)</option>
+                <option value="450">📍 Los Coquitos ($450)</option>
+                <option value="400">📍 Marquesado ($400)</option>
+                <option value="400">📍 Mascota ($400)</option>
+                <option value="400">📍 Modelo ($400)</option>
+                <option value="400">📍 Monte Carlos ($400)</option>
+                <option value="400">📍 Montejo ($400)</option>
+                <option value="450">📍 Nadales ($450)</option>
+                <option value="450">📍 Nitrógeno ($450)</option>
+                <option value="450">📍 Nueva Esperanza ($450)</option>
+                <option value="400">📍 Palomino ($400)</option>
+                <option value="350">📍 Porvenir ($350)</option>
+                <option value="350">📍 Previsora ($350)</option>
+                <option value="400">📍 Puerto Príncipe ($400)</option>
+                <option value="350">📍 Sanchez Soto ($350)</option>
+                <option value="500">📍 Saratoga ($500)</option>
+                <option value="350">📍 Simoni ($350)</option>
+                <option value="400">📍 Versalles ($400)</option>
+                <option value="400">📍 Villa Mariana ($400)</option>
+                <option value="450">📍 Vista Bella ($450)</option>
+                <option value="350">📍 Vista Hermosa ($350)</option>
+            </select>
+            <input type="text" id="nombreCliente" class="input-datos" placeholder="👤 Tu Nombre">
+            <textarea id="direccionCliente" class="input-datos" placeholder="🏠 Dirección y teléfono" rows="1"></textarea>
         </div>
     </div>
 
 <script>
     const URL_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSh6ypXBcxssEtPYB9l6ahApz-tHFPEoi5voACOA5ynv_gxA7Uo2nzXIPtlVTTTxOeN2vqjyygpGvOI/pub?output=csv';
     let productos = [];
+    let tipoEntregaSeleccionado = "tienda";
 
     async function obtenerDatos() {
         try {
@@ -146,7 +159,7 @@
             }).filter(p => p && p.nombre !== "");
             document.getElementById('cargando').style.display = 'none';
             mostrar();
-        } catch (e) { document.getElementById('cargando').innerText = "❌ Error al cargar inventario."; }
+        } catch (e) { document.getElementById('cargando').innerText = "❌ Error al cargar."; }
     }
 
     function mostrar() {
@@ -163,9 +176,8 @@
                     <img src="${imagen}" class="foto-producto" loading="lazy">
                     <div class="producto-info">
                         <span class="nombre">${p.nombre}</span>
-                        ${p.descripcion ? `<button class="btn-desc" onclick="this.nextElementSibling.classList.toggle('abierto')">Ver detalles ▼</button><div class="panel-desc">${p.descripcion}</div>` : ''}
+                        ${p.descripcion ? `<button class="btn-desc" onclick="this.nextElementSibling.classList.toggle('abierto')">Detalles ▼</button><div class="panel-desc">${p.descripcion}</div>` : ''}
                         <span class="precio">$${p.precio.toLocaleString()}</span>
-                        <span class="stock-numero">${!agotado ? 'Stock: '+p.stock : ''}</span>
                         <input type="number" class="cant-input" id="cant-${i}" value="0" min="0" max="${p.stock}" ${agotado ? 'disabled' : ''} oninput="calc()">
                     </div>
                 </div>`;
@@ -173,9 +185,11 @@
         cont.innerHTML = html;
     }
 
-    function toggleEntrega() {
-        const tipo = document.getElementById("tipoEntrega").value;
-        document.getElementById("zona-domicilio").style.display = (tipo === "domicilio") ? "block" : "none";
+    function seleccionarEntrega(tipo) {
+        tipoEntregaSeleccionado = tipo;
+        document.getElementById('btn-tienda').classList.toggle('activo', tipo === 'tienda');
+        document.getElementById('btn-domicilio').classList.toggle('activo', tipo === 'domicilio');
+        document.getElementById('formulario-domicilio').style.display = (tipo === 'domicilio') ? 'block' : 'none';
         calc();
     }
 
@@ -187,7 +201,7 @@
         });
         
         let costoEnvio = 0;
-        if(document.getElementById("tipoEntrega").value === "domicilio") {
+        if(tipoEntregaSeleccionado === "domicilio") {
             costoEnvio = parseInt(document.getElementById("zonaPrecio").value);
         }
         
@@ -211,7 +225,6 @@
 
         if (!hay) return alert("Por favor, selecciona al menos un producto.");
         
-        const tipo = document.getElementById("tipoEntrega").value;
         let txt = `*🌺 NUEVO PEDIDO - MÁS BELLA 🌺*\n`;
         txt += `_Estética Profesional Camagüey_\n`;
         txt += `––––––––––––––––––––––––––––\n\n`;
@@ -219,7 +232,7 @@
         txt += `––––––––––––––––––––––––––––\n`;
         txt += `🛍️ *Subtotal:* $${subtotalMercancia.toLocaleString()}\n`;
         
-        if(tipo === "domicilio") {
+        if(tipoEntregaSeleccionado === "domicilio") {
             const costoEnvio = parseInt(document.getElementById("zonaPrecio").value);
             const zonaNom = document.getElementById("zonaPrecio").options[document.getElementById("zonaPrecio").selectedIndex].text;
             txt += `🛵 *Envío:* $${costoEnvio.toLocaleString()}\n`;
@@ -230,7 +243,7 @@
             txt += `🏪 *Método:* Recogida en Tienda ($0)\n`;
         }
         
-        const totalFinal = subtotalMercancia + (tipo === "domicilio" ? parseInt(document.getElementById("zonaPrecio").value) : 0);
+        const totalFinal = subtotalMercancia + (tipoEntregaSeleccionado === "domicilio" ? parseInt(document.getElementById("zonaPrecio").value) : 0);
         txt += `\n💰 *TOTAL A PAGAR: $${totalFinal.toLocaleString()}*\n`;
         txt += `––––––––––––––––––––––––––––\n`;
         txt += `🙏 _Quedo a la espera de su confirmación._`;
@@ -240,5 +253,5 @@
     window.onload = obtenerDatos;
 </script>
 </body>
-    </html>
-    
+                    </html>
+                    
