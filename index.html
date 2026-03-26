@@ -19,7 +19,9 @@
         .producto-item:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(216, 27, 96, 0.15); }
         .producto-item.agotado { opacity: 0.7; }
         
-        .badge-agotado { background: #ff4444; color: white; padding: 8px 15px; border-radius: 5px; font-size: 0.9rem; position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); z-index: 10; font-weight: bold; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        .badge-status { position: absolute; top: 10px; left: 10px; padding: 4px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; color: white; z-index: 5; text-transform: uppercase; }
+        .badge-agotado { background: #ff4444; top: 40%; left: 50%; transform: translate(-50%, -50%); padding: 8px 15px; font-size: 0.9rem; position: absolute; }
+        .badge-pocos { background: var(--naranja); }
 
         .foto-producto { width: 100%; height: 180px; object-fit: cover; background-color: #f9f9f9; }
         .producto-info { padding: 10px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; text-align: center; }
@@ -30,26 +32,20 @@
         .panel-desc.abierto { max-height: 150px; padding: 8px; margin-bottom: 8px; }
 
         .precio { font-weight: bold; color: var(--rosa-fuerte); font-size: 1.1rem; }
-        .stock-numero { font-size: 0.65rem; color: #7f8c8d; font-style: italic; display: block; margin-bottom: 5px; }
+        .stock-numero { font-size: 0.7rem; color: #7f8c8d; font-style: italic; display: block; margin: 4px 0; font-weight: 600; }
+        .alerta-poca { color: var(--naranja); }
         
         .cant-input { width: 100%; text-align: center; border: 1px solid #ccc; border-radius: 8px; padding: 8px; font-weight: bold; box-sizing: border-box; font-size: 1rem; }
 
-        /* BARRA INFERIOR MODERNA */
         .resumen-fijo { background: var(--oscuro); color: white; position: fixed; bottom: 0; width: 100%; z-index: 1000; border-top: 3px solid var(--oro); padding: 12px; box-sizing: border-box; }
         .total-destacado { font-size: 1.2rem; font-weight: bold; text-align: center; display: block; margin-bottom: 12px; color: white; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; }
-        
         .fila-botones { display: flex; gap: 10px; margin-bottom: 10px; }
-        
         .btn-accion { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; transition: 0.3s; background: rgba(255,255,255,0.05); color: white; }
-        .btn-accion i { font-size: 1.2rem; margin-bottom: 4px; }
         .btn-accion.activo { background: var(--oro); color: var(--oscuro); border-color: var(--oro); font-weight: bold; }
         .btn-accion span { font-size: 0.75rem; text-align: center; line-height: 1.1; }
-
         .btn-whatsapp { flex: 1.5; background: #25d366; color: white; text-decoration: none; padding: 12px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-
         .formulario-domicilio { display: none; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; margin-top: 10px; border: 1px dashed var(--oro); animation: slideUp 0.3s ease; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
         .selector, .input-datos { width: 100%; padding: 10px; margin: 4px 0; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box; font-size: 0.9rem; }
     </style>
 </head>
@@ -71,21 +67,20 @@
             <div id="btn-tienda" class="btn-accion activo" onclick="seleccionarEntrega('tienda')">
                 <span>🏪 Recogida<br>en Tienda</span>
             </div>
-
             <div id="btn-domicilio" class="btn-accion" onclick="seleccionarEntrega('domicilio')">
                 <span>🛵 Servicio a<br>Domicilio</span>
             </div>
-
             <a href="javascript:void(0);" onclick="enviarPedido()" class="btn-whatsapp">
                 📲 ENVIAR PEDIDO
             </a>
         </div>
 
         <div id="formulario-domicilio" class="formulario-domicilio">
+            <p style="font-size: 0.75rem; color: var(--oro); margin: 0 0 8px 0; text-align: center;">Costo adicional según ubicación</p>
             <select id="zonaPrecio" class="selector" onchange="calc()">
                 <option value="300">📍 Centro del pueblo ($300)</option>
                 <option value="350">📍 Agramonte ($350)</option>
-                <option value="450">📍 Bella Vista ($450)</option>
+                <option value="400">📍 Bella Vista ($400)</option>
                 <option value="400">📍 Buenos Aires ($400)</option>
                 <option value="400">📍 Camino de la Matanza ($400)</option>
                 <option value="350">📍 Casino Campestre ($350)</option>
@@ -165,19 +160,36 @@
     function mostrar() {
         const cont = document.getElementById('contenedor-productos');
         let html = ""; let cat = "";
+        
         productos.forEach((p, i) => {
             if (p.cat !== cat) { cat = p.cat; html += `<div class="categoria-titulo">${p.cat}</div>`; }
+            
             const agotado = p.stock <= 0;
+            const pocaDispo = p.stock > 0 && p.stock < 10;
             const imagen = (p.foto && p.foto !== "") ? p.foto : 'https://placehold.co/600x800/fff5f8/d81b60?text=Sin+Foto';
             
+            let stockHTML = "";
+            let badgeHTML = "";
+
+            if (agotado) {
+                badgeHTML = `<div class="badge-status badge-agotado">AGOTADO</div>`;
+                stockHTML = `<span class="stock-numero">Sin existencias</span>`;
+            } else if (pocaDispo) {
+                badgeHTML = `<div class="badge-status badge-pocos">POCA DISPONIBILIDAD</div>`;
+                stockHTML = `<span class="stock-numero alerta-poca">¡Solo quedan ${p.stock}!</span>`;
+            } else {
+                stockHTML = `<span class="stock-numero">Disponibles: ${p.stock}</span>`;
+            }
+
             html += `
                 <div class="producto-item ${agotado ? 'agotado' : ''}">
-                    ${agotado ? '<div class="badge-agotado">AGOTADO</div>' : ''}
+                    ${badgeHTML}
                     <img src="${imagen}" class="foto-producto" loading="lazy">
                     <div class="producto-info">
                         <span class="nombre">${p.nombre}</span>
                         ${p.descripcion ? `<button class="btn-desc" onclick="this.nextElementSibling.classList.toggle('abierto')">Detalles ▼</button><div class="panel-desc">${p.descripcion}</div>` : ''}
                         <span class="precio">$${p.precio.toLocaleString()}</span>
+                        ${stockHTML}
                         <input type="number" class="cant-input" id="cant-${i}" value="0" min="0" max="${p.stock}" ${agotado ? 'disabled' : ''} oninput="calc()">
                     </div>
                 </div>`;
@@ -199,12 +211,7 @@
             let cant = parseInt(document.getElementById(`cant-${i}`).value) || 0;
             subtotal += cant * p.precio; 
         });
-        
-        let costoEnvio = 0;
-        if(tipoEntregaSeleccionado === "domicilio") {
-            costoEnvio = parseInt(document.getElementById("zonaPrecio").value);
-        }
-        
+        let costoEnvio = (tipoEntregaSeleccionado === "domicilio") ? parseInt(document.getElementById("zonaPrecio").value) : 0;
         document.getElementById("monto-total").innerText = (subtotal + costoEnvio).toLocaleString();
     }
 
@@ -218,7 +225,7 @@
             if (cant > 0) { 
                 const importeFila = cant * p.precio;
                 subtotalMercancia += importeFila;
-                productosTexto += `✨ *${cant}* x ${p.nombre}\n    (_$${p.precio.toLocaleString()} c/u_) → *$${importeFila.toLocaleString()}*\n\n`; 
+                productosTexto += `✨ *${cant}* x ${p.nombre}\n    → *$${importeFila.toLocaleString()}*\n\n`; 
                 hay = true; 
             }
         });
@@ -226,10 +233,7 @@
         if (!hay) return alert("Por favor, selecciona al menos un producto.");
         
         let txt = `*🌺 NUEVO PEDIDO - MÁS BELLA 🌺*\n`;
-        txt += `_Estética Profesional Camagüey_\n`;
-        txt += `––––––––––––––––––––––––––––\n\n`;
-        txt += productosTexto;
-        txt += `––––––––––––––––––––––––––––\n`;
+        txt += `––––––––––––––––––––––––––––\n\n${productosTexto}`;
         txt += `🛍️ *Subtotal:* $${subtotalMercancia.toLocaleString()}\n`;
         
         if(tipoEntregaSeleccionado === "domicilio") {
@@ -239,19 +243,15 @@
             txt += `📍 *Zona:* ${zonaNom}\n\n`;
             txt += `👤 *Cliente:* ${document.getElementById("nombreCliente").value || "No indicado"}\n`;
             txt += `🏠 *Dirección:* ${document.getElementById("direccionCliente").value || "No indicada"}\n`;
-        } else {
-            txt += `🏪 *Método:* Recogida en Tienda ($0)\n`;
         }
         
         const totalFinal = subtotalMercancia + (tipoEntregaSeleccionado === "domicilio" ? parseInt(document.getElementById("zonaPrecio").value) : 0);
-        txt += `\n💰 *TOTAL A PAGAR: $${totalFinal.toLocaleString()}*\n`;
-        txt += `––––––––––––––––––––––––––––\n`;
-        txt += `🙏 _Quedo a la espera de su confirmación._`;
+        txt += `\n💰 *TOTAL: $${totalFinal.toLocaleString()}*\n`;
         
         window.location.href = `https://wa.me/5356247880?text=${encodeURIComponent(txt)}`;
     }
     window.onload = obtenerDatos;
 </script>
 </body>
-                    </html>
-                    
+                </html>
+                
