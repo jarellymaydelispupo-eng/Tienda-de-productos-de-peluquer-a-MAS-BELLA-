@@ -30,7 +30,6 @@
 
         .precio { font-weight: bold; color: var(--rosa-fuerte); font-size: 1.2rem; }
         
-        /* ESTILOS DE STOCK */
         .badge-poca-dispo { color: var(--naranja); font-size: 0.75rem; font-weight: bold; margin-bottom: 2px; display: block; }
         .stock-numero { font-size: 0.7rem; color: #7f8c8d; font-style: italic; display: block; margin-bottom: 5px; }
         
@@ -66,10 +65,52 @@
                 <option value="0">🏪 Recogida en Tienda ($0)</option>
                 <optgroup label="Zonas de Domicilio">
                     <option value="350">📍 Agramonte ($350)</option>
-                    <option value="300">📍 Centro del pueblo ($300)</option>
+                    <option value="450">📍 Bella Vista ($450)</option>
+                    <option value="400">📍 Buenos Aires ($400)</option>
+                    <option value="400">📍 Camino de la Matanza ($400)</option>
+                    <option value="350">📍 Casino Campestre ($350)</option>
+                    <option value="300">📍 Centro del pueblo (Todas las dir.) ($300)</option>
+                    <option value="400">📍 El Jardín ($400)</option>
+                    <option value="450">📍 El Micro ($450)</option>
+                    <option value="400">📍 Florat ($400)</option>
+                    <option value="350">📍 Floiran Quiroz ($350)</option>
+                    <option value="400">📍 Garrido ($400)</option>
+                    <option value="450">📍 Imán ($450)</option>
+                    <option value="400">📍 Inra ($400)</option>
+                    <option value="500">📍 Isabel Hortensia ($500)</option>
+                    <option value="500">📍 Jayama ($500)</option>
+                    <option value="400">📍 Juanito ($400)</option>
+                    <option value="450">📍 La Belén ($450)</option>
                     <option value="350">📍 La Caridad ($350)</option>
+                    <option value="450">📍 La Esperanza ($450)</option>
+                    <option value="450">📍 La Guernina ($450)</option>
+                    <option value="400">📍 La Mosca ($400)</option>
+                    <option value="400">📍 La Vigía ($400)</option>
+                    <option value="450">📍 La Yaba ($450)</option>
+                    <option value="450">📍 La Zambrana ($450)</option>
+                    <option value="350">📍 Las Mercedes ($350)</option>
                     <option value="500">📍 Lenin ($500)</option>
-                    </optgroup>
+                    <option value="450">📍 Los Coquitos ($450)</option>
+                    <option value="400">📍 Marquesado ($400)</option>
+                    <option value="400">📍 Mascota ($400)</option>
+                    <option value="400">📍 Modelo ($400)</option>
+                    <option value="400">📍 Monte Carlos ($400)</option>
+                    <option value="400">📍 Montejo ($400)</option>
+                    <option value="450">📍 Nadales ($450)</option>
+                    <option value="450">📍 Nitrógeno ($450)</option>
+                    <option value="450">📍 Nueva Esperanza ($450)</option>
+                    <option value="400">📍 Palomino ($400)</option>
+                    <option value="350">📍 Porvenir ($350)</option>
+                    <option value="350">📍 Previsora ($350)</option>
+                    <option value="400">📍 Puerto Príncipe ($400)</option>
+                    <option value="350">📍 Sanchez Soto ($350)</option>
+                    <option value="500">📍 Saratoga ($500)</option>
+                    <option value="350">📍 Simoni ($350)</option>
+                    <option value="400">📍 Versalles ($400)</option>
+                    <option value="400">📍 Villa Mariana ($400)</option>
+                    <option value="450">📍 Vista Bella ($450)</option>
+                    <option value="350">📍 Vista Hermosa ($350)</option>
+                </optgroup>
             </select>
             <div id="campos-domicilio" style="display:none;">
                 <input type="text" id="nombreCliente" class="input-datos" placeholder="👤 Tu Nombre">
@@ -117,12 +158,12 @@
             
             const agotado = p.stock <= 0;
             const pocaDispo = !agotado && p.stock <= 10;
-            const imagen = p.foto ? p.foto : 'https://placehold.co/600x800/fff5f8/d81b60?text=Sin+Foto';
+            const imagen = (p.foto && p.foto !== "") ? p.foto : 'https://placehold.co/600x800/fff5f8/d81b60?text=Sin+Foto';
             
             html += `
                 <div class="producto-item ${agotado ? 'agotado' : ''}">
                     ${agotado ? '<div class="badge-agotado">AGOTADO</div>' : ''}
-                    <img src="${imagen}" class="foto-producto" loading="lazy">
+                    <img src="${imagen}" class="foto-producto" loading="lazy" onerror="this.src='https://placehold.co/600x800/fff5f8/d81b60?text=Error+Imagen'">
                     <div class="producto-info">
                         <span class="nombre">${p.nombre}</span>
                         ${p.descripcion ? `<button class="btn-desc" onclick="this.nextElementSibling.classList.toggle('abierto')">Ver detalles ▼</button><div class="panel-desc">${p.descripcion}</div>` : ''}
@@ -167,6 +208,8 @@
             txt += `\n📍 *Entrega:* ${document.getElementById("metodoEntrega").options[document.getElementById("metodoEntrega").selectedIndex].text}`;
             txt += `\n👤 *Cliente:* ${document.getElementById("nombreCliente").value}`;
             txt += `\n🏠 *Dirección:* ${document.getElementById("direccionCliente").value}`;
+        } else {
+            txt += `\n🏪 *Método:* Recogida en Tienda`;
         }
         
         txt += `\n\n*TOTAL: $${document.getElementById("monto-total").innerText}*`;
