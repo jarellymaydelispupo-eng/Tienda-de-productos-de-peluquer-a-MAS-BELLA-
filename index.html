@@ -196,27 +196,43 @@
 
     function enviarPedido() {
         let txt = `*🌺 PEDIDO - MÁS BELLA 🌺*\n\n`;
+        let subtotalMercancia = 0;
         let hay = false;
+
         productos.forEach((p, i) => {
             const cant = parseInt(document.getElementById(`cant-${i}`).value) || 0;
-            if (cant > 0) { txt += `✅ ${cant}x ${p.nombre}\n`; hay = true; }
+            if (cant > 0) { 
+                const importeFila = cant * p.precio;
+                subtotalMercancia += importeFila;
+                txt += `✅ ${cant}x ${p.nombre} ($${p.precio.toLocaleString()} c/u) = *$${importeFila.toLocaleString()}*\n`; 
+                hay = true; 
+            }
         });
+
         if (!hay) return alert("Por favor, selecciona al menos un producto.");
         
-        const dom = parseInt(document.getElementById("metodoEntrega").value);
-        if(dom > 0) {
-            txt += `\n📍 *Entrega:* ${document.getElementById("metodoEntrega").options[document.getElementById("metodoEntrega").selectedIndex].text}`;
+        const costoDomicilio = parseInt(document.getElementById("metodoEntrega").value);
+        const zonaTexto = document.getElementById("metodoEntrega").options[document.getElementById("metodoEntrega").selectedIndex].text;
+
+        txt += `\n--------------------------`;
+        txt += `\n📦 *Importe de Mercancía:* $${subtotalMercancia.toLocaleString()}`;
+        
+        if(costoDomicilio > 0) {
+            txt += `\n🛵 *Costo de Domicilio:* $${costoDomicilio.toLocaleString()}`;
+            txt += `\n📍 *Zona:* ${zonaTexto}`;
             txt += `\n👤 *Cliente:* ${document.getElementById("nombreCliente").value}`;
             txt += `\n🏠 *Dirección:* ${document.getElementById("direccionCliente").value}`;
         } else {
             txt += `\n🏪 *Método:* Recogida en Tienda`;
         }
         
-        txt += `\n\n*TOTAL: $${document.getElementById("monto-total").innerText}*`;
+        const totalFinal = subtotalMercancia + costoDomicilio;
+        txt += `\n\n*💰 TOTAL A PAGAR: $${totalFinal.toLocaleString()}*`;
+        
         window.location.href = `https://wa.me/5356247880?text=${encodeURIComponent(txt)}`;
     }
     window.onload = obtenerDatos;
 </script>
 </body>
-    </html>
-    
+                        </html>
+                        
