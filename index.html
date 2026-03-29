@@ -19,9 +19,7 @@
         .producto-item:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(216, 27, 96, 0.15); }
         .producto-item.agotado { opacity: 0.7; }
         
-        .badge-status { position: absolute; top: 10px; left: 10px; padding: 4px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; color: white; z-index: 5; text-transform: uppercase; }
-        .badge-agotado { background: #ff4444; top: 40%; left: 50%; transform: translate(-50%, -50%); padding: 8px 15px; font-size: 0.9rem; position: absolute; }
-        .badge-pocos { background: var(--naranja); }
+        .badge-agotado { background: #ff4444; color: white; padding: 8px 15px; border-radius: 5px; font-size: 0.9rem; position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); z-index: 10; font-weight: bold; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
 
         .foto-producto { width: 100%; height: 180px; object-fit: cover; background-color: #f9f9f9; }
         .producto-info { padding: 10px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; text-align: center; }
@@ -32,20 +30,25 @@
         .panel-desc.abierto { max-height: 150px; padding: 8px; margin-bottom: 8px; }
 
         .precio { font-weight: bold; color: var(--rosa-fuerte); font-size: 1.1rem; }
-        .stock-numero { font-size: 0.7rem; color: #7f8c8d; font-style: italic; display: block; margin: 4px 0; font-weight: 600; }
-        .alerta-poca { color: var(--naranja); }
+        .stock-numero { font-size: 0.65rem; color: #7f8c8d; font-style: italic; display: block; margin-bottom: 5px; }
         
         .cant-input { width: 100%; text-align: center; border: 1px solid #ccc; border-radius: 8px; padding: 8px; font-weight: bold; box-sizing: border-box; font-size: 1rem; }
 
         .resumen-fijo { background: var(--oscuro); color: white; position: fixed; bottom: 0; width: 100%; z-index: 1000; border-top: 3px solid var(--oro); padding: 12px; box-sizing: border-box; }
         .total-destacado { font-size: 1.2rem; font-weight: bold; text-align: center; display: block; margin-bottom: 12px; color: white; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; }
+        
         .fila-botones { display: flex; gap: 10px; margin-bottom: 10px; }
+        
         .btn-accion { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; transition: 0.3s; background: rgba(255,255,255,0.05); color: white; }
+        .btn-accion i { font-size: 1.2rem; margin-bottom: 4px; }
         .btn-accion.activo { background: var(--oro); color: var(--oscuro); border-color: var(--oro); font-weight: bold; }
         .btn-accion span { font-size: 0.75rem; text-align: center; line-height: 1.1; }
+
         .btn-whatsapp { flex: 1.5; background: #25d366; color: white; text-decoration: none; padding: 12px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+
         .formulario-domicilio { display: none; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; margin-top: 10px; border: 1px dashed var(--oro); animation: slideUp 0.3s ease; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
         .selector, .input-datos { width: 100%; padding: 10px; margin: 4px 0; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box; font-size: 0.9rem; }
     </style>
 </head>
@@ -67,63 +70,64 @@
             <div id="btn-tienda" class="btn-accion activo" onclick="seleccionarEntrega('tienda')">
                 <span>🏪 Recogida<br>en Tienda</span>
             </div>
+
             <div id="btn-domicilio" class="btn-accion" onclick="seleccionarEntrega('domicilio')">
                 <span>🛵 Servicio a<br>Domicilio</span>
             </div>
+
             <a href="javascript:void(0);" onclick="enviarPedido()" class="btn-whatsapp">
                 📲 ENVIAR PEDIDO
             </a>
         </div>
 
         <div id="formulario-domicilio" class="formulario-domicilio">
-            <p style="font-size: 0.75rem; color: var(--oro); margin: 0 0 8px 0; text-align: center;">Costo adicional según ubicación</p>
             <select id="zonaPrecio" class="selector" onchange="calc()">
-                <option value="300">📍 Centro del pueblo ($300)</option>
+                <option value="300">📍 centro del pueblo ($300)</option>
+                <option value="500">📍 Lenin ($500)</option>
+                <option value="400">📍 Modelo ($400)</option>
+                <option value="350">📍 La Caridad ($350)</option>
+                <option value="400">📍 La Vigía ($400)</option>
+                <option value="400">📍 Florat ($400)</option>
+                <option value="350">📍 Vista Hermosa ($350)</option>
+                <option value="400">📍 Versalles ($400)</option>
                 <option value="350">📍 Agramonte ($350)</option>
+                <option value="500">📍 Jayama ($500)</option>
+                <option value="400">📍 Monte Carlos ($400)</option>
+                <option value="400">📍 La Mosca ($400)</option>
+                <option value="400">📍 Marquesado ($400)</option>
+                <option value="450">📍 La Esperanza ($450)</option>
+                <option value="450">📍 Nueva Esperanza ($450)</option>
+                <option value="400">📍 Garrido ($400)</option>
+                <option value="450">📍 El Micro ($450)</option>
+                <option value="400">📍 Palomino ($400)</option>
+                <option value="400">📍 Juanito ($400)</option>
+                <option value="350">📍 Previsora ($350)</option>
+                <option value="450">📍 La Guernina ($450)</option>
+                <option value="450">📍 La Belén ($450)</option>
+                <option value="350">📍 Casino Campestre ($350)</option>
+                <option value="350">📍 Las Mercedes ($350)</option>
+                <option value="350">📍 Simoni ($350)</option>
+                <option value="400">📍 Montejo ($400)</option>
+                <option value="450">📍 La Yaba ($450)</option>
+                <option value="450">📍 Nadales ($450)</option>
                 <option value="400">📍 Bella Vista ($400)</option>
+                <option value="450">📍 Vista Bella ($450)</option>
+                <option value="400">📍 Inra ($400)</option>
+                <option value="450">📍 Imán ($450)</option>
+                <option value="400">📍 Mascota ($400)</option>
+                <option value="400">📍 Puerto Príncipe ($400)</option>
+                <option value="500">📍 Isabel Hortensia ($500)</option>
+                <option value="400">📍 Villa Mariana ($400)</option>
+                <option value="450">📍 Los Coquitos ($450)</option>
+                <option value="450">📍 La Zambrana ($450)</option>
+                <option value="500">📍 Saratoga ($500)</option>
+                <option value="400">📍 El Jardín ($400)</option>
+                <option value="350">📍 Floiran Quiroz ($350)</option>
+                <option value="350">📍 Porvenir ($350)</option>
+                <option value="450">📍 Nitrógeno ($450)</option>
                 <option value="400">📍 Buenos Aires ($400)</option>
                 <option value="400">📍 Camino de la Matanza ($400)</option>
-                <option value="350">📍 Casino Campestre ($350)</option>
-                <option value="400">📍 El Jardín ($400)</option>
-                <option value="450">📍 El Micro ($450)</option>
-                <option value="400">📍 Florat ($400)</option>
-                <option value="350">📍 Floiran Quiroz ($350)</option>
-                <option value="400">📍 Garrido ($400)</option>
-                <option value="450">📍 Imán ($450)</option>
-                <option value="400">📍 Inra ($400)</option>
-                <option value="500">📍 Isabel Hortensia ($500)</option>
-                <option value="500">📍 Jayama ($500)</option>
-                <option value="400">📍 Juanito ($400)</option>
-                <option value="450">📍 La Belén ($450)</option>
-                <option value="350">📍 La Caridad ($350)</option>
-                <option value="450">📍 La Esperanza ($450)</option>
-                <option value="450">📍 La Guernina ($450)</option>
-                <option value="400">📍 La Mosca ($400)</option>
-                <option value="400">📍 La Vigía ($400)</option>
-                <option value="450">📍 La Yaba ($450)</option>
-                <option value="450">📍 La Zambrana ($450)</option>
-                <option value="350">📍 Las Mercedes ($350)</option>
-                <option value="500">📍 Lenin ($500)</option>
-                <option value="450">📍 Los Coquitos ($450)</option>
-                <option value="400">📍 Marquesado ($400)</option>
-                <option value="400">📍 Mascota ($400)</option>
-                <option value="400">📍 Modelo ($400)</option>
-                <option value="400">📍 Monte Carlos ($400)</option>
-                <option value="400">📍 Montejo ($400)</option>
-                <option value="450">📍 Nadales ($450)</option>
-                <option value="450">📍 Nitrógeno ($450)</option>
-                <option value="450">📍 Nueva Esperanza ($450)</option>
-                <option value="400">📍 Palomino ($400)</option>
-                <option value="350">📍 Porvenir ($350)</option>
-                <option value="350">📍 Previsora ($350)</option>
-                <option value="400">📍 Puerto Príncipe ($400)</option>
                 <option value="350">📍 Sanchez Soto ($350)</option>
-                <option value="500">📍 Saratoga ($500)</option>
-                <option value="350">📍 Simoni ($350)</option>
-                <option value="400">📍 Versalles ($400)</option>
-                <option value="400">📍 Villa Mariana ($400)</option>
-                <option value="450">📍 Vista Bella ($450)</option>
-                <option value="350">📍 Vista Hermosa ($350)</option>
             </select>
             <input type="text" id="nombreCliente" class="input-datos" placeholder="👤 Tu Nombre">
             <textarea id="direccionCliente" class="input-datos" placeholder="🏠 Dirección y teléfono" rows="1"></textarea>
@@ -134,6 +138,20 @@
     const URL_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSh6ypXBcxssEtPYB9l6ahApz-tHFPEoi5voACOA5ynv_gxA7Uo2nzXIPtlVTTTxOeN2vqjyygpGvOI/pub?output=csv';
     let productos = [];
     let tipoEntregaSeleccionado = "tienda";
+
+    // FUNCIÓN OPTIMIZADA A 600PX DE RESOLUCIÓN
+    function optimizarEnlaceDrive(url) {
+        if (!url || !url.includes('drive.google.com')) return url;
+        try {
+            const match = url.match(/\/d\/(.+?)\//) || url.match(/id=(.+?)(&|$)/);
+            const id = match ? match[1] : null;
+            if (id) {
+                // Ajustado a s600 para mayor velocidad en Cuba
+                return `https://lh3.googleusercontent.com/d/${id}=s600`;
+            }
+        } catch (e) { console.error("Error", e); }
+        return url;
+    }
 
     async function obtenerDatos() {
         try {
@@ -160,36 +178,20 @@
     function mostrar() {
         const cont = document.getElementById('contenedor-productos');
         let html = ""; let cat = "";
-        
         productos.forEach((p, i) => {
             if (p.cat !== cat) { cat = p.cat; html += `<div class="categoria-titulo">${p.cat}</div>`; }
-            
             const agotado = p.stock <= 0;
-            const pocaDispo = p.stock > 0 && p.stock < 10;
-            const imagen = (p.foto && p.foto !== "") ? p.foto : 'https://placehold.co/600x800/fff5f8/d81b60?text=Sin+Foto';
+            let urlFoto = optimizarEnlaceDrive(p.foto);
+            const imagen = (urlFoto && urlFoto !== "") ? urlFoto : 'https://placehold.co/600x800/fff5f8/d81b60?text=Sin+Foto';
             
-            let stockHTML = "";
-            let badgeHTML = "";
-
-            if (agotado) {
-                badgeHTML = `<div class="badge-status badge-agotado">AGOTADO</div>`;
-                stockHTML = `<span class="stock-numero">Sin existencias</span>`;
-            } else if (pocaDispo) {
-                badgeHTML = `<div class="badge-status badge-pocos">POCA DISPONIBILIDAD</div>`;
-                stockHTML = `<span class="stock-numero alerta-poca">¡Solo quedan ${p.stock}!</span>`;
-            } else {
-                stockHTML = `<span class="stock-numero">Disponibles: ${p.stock}</span>`;
-            }
-
             html += `
                 <div class="producto-item ${agotado ? 'agotado' : ''}">
-                    ${badgeHTML}
+                    ${agotado ? '<div class="badge-agotado">AGOTADO</div>' : ''}
                     <img src="${imagen}" class="foto-producto" loading="lazy">
                     <div class="producto-info">
                         <span class="nombre">${p.nombre}</span>
                         ${p.descripcion ? `<button class="btn-desc" onclick="this.nextElementSibling.classList.toggle('abierto')">Detalles ▼</button><div class="panel-desc">${p.descripcion}</div>` : ''}
                         <span class="precio">$${p.precio.toLocaleString()}</span>
-                        ${stockHTML}
                         <input type="number" class="cant-input" id="cant-${i}" value="0" min="0" max="${p.stock}" ${agotado ? 'disabled' : ''} oninput="calc()">
                     </div>
                 </div>`;
@@ -208,10 +210,13 @@
     function calc() {
         let subtotal = 0;
         productos.forEach((p, i) => { 
-            let cant = parseInt(document.getElementById(`cant-${i}`).value) || 0;
-            subtotal += cant * p.precio; 
+            let el = document.getElementById(`cant-${i}`);
+            if(el) {
+                let cant = parseInt(el.value) || 0;
+                subtotal += cant * p.precio; 
+            }
         });
-        let costoEnvio = (tipoEntregaSeleccionado === "domicilio") ? parseInt(document.getElementById("zonaPrecio").value) : 0;
+        let costoEnvio = (tipoEntregaSeleccionado === "domicilio") ? (parseInt(document.getElementById("zonaPrecio").value) || 0) : 0;
         document.getElementById("monto-total").innerText = (subtotal + costoEnvio).toLocaleString();
     }
 
@@ -219,35 +224,29 @@
         let subtotalMercancia = 0;
         let productosTexto = "";
         let hay = false;
-
         productos.forEach((p, i) => {
-            const cant = parseInt(document.getElementById(`cant-${i}`).value) || 0;
-            if (cant > 0) { 
-                const importeFila = cant * p.precio;
-                subtotalMercancia += importeFila;
-                productosTexto += `✨ *${cant}* x ${p.nombre}\n    → *$${importeFila.toLocaleString()}*\n\n`; 
-                hay = true; 
+            const el = document.getElementById(`cant-${i}`);
+            if(el) {
+                const cant = parseInt(el.value) || 0;
+                if (cant > 0) { 
+                    const importeFila = cant * p.precio;
+                    subtotalMercancia += importeFila;
+                    productosTexto += `✨ *${cant}* x ${p.nombre}\n    (_$${p.precio.toLocaleString()} c/u_) → *$${importeFila.toLocaleString()}*\n\n`; 
+                    hay = true; 
+                }
             }
         });
-
         if (!hay) return alert("Por favor, selecciona al menos un producto.");
-        
-        let txt = `*🌺 NUEVO PEDIDO - MÁS BELLA 🌺*\n`;
-        txt += `––––––––––––––––––––––––––––\n\n${productosTexto}`;
-        txt += `🛍️ *Subtotal:* $${subtotalMercancia.toLocaleString()}\n`;
-        
+        let txt = `*🌺 NUEVO PEDIDO - MÁS BELLA 🌺*\n_Estética Profesional Camagüey_\n––––––––––––––––––––––––––––\n\n${productosTexto}––––––––––––––––––––––––––––\n🛍️ *Subtotal:* $${subtotalMercancia.toLocaleString()}\n`;
         if(tipoEntregaSeleccionado === "domicilio") {
             const costoEnvio = parseInt(document.getElementById("zonaPrecio").value);
             const zonaNom = document.getElementById("zonaPrecio").options[document.getElementById("zonaPrecio").selectedIndex].text;
-            txt += `🛵 *Envío:* $${costoEnvio.toLocaleString()}\n`;
-            txt += `📍 *Zona:* ${zonaNom}\n\n`;
-            txt += `👤 *Cliente:* ${document.getElementById("nombreCliente").value || "No indicado"}\n`;
-            txt += `🏠 *Dirección:* ${document.getElementById("direccionCliente").value || "No indicada"}\n`;
+            txt += `🛵 *Envío:* $${costoEnvio.toLocaleString()}\n📍 *Zona:* ${zonaNom}\n\n👤 *Cliente:* ${document.getElementById("nombreCliente").value || "No indicado"}\n🏠 *Dirección:* ${document.getElementById("direccionCliente").value || "No indicada"}\n`;
+        } else {
+            txt += `🏪 *Método:* Recogida en Tienda ($0)\n`;
         }
-        
-        const totalFinal = subtotalMercancia + (tipoEntregaSeleccionado === "domicilio" ? parseInt(document.getElementById("zonaPrecio").value) : 0);
-        txt += `\n💰 *TOTAL: $${totalFinal.toLocaleString()}*\n`;
-        
+        const totalFinal = subtotalMercancia + (tipoEntregaSeleccionado === "domicilio" ? (parseInt(document.getElementById("zonaPrecio").value) || 0) : 0);
+        txt += `\n💰 *TOTAL A PAGAR: $${totalFinal.toLocaleString()}*\n––––––––––––––––––––––––––––\n🙏 _Quedo a la espera de su confirmación._`;
         window.location.href = `https://wa.me/5356247880?text=${encodeURIComponent(txt)}`;
     }
     window.onload = obtenerDatos;
