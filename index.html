@@ -30,7 +30,9 @@
         .panel-desc.abierto { max-height: 150px; padding: 8px; margin-bottom: 8px; }
 
         .precio { font-weight: bold; color: var(--rosa-fuerte); font-size: 1.1rem; }
-        .stock-numero { font-size: 0.65rem; color: #7f8c8d; font-style: italic; display: block; margin-bottom: 5px; }
+        .stock-info { font-size: 0.7rem; margin: 4px 0; font-weight: 500; }
+        .poca-dispo { color: var(--naranja); font-weight: bold; }
+        .buena-dispo { color: #7f8c8d; }
         
         .cant-input { width: 100%; text-align: center; border: 1px solid #ccc; border-radius: 8px; padding: 8px; font-weight: bold; box-sizing: border-box; font-size: 1rem; }
 
@@ -139,14 +141,12 @@
     let productos = [];
     let tipoEntregaSeleccionado = "tienda";
 
-    // FUNCIÓN OPTIMIZADA A 600PX DE RESOLUCIÓN
     function optimizarEnlaceDrive(url) {
         if (!url || !url.includes('drive.google.com')) return url;
         try {
             const match = url.match(/\/d\/(.+?)\//) || url.match(/id=(.+?)(&|$)/);
             const id = match ? match[1] : null;
             if (id) {
-                // Ajustado a s600 para mayor velocidad en Cuba
                 return `https://lh3.googleusercontent.com/d/${id}=s600`;
             }
         } catch (e) { console.error("Error", e); }
@@ -180,7 +180,10 @@
         let html = ""; let cat = "";
         productos.forEach((p, i) => {
             if (p.cat !== cat) { cat = p.cat; html += `<div class="categoria-titulo">${p.cat}</div>`; }
+            
             const agotado = p.stock <= 0;
+            const pocaDispo = p.stock > 0 && p.stock < 10;
+            
             let urlFoto = optimizarEnlaceDrive(p.foto);
             const imagen = (urlFoto && urlFoto !== "") ? urlFoto : 'https://placehold.co/600x800/fff5f8/d81b60?text=Sin+Foto';
             
@@ -192,6 +195,11 @@
                         <span class="nombre">${p.nombre}</span>
                         ${p.descripcion ? `<button class="btn-desc" onclick="this.nextElementSibling.classList.toggle('abierto')">Detalles ▼</button><div class="panel-desc">${p.descripcion}</div>` : ''}
                         <span class="precio">$${p.precio.toLocaleString()}</span>
+                        
+                        <div class="stock-info ${pocaDispo ? 'poca-dispo' : 'buena-dispo'}">
+                            ${agotado ? 'No disponible' : (pocaDispo ? '⚠️ Poca disponibilidad: ' + p.stock : 'Disponibles: ' + p.stock)}
+                        </div>
+
                         <input type="number" class="cant-input" id="cant-${i}" value="0" min="0" max="${p.stock}" ${agotado ? 'disabled' : ''} oninput="calc()">
                     </div>
                 </div>`;
